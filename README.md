@@ -3,15 +3,6 @@ Diagnostic Test Triggers
 
 How do you find (in the database) patients who had a test that shows a possibility of cancer, but who have **not** had timely follow-up?
 
-List of cancers currently
---------
-
-- bladder
-- breast
-- colorectal
-- hepatocellular
-- lung
-
 Bladder
 ========
 
@@ -48,3 +39,20 @@ Expected follow up
 - renal stone surgery **cpt** **icdp**
 - stent **cpt** **icdp**
 
+
+Breast
+========
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vel faucibus nunc. Fusce finibus vel felis at ullamcorper. Quisque leo enim, vestibulum vel urna ac, lacinia iaculis lacus. In hac habitasse platea dictumst. Curabitur a magna libero. 
+
+Colorectal
+========
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vel faucibus nunc. Fusce finibus vel felis at ullamcorper. Quisque leo enim, vestibulum vel urna ac, lacinia iaculis lacus. In hac habitasse platea dictumst. Curabitur a magna libero. 
+
+
+Hepatocellular
+========
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vel faucibus nunc. Fusce finibus vel felis at ullamcorper. Quisque leo enim, vestibulum vel urna ac, lacinia iaculis lacus. In hac habitasse platea dictumst. Curabitur a magna libero. 
+
+Lung
+========
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vel faucibus nunc. Fusce finibus vel felis at ullamcorper. Quisque leo enim, vestibulum vel urna ac, lacinia iaculis lacus. In hac habitasse platea dictumst. Curabitur a magna libero. 
