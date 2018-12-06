@@ -6,7 +6,7 @@ How do you find (in the database) patients who had a test that shows a possibili
 Bladder
 ========
 
-Main file *Bladder Cancer Trigger Criteria.docx*
+Main file *Bladder Cancer Trigger Criteria.docx*. Has an external docx with lists of codes. Does have ICD9-ICD-10 docx too.
 
 Inclusion
 
@@ -41,11 +41,32 @@ Expected follow up
 6. bladd surg *cpt* *icdp* docx
 
 
-
-
 Breast
 ========
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vel faucibus nunc. Fusce finibus vel felis at ullamcorper. Quisque leo enim, vestibulum vel urna ac, lacinia iaculis lacus. In hac habitasse platea dictumst. Curabitur a magna libero. 
+
+No external docx w/ pure code lists. Does have ICD9-ICD10 docx.
+
+Inclusion
+
+1. Abnormal mammo. List of BIRADS. *cpt* *icd* main
+
+Exclusion
+
+1. age: main
+2. deceased: main
+3. previous breast ca dx: *icd* main
+4. terminal illness: *icd* main
+5. hospice or palliative: *icd* *stop* main
+
+Expected follow up
+
+1. repeat mammo: *cpt* *icd*
+2. breast bx: *cpt* *icd*
+3. breast us: *cpt*
+4. breast mri: *cpt* 
+5. breast surg: *cpt* *icdp*
+6. onc referral completed: *stop*
+
 
 Colorectal
 ========
