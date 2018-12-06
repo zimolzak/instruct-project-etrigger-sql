@@ -21,7 +21,7 @@ Exclusion
 5. terminal dx. *ICD* within main
 6. hospice. *icd* *stop code* within main
 7. other bleeding dx. *icd* docx
-8. e/o uti. incompletely. "abx order, positive cx, positive other ua components"
+8. e/o uti. **incompletely.** "abx order, positive cx, positive other ua components"
 9. cysto. *cpt* docx
 10. recent gu procedure
     - renal bx *cpt* *icdp* docx
@@ -33,7 +33,7 @@ Exclusion
 
 Expected follow up
 
-1. uro visit *stop* docx but not listed at all
+1. uro visit *stop* docx but **not listed at all**
 2. cysto *cpt* docx
 3. imaging *cpt* *icdp* docx
 4. renal bx *cpt* *icdp* docx
