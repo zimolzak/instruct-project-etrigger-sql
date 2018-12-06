@@ -77,25 +77,25 @@ Inclusion
 
 Exclusion
 
-1. age
-2. deceased
-3. prior colo CA dx
-4. total colec
-5. terminal
-6. hospice
-7. e/o UGIB
-8. had a cscope
+1. age: main
+2. deceased: main
+3. prior colo CA dx: *icd*
+4. total colec: *cpt/icdp*
+5. terminal: *icd*
+6. hospice: *icd stop*
+7. e/o UGIB: *icd*
+8. had a cscope: *cpt/icdp*
 
 Exclusion for IDA only
 
-1. other bleed src
-2. preg
-3. thalassemia
+1. other bleed src: *icd*
+2. preg: *icd*
+3. thalassemia: *icd*
 
 Expected follow up
 
-1. cscope done
-2. GI referral complete
+1. cscope done: *cpt/icdp*
+2. GI referral complete: *stop*
 
 
 
