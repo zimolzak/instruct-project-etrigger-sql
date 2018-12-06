@@ -131,7 +131,30 @@ Expected follow up
 10. tumor board: *stop* and *note title* **incomplete**
 
 
-
 Lung
 ========
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vel faucibus nunc. Fusce finibus vel felis at ullamcorper. Quisque leo enim, vestibulum vel urna ac, lacinia iaculis lacus. In hac habitasse platea dictumst. Curabitur a magna libero. 
+Inclusion
+
+1. abnormal cxr. *cpt* "flagged as suspicious," and "primary diagnostic code flag." **incomplete? not sure.**
+2. abnl chest CT. *cpt* "flagged as suspicious," and "primary diagnostic code flag." **incomplete? not sure.**
+
+Exclusion
+
+1. age: main
+2. deceased: main
+3. recent lung ca dx: *icd*
+4. terminal: *icd*
+5. hospice: *icd* *stop*
+6. tuberculosis: *icd*
+
+Expected follow up
+
+1. pulm visit: *stop*
+2. thoracic visit: *stop*
+3. lung bx: *cpt* *icdp*
+4. bronch: *cpt* *icdp*
+5. lung surg: *cpt* *icdp*
+6. repeat cxr: *cpt*
+7. repeat ct: *cpt*
+8. PET or PET/CT: *cpt*
+9. tumor board: *stop* and *note title* **incomplete**
