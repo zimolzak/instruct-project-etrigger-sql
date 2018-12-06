@@ -102,7 +102,35 @@ Expected follow up
 
 Hepatocellular
 ========
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vel faucibus nunc. Fusce finibus vel felis at ullamcorper. Quisque leo enim, vestibulum vel urna ac, lacinia iaculis lacus. In hac habitasse platea dictumst. Curabitur a magna libero. 
+Inclusion
+
+1. AFP level. *loinc*, test name **incomplete**
+
+Exclusion
+
+1. age: main
+2. deceased: main
+3. recent hcc dx: *icd*
+4. terminal: *icd*
+5. hospice: *icd stop*
+6. gonadal: *icd*
+7. preg: *icd* *loinc* may be **incomplete**
+
+
+Expected follow up
+
+1. hepatol referral: *stop* **incomplete**
+2. GI referral: *stop* **incomplete**
+3. surg refer: *stop* **incomplete**
+4. onc refer: *stop* **incomplete**
+5. transplant refer: *stop* **incomplete**
+6. liver bx: *cpt/icdp*
+7. liver img: *cpt/icdp*
+8. liver surg: *cpt/icdp*
+9. liver tumor embol: *cpt*
+10. tumor board: *stop* and *note title* **incomplete**
+
+
 
 Lung
 ========
