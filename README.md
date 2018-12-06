@@ -70,7 +70,34 @@ Expected follow up
 
 Colorectal
 ========
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vel faucibus nunc. Fusce finibus vel felis at ullamcorper. Quisque leo enim, vestibulum vel urna ac, lacinia iaculis lacus. In hac habitasse platea dictumst. Curabitur a magna libero. 
+Inclusion
+
+1. IDA, defined by hgb level and mcv and ferritin. *loinc* and "search by test name" **incomplete**
+2. Positive FOBT or FIT. *loinc*.
+
+Exclusion
+
+1. age
+2. deceased
+3. prior colo CA dx
+4. total colec
+5. terminal
+6. hospice
+7. e/o UGIB
+8. had a cscope
+
+Exclusion for IDA only
+
+1. other bleed src
+2. preg
+3. thalassemia
+
+Expected follow up
+
+1. cscope done
+2. GI referral complete
+
+
 
 
 Hepatocellular
