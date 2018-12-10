@@ -4,6 +4,27 @@ Diagnostic Test Triggers
 How do you find (in the database) patients who had a test that shows a possibility of cancer, but who have **not** had timely follow-up?
 
 
+Definitions
+========
+```
+proc_cysto := (27 lines)
+proc_renal_bx := (8 lines)
+proc_blad_surg := (7 + 10 + 11 + 2 + 4 + 2 + 3 + 9)
+icd_term := (14 rows)
+icd_stopcode_hospice := (v66.7, 351, 353)
+proc_cscope := (CPT: 	44394, 45378-45387, 44387, 45355, 45391, 45392, 44391, 44392, 44388, 44389. ICD-9: 45.23)
+stopcode_gi := Primary Stop Code 307,33
+stopcode_onc := ????
+stopcode_notetitle_tumorboard_incomp := (316 and Tumor Board Conference Note Title)
+proc_cxr_poss_incomp := (9 CPT codes)
+proc_chest_ct_poss_incomp := (4 CPT codes)
+
+proc_mammo_poss_incomp :=(CPT: 77051, 77052, 77053, 77054, 77055, 77056, 77057, 76082, 76083, 76085, 76090, 76092, 
+G0202, G0204, G0206, G8111, G8112, G8113, S8080, S8075, 77058, 77059, 77061, 77062, 77063. 
+ICD: 793.80, 793.81, 793.82, 793.89)
+```
+
+
 Bladder
 ========
 
@@ -40,14 +61,6 @@ Expected follow up
 5. bladd bx *proc_blad_bx* docx
 6. bladd surg **proc_blad_surg** docx
 
-Definitions
---------
-```
-proc_cysto := (27 lines)
-proc_renal_bx := (8 lines)
-proc_blad_surg := (7 + 10 + 11 + 2 + 4 + 2 + 3 + 9)
-```
-
 
 Breast
 ========
@@ -74,17 +87,6 @@ Expected follow up
 4. breast mri: *proc_breast_mri* 
 5. breast surg: *proc_breast_surg*
 6. onc referral completed: **stopcode_onc**
-
-Definitions
---------
-```
-icd_term := (14 rows)
-icd_stopcode_hospice := (v66.7, 351, 353)
-
-proc_mammo_poss_incomp :=(CPT: 77051, 77052, 77053, 77054, 77055, 77056, 77057, 76082, 76083, 76085, 76090, 76092, 
-G0202, G0204, G0206, G8111, G8112, G8113, S8080, S8075, 77058, 77059, 77061, 77062, 77063. 
-ICD: 793.80, 793.81, 793.82, 793.89)
-```
 
 
 Colorectal
@@ -116,10 +118,6 @@ Expected follow up
 1. cscope done: **proc_cscope**
 2. GI referral complete: **stopcode_gi**
 
-Definitions
---------
-`proc_cscope := (CPT: 	44394, 45378-45387, 44387, 45355, 45391, 45392, 44391, 44392, 44388, 44389. ICD-9: 45.23)`
-
 
 Hepatocellular
 ========
@@ -150,13 +148,6 @@ Expected follow up
 9. liver tumor embol: *proc_liver_embol*
 10. tumor board: **stopcode_notetitle_tumorboard_incomp**
 
-Definitions
---------
-```
-stopcode_gi := Primary Stop Code 307,33
-stopcode_onc := ????
-```
-
 
 Lung
 ========
@@ -185,11 +176,3 @@ Expected follow up
 7. repeat ct: **proc_chest_ct_poss_incomp**
 8. PET or PET/CT: *cpt_pet*
 9. tumor board: **stopcode_notetitle_tumorboard_incomp**
-
-Definitions
---------
-```
-stopcode_notetitle_tumorboard_incomp := (316 and Tumor Board Conference Note Title)
-proc_cxr_poss_incomp := (9 CPT codes)
-proc_chest_ct_poss_incomp := (4 CPT codes)
-```
