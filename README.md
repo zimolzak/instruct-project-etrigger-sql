@@ -20,7 +20,7 @@ Exclusion
 4. cystect, *Proc_cystec* docx
 5. terminal dx. *ICD_term* within main
 6. hospice. *icd_stopcode_hospice* within main
-7. other bleeding dx. *icd_bleed* docx
+7. other bleeding dx. *icd_stone* docx
 8. e/o uti. **incompletely.** "abx order, positive cx, positive other ua components"
 9. cysto. *proc_cysto* docx
 10. recent gu procedure
@@ -84,31 +84,31 @@ Colorectal
 Inclusion
 
 1. IDA, defined by hgb level and mcv and ferritin. *loinc* and "search by test name" **incomplete**
-2. Positive FOBT or FIT. *loinc*.
+2. Positive FOBT or FIT. *loinc_fobt_fit*.
 
 Exclusion
 
 1. age: *age_colo*
-2. deceased: main
-3. prior colo CA dx: *icd*
-4. total colec: *cpt/icdp*
-5. terminal: *icd*
-6. hospice: *icd stop*
-7. e/o UGIB: *icd*
-8. had a cscope: *cpt/icdp*
+2. deceased: *deceased*
+3. prior colo CA dx: *icd_colo_ca*
+4. total colec: *proc_colectomy*
+5. terminal: *icd_term*
+6. hospice: *icd_stopcode_hospice*
+7. e/o UGIB: *icd_ugib*
+8. had a cscope: *proc_cscope*
 
 Exclusion for IDA only
 
-1. other bleed src: *icd*
-2. preg: *icd*
-3. thalassemia: *icd*
+1. other bleed src: *icd_blood_loss_cause*
+2. preg: *icd_preg*
+3. thalassemia: *icd_thal*
 
 Expected follow up
 
-1. cscope done: *cpt/icdp*
-2. GI referral complete: *stop*
+1. cscope done: *proc_cscope*
+2. GI referral complete: *stopcode_gi*
 
-
+`proc_cscope := (CPT: 	44394, 45378-45387, 44387, 45355, 45391, 45392, 44391, 44392, 44388, 44389. ICD-9: 45.23)`
 
 
 Hepatocellular
