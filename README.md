@@ -7,6 +7,7 @@ How do you find (in the database) patients who had a test that shows a possibili
 Definitions
 ========
 ```
+deceased := ...
 proc_cysto := (27 lines)
 proc_renal_bx := (8 lines)
 proc_blad_surg := (7 + 10 + 11 + 2 + 4 + 2 + 3 + 9)
@@ -32,7 +33,7 @@ Main file *Bladder Cancer Trigger Criteria.docx*. Has an external docx with list
 
 Inclusion
 
-1. over 50 RBC on UA. **lab_hematuria_incomp** Loinc, but incompletely expressed.
+1. over 50 RBC on UA. *lab_hematuria_incomplete* Loinc....
 
 Exclusion
 
@@ -43,7 +44,7 @@ Exclusion
 5. terminal dx. **ICD_term** within main
 6. hospice. **icd_stopcode_hospice** within main
 7. other bleeding dx. *icd_stone* docx
-8. e/o uti. **abx_lab_uti_incomp** "abx order, positive cx, positive other ua components"
+8. e/o uti. *abx_lab_uti_incomplete* "abx order, positive cx, positive other ua components"
 9. cysto. **proc_cysto** docx
 10. recent gu procedure
     - renal bx **proc_renal_bx** docx
@@ -54,7 +55,7 @@ Exclusion
 
 Expected follow up
 
-1. uro visit **stopcode_uro_incomp**
+1. uro visit *stopcode_uro_incomplete*
 2. cysto **proc_cysto** docx
 3. imaging *proc_blad_imaging* docx
 4. renal bx **proc_renal_bx** docx
@@ -93,7 +94,7 @@ Colorectal
 ========
 Inclusion
 
-1. IDA, defined by hgb level and mcv and ferritin. **lab_ida_incomp** and "search by test name"
+1. IDA, defined by hgb level and mcv and ferritin. *lab_ida_incomplete* and "search by test name"
 2. Positive FOBT or FIT. *loinc_fobt_fit*.
 
 Exclusion
@@ -123,7 +124,7 @@ Hepatocellular
 ========
 Inclusion
 
-1. AFP level. **lab_afp_incomp**, test name
+1. AFP level. *lab_afp_incomplete*, test name
 
 Exclusion
 
@@ -133,15 +134,15 @@ Exclusion
 4. terminal: **icd_term_hcc**
 5. hospice: **icd_stopcode_hospice**
 6. gonadal: *icd_gonadal*
-7. preg: *icd_preg* **lab_hcg_poss_incomplete**
+7. preg: *icd_preg* *lab_hcg_poss_incomplete*
 
 Expected follow up
 
-1. hepatol referral: **stopcode_hep_incomp**
+1. hepatol referral: *stopcode_hep_incomplete*
 2. GI referral: *stop* **stopcode_gi**
-3. surg refer: **stopcode_surg_incomp**
+3. surg refer: *stopcode_surg_incomplete*
 4. onc refer: **stopcode_onc**
-5. transplant refer: **stopcode_transp_incomp**
+5. transplant refer: *stopcode_transp_incomplete*
 6. liver bx: *proc_liver_bx*
 7. liver img: *proc_liver_img*
 8. liver surg: *proc_liver_surg*
