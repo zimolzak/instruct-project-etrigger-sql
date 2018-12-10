@@ -116,6 +116,8 @@ Expected follow up
 1. cscope done: *proc_cscope*
 2. GI referral complete: *stopcode_gi*
 
+Definitions
+--------
 `proc_cscope := (CPT: 	44394, 45378-45387, 44387, 45355, 45391, 45392, 44391, 44392, 44388, 44389. ICD-9: 45.23)`
 
 
@@ -147,33 +149,41 @@ Expected follow up
 7. liver img: *proc_liver_img*
 8. liver surg: *proc_liver_surg*
 9. liver tumor embol: *proc_liver_embol*
-10. tumor board: *stopcode_tumorboard* and *note_tumorboard* **incomplete**
+10. tumor board: *stopcode_notetitle_tumorboard* **incomplete**
 
 
 Lung
 ========
 Inclusion
 
-1. abnormal cxr. *cpt* "flagged as suspicious," and "primary diagnostic code flag." **incomplete? not sure.**
-2. abnl chest CT. *cpt* "flagged as suspicious," and "primary diagnostic code flag." **incomplete? not sure.**
+1. abnormal cxr. *proc_cxr* "flagged as suspicious," and "primary diagnostic code flag." **incomplete? not sure.**
+2. abnl chest CT. *proc_chest_ct* "flagged as suspicious," and "primary diagnostic code flag." **incomplete? not sure.**
 
 Exclusion
 
-1. age: main
-2. deceased: main
-3. recent lung ca dx: *icd*
-4. terminal: *icd*
-5. hospice: *icd* *stop*
-6. tuberculosis: *icd*
+1. age: *age_lung*
+2. deceased: *deceased*
+3. recent lung ca dx: *icd_lung_ca*
+4. terminal: *icd_term_lung*
+5. hospice: *icd_stopcode_hospice*
+6. tuberculosis: *icd_tb*
 
 Expected follow up
 
-1. pulm visit: *stop*
-2. thoracic visit: *stop*
-3. lung bx: *cpt* *icdp*
-4. bronch: *cpt* *icdp*
-5. lung surg: *cpt* *icdp*
-6. repeat cxr: *cpt*
-7. repeat ct: *cpt*
-8. PET or PET/CT: *cpt*
-9. tumor board: *stop* and *note title* **incomplete**
+1. pulm visit: *stopcode_pulm*
+2. thoracic visit: *stopcode_thoracic*
+3. lung bx: *proc_lung_bx*
+4. bronch: *proc_bronch*
+5. lung surg: *proc_lung_surg*
+6. repeat cxr: *proc_cxr*
+7. repeat ct: *proc_chest_ct*
+8. PET or PET/CT: *cpt_pet*
+9. tumor board: *stopcode_notetitle_tumorboard* **incomplete**
+
+Definitions
+--------
+```
+stopcode_notetitle_tumorboard := (316 and Tumor Board Conference Note Title)
+proc_cxr := (9 CPT codes)
+proc_chest_ct := (4 CPT codes)
+```
