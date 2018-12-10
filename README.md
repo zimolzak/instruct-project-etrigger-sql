@@ -14,32 +14,36 @@ Inclusion
 
 Exclusion
 
-1. age: within main
-2. deceased: within main
-3. prior bladder CA dx *ICD* docx
-4. cystect, *CPT* *ICD* docx
-5. terminal dx. *ICD* within main
-6. hospice. *icd* *stop code* within main
-7. other bleeding dx. *icd* docx
+1. age: within main *age_blad*
+2. deceased: within main *dec_blad*
+3. prior bladder CA dx *ICD_blad* docx
+4. cystect, *Proc_cystec* docx
+5. terminal dx. *ICD_term* within main
+6. hospice. *icd_hosp* *stop_hosp* within main
+7. other bleeding dx. *icd_bleed* docx
 8. e/o uti. **incompletely.** "abx order, positive cx, positive other ua components"
-9. cysto. *cpt* docx
+9. cysto. *proc_cysto* docx
 10. recent gu procedure
-    - renal bx *cpt* *icdp* docx
-    - prost bx *cpt* *icdp*  docx 
-    - renal stone surgery *cpt* *icdp*
-    - stent *cpt* *icdp* docx
-    - bladder surg *cpt* *icdp* docx
-
+    - renal bx *proc_renal_bx* docx
+    - prost bx *proc_prost_bx*  docx 
+    - renal stone surgery *proc_stone*
+    - stent *proc_stent* docx
+    - bladder surg *proc_blad_surg* docx
 
 Expected follow up
 
 1. uro visit *stop* docx but **not listed at all**
-2. cysto *cpt* docx
-3. imaging *cpt* *icdp* docx
-4. renal bx *cpt* *icdp* docx
-5. bladd bx *cpt* *icdp* docx
-6. bladd surg *cpt* *icdp* docx
+2. cysto *proc_cysto* docx
+3. imaging *proc_blad_imaging* docx
+4. renal bx *proc_renal_bx* docx
+5. bladd bx *proc_blad_bx* docx
+6. bladd surg *proc_blad_surg* docx
 
+`proc_cysto := (27 lines)`
+
+`proc_renal_bx := (8 lines)`
+
+`proc_blad_surg := (7 + 10 + 11 + 2 + 4 + 2 + 3 + 9)`
 
 Breast
 ========
