@@ -23,22 +23,22 @@ Exclusion
 6. hospice. *icd_stopcode_hospice* within main
 7. other bleeding dx. *icd_stone* docx
 8. e/o uti. **incompletely.** "abx order, positive cx, positive other ua components"
-9. cysto. *proc_cysto* docx
+9. cysto. **proc_cysto** docx
 10. recent gu procedure
-    - renal bx *proc_renal_bx* docx
+    - renal bx **proc_renal_bx** docx
     - prost bx *proc_prost_bx*  docx 
     - renal stone surgery *proc_stone*
     - stent *proc_stent* docx
-    - bladder surg *proc_blad_surg* docx
+    - bladder surg **proc_blad_surg** docx
 
 Expected follow up
 
 1. uro visit *stop* docx but **not listed at all**
-2. cysto *proc_cysto* docx
+2. cysto **proc_cysto** docx
 3. imaging *proc_blad_imaging* docx
-4. renal bx *proc_renal_bx* docx
+4. renal bx **proc_renal_bx** docx
 5. bladd bx *proc_blad_bx* docx
-6. bladd surg *proc_blad_surg* docx
+6. bladd surg **proc_blad_surg** docx
 
 Definitions
 --------
