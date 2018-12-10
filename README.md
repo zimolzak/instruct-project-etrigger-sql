@@ -5,7 +5,7 @@ How do you find (in the database) patients who had a test that shows a possibili
 
 
 Definitions
-========
+--------
 ```
 deceased := ...
 proc_cysto := (27 lines)
@@ -24,6 +24,18 @@ proc_mammo_poss_incomp :=(CPT: 77051, 77052, 77053, 77054, 77055, 77056, 77057, 
 G0202, G0204, G0206, G8111, G8112, G8113, S8080, S8075, 77058, 77059, 77061, 77062, 77063. 
 ICD: 793.80, 793.81, 793.82, 793.89)
 ```
+
+Incomplete ones
+--------
+1. lab hematuria
+1. abx lab uti
+1. stopcode uro
+1. lab ida
+1. lab afp
+1. lab hcg
+1. stopcode hep
+1. stopcode surg
+1. stopcode transp
 
 
 Bladder
