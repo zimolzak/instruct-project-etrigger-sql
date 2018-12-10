@@ -15,11 +15,11 @@ Inclusion
 Exclusion
 
 1. age: within main *age_blad*
-2. deceased: within main *dec_blad*
-3. prior bladder CA dx *ICD_blad* docx
+2. deceased: within main *deceased*
+3. prior bladder CA dx *ICD_blad_ca* docx
 4. cystect, *Proc_cystec* docx
 5. terminal dx. *ICD_term* within main
-6. hospice. *icd_hosp* *stop_hosp* within main
+6. hospice. *icd_stopcode_hospice* within main
 7. other bleeding dx. *icd_bleed* docx
 8. e/o uti. **incompletely.** "abx order, positive cx, positive other ua components"
 9. cysto. *proc_cysto* docx
@@ -52,24 +52,31 @@ No external docx w/ pure code lists. Does have ICD9-ICD10 docx.
 
 Inclusion
 
-1. Abnormal mammo. List of BIRADS. *cpt* *icd* main
+1. Abnormal mammo. List of BIRADS. *proc_mammo* main
 
 Exclusion
 
-1. age: main
-2. deceased: main
-3. previous breast ca dx: *icd* main
-4. terminal illness: *icd* main
-5. hospice or palliative: *icd* *stop* main
+1. age: *age_breast*
+2. deceased: *deceased*
+3. previous breast ca dx: *icd_breast_ca* main
+4. terminal illness: *icd_term* main, note same as bladder
+5. hospice or palliative: *icd_stopcode_hospice* main, same as blad
+
+`icd_term := (14 rows)`
+
+`icd_stopcode_hospice := (v66.7, 351, 353)`
 
 Expected follow up
 
-1. repeat mammo: *cpt* *icd*
-2. breast bx: *cpt* *icd*
-3. breast us: *cpt*
-4. breast mri: *cpt* 
-5. breast surg: *cpt* *icdp*
-6. onc referral completed: *stop*
+1. repeat mammo: *proc_mammo*
+2. breast bx: *proc_breast_bx*
+3. breast us: *proc_breast_us*
+4. breast mri: *proc_breast_mri* 
+5. breast surg: *proc_breast_surg*
+6. onc referral completed: *stopcode_onc*
+
+`proc_mammo :=(CPT: 77051, 77052, 77053, 77054, 77055, 77056, 77057, 76082, 76083, 76085, 76090, 76092, G0202, G0204, G0206, G8111, G8112, G8113, S8080, S8075, 77058, 77059, 77061, 77062, 77063. 
+ICD: 793.80, 793.81, 793.82, 793.89)`
 
 
 Colorectal
@@ -81,7 +88,7 @@ Inclusion
 
 Exclusion
 
-1. age: main
+1. age: *age_colo*
 2. deceased: main
 3. prior colo CA dx: *icd*
 4. total colec: *cpt/icdp*
