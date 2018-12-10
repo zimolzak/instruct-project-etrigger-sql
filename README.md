@@ -108,7 +108,7 @@ Exclusion
 Exclusion for IDA only
 
 1. other bleed src: *icd_blood_loss_cause*
-2. preg: *icd_preg*
+2. preg: *icd_preg_vcodes*
 3. thalassemia: *icd_thal*
 
 Expected follow up
@@ -127,13 +127,13 @@ Inclusion
 
 Exclusion
 
-1. age: main
-2. deceased: main
-3. recent hcc dx: *icd*
-4. terminal: *icd*
-5. hospice: *icd stop*
-6. gonadal: *icd*
-7. preg: *icd* *loinc* may be **incomplete**
+1. age: *age_hcc*
+2. deceased: *deceased*
+3. recent hcc dx: *icd_hcc*
+4. terminal: *icd_term_hcc*
+5. hospice: *icd_stopcode_hospice*
+6. gonadal: *icd_gonadal*
+7. preg: *icd_preg* *loinc_hcg* may be **incomplete**
 
 
 Expected follow up
@@ -143,11 +143,11 @@ Expected follow up
 3. surg refer: *stop* **incomplete**
 4. onc refer: *stop* **incomplete**
 5. transplant refer: *stop* **incomplete**
-6. liver bx: *cpt/icdp*
-7. liver img: *cpt/icdp*
-8. liver surg: *cpt/icdp*
-9. liver tumor embol: *cpt*
-10. tumor board: *stop* and *note title* **incomplete**
+6. liver bx: *proc_liver_bx*
+7. liver img: *proc_liver_img*
+8. liver surg: *proc_liver_surg*
+9. liver tumor embol: *proc_liver_embol*
+10. tumor board: *stopcode_tumorboard* and *note_tumorboard* **incomplete**
 
 
 Lung
