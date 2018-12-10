@@ -3,6 +3,7 @@ Diagnostic Test Triggers
 
 How do you find (in the database) patients who had a test that shows a possibility of cancer, but who have **not** had timely follow-up?
 
+
 Bladder
 ========
 
@@ -39,11 +40,14 @@ Expected follow up
 5. bladd bx *proc_blad_bx* docx
 6. bladd surg *proc_blad_surg* docx
 
-`proc_cysto := (27 lines)`
+Definitions
+--------
+```
+proc_cysto := (27 lines)
+proc_renal_bx := (8 lines)
+proc_blad_surg := (7 + 10 + 11 + 2 + 4 + 2 + 3 + 9)
+```
 
-`proc_renal_bx := (8 lines)`
-
-`proc_blad_surg := (7 + 10 + 11 + 2 + 4 + 2 + 3 + 9)`
 
 Breast
 ========
@@ -62,10 +66,6 @@ Exclusion
 4. terminal illness: *icd_term* main, note same as bladder
 5. hospice or palliative: *icd_stopcode_hospice* main, same as blad
 
-`icd_term := (14 rows)`
-
-`icd_stopcode_hospice := (v66.7, 351, 353)`
-
 Expected follow up
 
 1. repeat mammo: *proc_mammo*
@@ -75,9 +75,16 @@ Expected follow up
 5. breast surg: *proc_breast_surg*
 6. onc referral completed: *stopcode_onc*
 
-`proc_mammo :=(CPT: 77051, 77052, 77053, 77054, 77055, 77056, 77057, 76082, 76083, 76085, 76090, 76092, 
+Definitions
+--------
+```
+icd_term := (14 rows)
+icd_stopcode_hospice := (v66.7, 351, 353)
+
+proc_mammo :=(CPT: 77051, 77052, 77053, 77054, 77055, 77056, 77057, 76082, 76083, 76085, 76090, 76092, 
 G0202, G0204, G0206, G8111, G8112, G8113, S8080, S8075, 77058, 77059, 77061, 77062, 77063. 
-ICD: 793.80, 793.81, 793.82, 793.89)`
+ICD: 793.80, 793.81, 793.82, 793.89)
+```
 
 
 Colorectal
