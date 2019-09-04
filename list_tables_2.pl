@@ -9,6 +9,7 @@ while(<>){
     tr/[A-Z]/[a-z]/;
     s/  / /g;
     $want_print = 1 if s/.*(\[ord_singh[^ -')]*).*/$1/i;
+    $want_print = 1 if s/.*(\[vinci1[^ -')]*).*/$1/i;
     s/ //g;
     s/\t//g;
     s/\]//g;
