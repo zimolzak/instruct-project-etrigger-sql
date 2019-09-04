@@ -1,8 +1,11 @@
 #!/usr/bin/perl -w
 use strict;
 
+my ($filename, $flag) = @ARGV;
+#print "$flag\n\n\n"; #deleteme
+open my $fh, '<', $filename or die $!;
 
-while(<>){
+while(<$fh>){
     my $want_print = 0;
     s/^\s+//;
     s/\r//g;
@@ -14,5 +17,13 @@ while(<>){
     s/\t//g;
     s/\]//g;
     s/\[//g;
-    print if $want_print;
+    if (not defined $flag) {
+	print if $want_print;
+    }
+    elsif ($flag eq '--dst') {
+	print if $want_print and /dflt/i;
+    }
+    elsif ($flag eq '--src') {
+	print if $want_print and (/src/i or /vinci/i) ;
+    }
 }

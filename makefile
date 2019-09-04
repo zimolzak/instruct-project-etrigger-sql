@@ -1,6 +1,7 @@
 pdfs = Fobt.pdf HCC.pdf IDA.pdf Lung.pdf
 lists = list_Fobt.txt list_HCC.txt list_IDA.txt list_Lung.txt
 
+.PHONY : all
 all : $(pdfs) list1.txt list2.txt $(lists)
 
 Fobt.pdf : Fobt.sql
@@ -30,4 +31,4 @@ list_%.txt : %.sql list_tables_2.pl
 
 .PHONY : clean
 clean :
-	rm -f $(pdfs) list1.txt list2.txt
+	rm -f $(pdfs) list1.txt list2.txt $(lists)
