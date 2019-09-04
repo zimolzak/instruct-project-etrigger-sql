@@ -2,3 +2,6 @@
 *~
 list1.txt
 list2.txt
+.DS_Store
+list_*.txt
+primitive_Fobt_list.txt
