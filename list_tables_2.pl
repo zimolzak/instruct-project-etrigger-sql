@@ -2,7 +2,6 @@
 use strict;
 
 my ($filename, $flag) = @ARGV;
-#print "$flag\n\n\n"; #deleteme
 open my $fh, '<', $filename or die $!;
 
 while(<$fh>){
