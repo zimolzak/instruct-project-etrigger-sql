@@ -13,10 +13,12 @@ ord_dflt = re.compile("\[?ORD_Singh[^ -')]*Dflt\]?", re.IGNORECASE)
 
 for L in fh.read().splitlines():
     comment = ''
-    if vinci.search(L) or ord_dflt.search(L):
-        comment = DEFAULT_COMMENT
+    if vinci.search(L):
+        comment = '    --altered (VINCI1)'
+    if ord_dflt.search(L):
+        comment = '    --altered (ORD_...Dflt)'
     if ord_singh_src_all.search(L):
-        comment = '    --alert'
+        comment = '    --altered (ORD_...Src)'
         m = ord_singh_src_backref.search(L)
         underscores = m.group(1)                                                # '[inpat_inpatientcptprocedure]'
         dots = underscores.replace('_', '.', 1).replace('[','').replace(']','') # 'inpat.inpatientcptprocedure'
