@@ -25,6 +25,6 @@ for L in fh.read().splitlines():
         dot_brkt = '[' + dots.replace('.', '].[') + ']'
         L = ord_singh_src_stop.sub('[CDWWork]', L)
         L = L.replace(underscores, dot_brkt)
-    L = vinci.sub('[CDWWork]', L)
+    L = vinci.sub('CDWWork', L)
     L = ord_dflt.sub('[MyDB].[MySchema]', L)
     print(L + comment)
