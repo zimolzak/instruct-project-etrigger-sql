@@ -2,7 +2,6 @@ import sys
 import re
 assert sys.version_info.major >= 3
 
-DEFAULT_COMMENT = '    --altered by Python'
 fh = open(sys.argv[1])
 vinci = re.compile(re.escape('VINCI1'), re.IGNORECASE)
 ord_singh_src_all = re.compile("\[?ORD_Singh[^ -')]*Src[^ -')]*\]?", re.IGNORECASE)
