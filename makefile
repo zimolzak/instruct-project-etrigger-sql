@@ -29,6 +29,8 @@ list_dst_%.txt : %.sql list_tables_2.pl
 %_altered.sql : %.sql transform.py
 	python transform.py $< > $@
 
-.PHONY : clean
+.PHONY : clean cleanall
 clean :
-	rm -f $(pdfs) primitive_Fobt_list.txt $(srctxt) $(dsttxt) $(mod_sql)
+	rm -f primitive_Fobt_list.txt $(srctxt) $(dsttxt)
+cleanall : clean
+	rm -f $(pdfs) $(mod_sql)
