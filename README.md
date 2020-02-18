@@ -1,10 +1,10 @@
 Diagnostic Test Triggers
 ========
 
-This repository stores SQL code that implements
-some medical e-triggers. An e-trigger answers the question, "How do
-you find (in the database) patients who had a test that shows a
-possibility of cancer, but who have **not** had timely follow-up?"
+This repository stores SQL code that implements some medical
+e-triggers. An e-trigger answers the question, "How do you find (in
+the database) patients who had a test that shows a possibility of
+cancer, but who have **not** had timely follow-up?"
 
 As of February 2020, end users of the code just need to select the
 SQL file they want, download it to their local computer, and run it.
