@@ -95,12 +95,11 @@ This will do some pretty-printing of SQL source code listings
 (Perl), and string replacements to make the SQL work on the wider VA
 data warehouse.
 
-At command prompt, type `make`. Most usefully, the script
-`transform.py` does useful string replacements that should make the
-SQL work on the overall, generic VA data warehouse. You will find that
-the files `Fobt_altered.sql HCC_altered.sql IDA_altered.sql
-Lung_altered.sql` are useful outputs of this script. The makefile
-depends on:
+At command prompt, type `cd advanced` and then `make`. Most notably,
+the script `transform.py` does useful string replacements that should
+make the SQL work on the overall, generic VA data warehouse. The files
+`Fobt_altered.sql HCC_altered.sql IDA_altered.sql Lung_altered.sql`
+are output by this script. The makefile depends on:
 
 - Python 3
 - Perl
