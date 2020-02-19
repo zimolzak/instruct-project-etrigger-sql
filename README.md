@@ -1,23 +1,31 @@
-Quick Start
+InSTRuCt Project e-Trigger Quick Start
 ========
 
-Assuming you are reading this on github.com,
+Assuming you are reading this on github.com:
 
-1. Click on the SQL file you want above
-2. Click on the grey button "Raw" near top of page
-3. Use browser menu to save file to disk (such as "File / Save Page As...")
+1. Before downloading, you might want to jot down or copy/paste what
+it says above under "Latest commit 2a8f123 *xx* days ago" for future
+reference.
 
-Email z i m o l z a k **at** bcm.edu with any questions.
+2. Click on the SQL file you want above (such as LungOperational.sql).
+
+3. Click on the grey button "Raw" at the top the page that comes up.
+
+4. Use your browser menu to save file to disk (such as "File / Save
+Page As...").
+
+The code you download should always be the latest version. Email z i m
+o l z a k **at** bcm.edu with any questions (delete those spaces
+first, and replace **at** with a real at sign). The SharePoint site
+for change package and other documentation can be found at (insert URL
+here).
+
 
 Details
 ========
 
 This repository stores SQL code that implements some e-triggers for
-diagnostic tests.
-
-InSTRuCt Project Diagnostic Test Triggers
-
-An e-trigger answers the question, "How do you find
+diagnostic tests. An e-trigger answers the question, "How do you find
 (in the database) patients who had a test that shows a possibility of
 cancer, but who have **not** had timely follow-up?"
 
@@ -55,3 +63,4 @@ If you learn Git / GitHub:
 
 - this code can be "forked" so you can make your own changes
 - all previous versions can be viewed
+- you can suggest changes to this repository or make changes directly
