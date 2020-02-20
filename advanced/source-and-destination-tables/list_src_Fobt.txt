@@ -1,0 +1,16 @@
+ord_singh_201210017d.src.fee_feeinitialtreatment
+ord_singh_201210017d.src.fee_feeinpatinvoice
+ord_singh_201210017d.src.fee_feeinpatinvoiceicdprocedure
+ord_singh_201210017d.src.fee_feeserviceprovided
+ord_singh_201210017d.src.inpat_inpatientcptprocedure
+ord_singh_201210017d.src.spatient_spatient
+ord_singh_201210017d.src.surgery_surgery_130
+ord_singh_201210017d.src.surgery_surgeryprcdrdgnsscodes_136
+vinci1.chem.patientlabchem
+vinci1.fee.feeinitialtreatment
+vinci1.inpat.inpatient
+vinci1.inpat.inpatientdiagnosis
+vinci1.inpat.inpatientfeediagnosis
+vinci1.outpat.problemlist
+vinci1.outpat.vdiagnosis
+vinci1.outpat.vprocedure
