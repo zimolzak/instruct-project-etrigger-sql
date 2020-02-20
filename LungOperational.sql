@@ -1,4 +1,3 @@
-
 --------------------------------------------
 --- Lung Cancer Trigger 
 --------------------------------------------
@@ -41,7 +40,12 @@
 --
 --		8. Numerator and denumerators: select * from [MyDB].[MySchema].Lung_Sta3n528_4_01_Count
 --
---		9. If you want to delete the intermediate table generated during execution. uncomment the block at the end of the script.
+--      10. Data Set		    
+--			--Lung_Sta3n528_1_In_2_All_Chest_XRayCT_Sta6a		-- 	All chest images from sta6a in the study period
+--			--Lung_Sta3n528_1_In_6_IncIns						--  Abnormal (red_flagged) chest images from sta6a in the study period
+--			--Lung_Sta3n528_3_Ins_U_TriggerPos					--  Chest images from sta6a in the study period, which come out trigger positive
+--
+--		11. If you want to delete the intermediate table generated during execution. uncomment the block at the end of the script.
 
 
 --------------------------------------------------------------------------------------------------------------------------------
@@ -57,9 +61,9 @@ declare @VISN smallint
 declare @isSta3n bit				--Trigger runs on Sta3n levle
 declare @Sta3n smallint				
 declare @Sta6a varchar(10)			--Site Code
-declare @run_date datetime			--Date time of trigger run
-declare @sp_start datetime			--Study starting date time
-declare @sp_end datetime			--Study ending date time
+declare @run_date datetime2(0)			--Date time of trigger run
+declare @sp_start datetime2(0)			--Study starting date time
+declare @sp_end datetime2(0)			--Study ending date time
 declare @fu_period as smallint		--follow-up window for red-flagged patients  
 declare @age as smallint			--patient age upper limit
 declare @ICD9Needed bit				--ICD9 and ICD9Proc are not searched if run trigger in year 2017 and beyond, set to 0
@@ -96,9 +100,9 @@ if (OBJECT_ID('[MyDB].[MySchema].[Lung_Sta3n528_0_1_inputP]') is not null)	    -
 		Sta3n smallint null,
 		ICD9Needed bit null,
 		Sta6a [varchar](10) NULL,
-		[run_dt] [datetime] NULL,
-		[sp_start] [datetime] NULL,
-		[sp_end] [datetime] NULL,
+		[run_dt] datetime2(0) NULL,
+		[sp_start] datetime2(0) NULL,
+		[sp_end] datetime2(0) NULL,
 		[fu_period] [smallint] NULL,
 		[age] [smallint] NULL)
 	end
@@ -2302,8 +2306,8 @@ SELECT
       ,Diag.[PatientSID]
 	  ,[InpatientFeeDiagnosisSID]
       ,[InpatientFeeBasisSID]      
-      ,[AdmitDateTime] as dx_dt
-      ,[DischargeDateTime]
+      ,[AdmitDateTime] 
+      ,[DischargeDateTime] as dx_dt
 	  ,targetCode.ICD9Code as ICD9Code
 	  ,targetCode.dx_code_type as ICD9dx_code_type
 	   ,ICD10CodeList.ICD10Code as ICD10Code
@@ -2322,8 +2326,8 @@ on ICD10CodeList.ICD10Code=DimICD10.ICD10Code
 inner join [MyDB].[MySchema].[Lung_Sta3n528_1_In_8_IncPat] as p    --altered (ORD_...Dflt)
   on Diag.sta3n=p.sta3n and Diag.patientsid=p.patientsid
 where --CohortName='Cohort20180712' and
- [AdmitDateTime]> DATEADD(yy,-1,(select sp_start from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP))     --altered (ORD_...Dflt)
-and [AdmitDateTime]<= DATEADD(dd,(select fu_period from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP),(select sp_end from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP))     --altered (ORD_...Dflt)
+ DischargeDateTime> DATEADD(yy,-1,(select sp_start from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP))     --altered (ORD_...Dflt)
+and DischargeDateTime<= DATEADD(dd,(select fu_period from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP),(select sp_end from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP))     --altered (ORD_...Dflt)
 and (TargetCode.dx_code_type is not null or ICD10CodeList.dx_code_type is not null)	
 go
 
@@ -3215,7 +3219,7 @@ if (OBJECT_ID('[MyDB].[MySchema].[Lung_Sta3n528_3_Ins_9_Ex_0_AllVisits_Hlp1]') i
 select p.patientSSN
 	,V.Sta3n,V.PatientSID,V.Visitsid,V.VisitDatetime,V.primaryStopcodeSID,V.SecondaryStopcodeSID					
 into [MyDB].[MySchema].Lung_Sta3n528_3_Ins_9_Ex_0_AllVisits_Hlp1					    --altered (ORD_...Dflt)
-from [CDWWork].[Outpat].[Workload] as V    --altered (ORD_...Src)
+from [CDWWork].[Outpat].[Visit] as V    --altered (ORD_...Src)
 inner join 
 	(select distinct pat.*,ins.ExamDateTime 
 		from [MyDB].[MySchema].[Lung_Sta3n528_1_In_8_IncPat] as pat    --altered (ORD_...Dflt)
@@ -3224,10 +3228,10 @@ inner join
 	) as p 
 	on v.sta3n=p.sta3n and v.patientsid=p.patientsid 
 	and v.VisitDateTime between dateAdd(yy,-1,p.ExamDateTime)
-					and DateAdd(dd,60,p.ExamDateTime)
+					and DateAdd(dd,30+(select fu_period from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP),p.ExamDateTime)    --altered (ORD_...Dflt)
 where 	--CohortName='Cohort20180712'	and	
 	V.VisitDateTime between dateAdd(yy,-1,(select sp_start from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP))    --altered (ORD_...Dflt)
-						and DateAdd(dd,60,(select sp_end from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP))						      --altered (ORD_...Dflt)
+						and DateAdd(dd,30+(select fu_period from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP),(select sp_end from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP))						      --altered (ORD_...Dflt)
 go
 
 
@@ -3269,6 +3273,9 @@ if (OBJECT_ID('[MyDB].[MySchema].Lung_Sta3n528_3_Ins_9_Ex_2_VisitTIU') is not nu
 	from [MyDB].[MySchema].Lung_Sta3n528_3_Ins_9_Ex_1_AllVisits_StopCode as V    --altered (ORD_...Dflt)
 	left join [CDWWork].[TIU].[TIUDocument] as T    --altered (ORD_...Src)
 	on T.VisitSID=V.Visitsid --and T.CohortName='Cohort20180712'
+					--more filter
+					--and T.[EntryDateTime] between dateAdd(yy,-1,(select sp_start from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP))    --altered (ORD_...Dflt)
+					--	and DateAdd(dd,30+(select fu_period from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP),(select sp_end from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP))						      --altered (ORD_...Dflt)
 	left join cdwwork.dim.[TIUDocumentDefinition] as d                                         
 	on t.[TIUDocumentDefinitionSID]=d.[TIUDocumentDefinitionSID]
 	left join cdwwork.dim.TIUStandardTitle as e
@@ -3279,6 +3286,7 @@ if (OBJECT_ID('[MyDB].[MySchema].Lung_Sta3n528_3_Ins_9_Ex_2_VisitTIU') is not nu
 go
 
 -- Referrals
+-- E-Consult shares the same stop code as the physical location
 if (OBJECT_ID('[MyDB].[MySchema].[Lung_Sta3n528_3_Ins_9_Ex_3_VisitTIUconsult_joinByConsultSID]') is not null)    --altered (ORD_...Dflt)
 			drop table [MyDB].[MySchema].Lung_Sta3n528_3_Ins_9_Ex_3_VisitTIUconsult_joinByConsultSID    --altered (ORD_...Dflt)
 
@@ -3288,11 +3296,18 @@ if (OBJECT_ID('[MyDB].[MySchema].[Lung_Sta3n528_3_Ins_9_Ex_3_VisitTIUconsult_joi
 			c.placeofconsultation,	  
 			c.requestType, -- weather the request is a consult or procedure
 			c.[InpatOutpat], -- the ordering person to indicate if the service is to be rendered on an outpatient or Inpatients basis.
-			c.[RemoteService]
+			c.[RemoteService],
+			d.StopCode as ConStopCode
 			into [MyDB].[MySchema].Lung_Sta3n528_3_Ins_9_Ex_3_VisitTIUconsult_joinByConsultSID				    --altered (ORD_...Dflt)
             from [MyDB].[MySchema].Lung_Sta3n528_3_Ins_9_Ex_2_VisitTIU as V    --altered (ORD_...Dflt)
 			left join [CDWWork].[Con].[Consult] as C										                        --altered (ORD_...Src)
-			on C.ConsultSID=V.ConsultSID --and CohortName='Cohort20180712'			
+			on C.ConsultSID=V.ConsultSID --and CohortName='Cohort20180712'		
+					--more filter
+					--and C.[requestDateTime] between dateAdd(yy,-1,(select sp_start from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP))    --altered (ORD_...Dflt)
+					--	and DateAdd(dd,30+(select fu_period from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP),(select sp_end from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP))						      --altered (ORD_...Dflt)
+			left join CDWWork.dim.AssociatedStopCode as d
+			on c.ToRequestserviceSID=d.RequestServiceSID
+				
 go
 
 --------------------------------------------------------------------------------------------------------------------------------
@@ -3430,7 +3445,7 @@ go
 			(	select * from [MyDB].[MySchema].[Lung_Sta3n528_3_Ins_9_Ex_3_VisitTIUconsult_joinByConsultSID] as b    --altered (ORD_...Dflt)
 				 where (
 						 --With Stopcode
-						   b.[primaryStopcode] in (351,353) or b.[secondaryStopcode] in (351,353)   --Hospice
+						   b.[primaryStopcode] in (351,353) or b.[secondaryStopcode] in (351,353) or b.ConStopCode in (351,353)   --Hospice
 						 -- There is a visit, but the StopCode is missing
 							or (
 							b.[ConsultToRequestserviceName] like '%Hospice%' or b.[ConsultToRequestserviceName] like '%palliative%'
@@ -3531,8 +3546,8 @@ go
 		where not exists
 			(select * from (select PatientSSN,ExamDateTime,img_code_type from [MyDB].[MySchema].[Lung_Sta3n528_1_In_1_All_Chest_XRayCTPET_SSN]     --altered (ORD_...Dflt)
 						where [img_code_type]='XRay'
-					 union  select patientssn, img_dt as ExamDateTime,code_type as img_code_type from  [MyDB].[MySchema].Lung_Sta3n528_3_Exc_NonDx_E_PrevProc_AllNonDxProcICD9ICD10Proc_XRay    --altered (ORD_...Dflt)
-						   where code_type='XRAY'
+					 --union  select patientssn, img_dt as ExamDateTime,code_type as img_code_type from  [MyDB].[MySchema].Lung_Sta3n528_3_Exc_NonDx_E_PrevProc_AllNonDxProcICD9ICD10Proc_XRay    --altered (ORD_...Dflt)
+						--   where code_type='XRAY'
 			   ) as b
 			 where a.PatientSSN = b.patientSSN and			 
 			 (b.ExamDateTime > a.examDateTime
@@ -3552,8 +3567,8 @@ go
 		where not exists
 				(select * from (select PatientSSN,ExamDateTime,img_code_type from [MyDB].[MySchema].[Lung_Sta3n528_1_In_1_All_Chest_XRayCTPET_SSN]     --altered (ORD_...Dflt)
 				       where [img_code_type]='CT'
-					 union  select patientssn, img_dt as ExamDateTime,code_type as img_code_type from  [MyDB].[MySchema].Lung_Sta3n528_3_Exc_NonDx_F_PrevProc_AllNonDxProcICD9ICD10Proc_CT    --altered (ORD_...Dflt)
-						   where code_type='CT'
+					 --union  select patientssn, img_dt as ExamDateTime,code_type as img_code_type from  [MyDB].[MySchema].Lung_Sta3n528_3_Exc_NonDx_F_PrevProc_AllNonDxProcICD9ICD10Proc_CT    --altered (ORD_...Dflt)
+						--   where code_type='CT'
 			   ) as b
 			 where a.PatientSSN = b.patientSSN and			 
 			 (b.ExamDateTime > a.ExamDateTime
@@ -3573,8 +3588,8 @@ go
 		where not exists
 				(select * from (select PatientSSN,ExamDateTime,img_code_type from [MyDB].[MySchema].[Lung_Sta3n528_1_In_1_All_Chest_XRayCTPET_SSN]     --altered (ORD_...Dflt)
 				where [img_code_type]='PET'
-					 union  select patientssn, img_dt as ExamDateTime,code_type as img_code_type from  [MyDB].[MySchema].Lung_Sta3n528_3_Exc_NonDx_G_PrevProc_AllNonDxProcICD9ICD10Proc_PET    --altered (ORD_...Dflt)
-						   where code_type='PET'
+					 --union  select patientssn, img_dt as ExamDateTime,code_type as img_code_type from  [MyDB].[MySchema].Lung_Sta3n528_3_Exc_NonDx_G_PrevProc_AllNonDxProcICD9ICD10Proc_PET    --altered (ORD_...Dflt)
+						--   where code_type='PET'
 			   ) as b
 			 where a.PatientSSN = b.patientSSN and			 
 			 (b.ExamDateTime > a.ExamDateTime
@@ -3596,7 +3611,7 @@ go
 			(select * from [MyDB].[MySchema].[Lung_Sta3n528_3_Ins_9_Ex_3_VisitTIUconsult_joinByConsultSID] as b    --altered (ORD_...Dflt)
 			 where (
 			 --With Stopcode
-			 b.PrimaryStopCode in (312,104)   or b.SecondaryStopCode in (312,104)   
+			 b.PrimaryStopCode in (312,104)   or b.SecondaryStopCode in (312,104)  or b.ConStopCode in (312,104)  
 			 -- There is a visit, but the StopCode is missing
 					or 	((b.[ConsultToRequestserviceName] like '%pulm%' or b.[tiustandardtitle] like '%pulm%')
 							and b.[tiustandardtitle] not like '%CARDIO%' 
@@ -3644,7 +3659,7 @@ go
 			(select * from [MyDB].[MySchema].[Lung_Sta3n528_3_Ins_9_Ex_3_VisitTIUconsult_joinByConsultSID] as b    --altered (ORD_...Dflt)
 			 where (
 					 --With Stopcode
-					b.[primaryStopcode] in (413,64) or b.[SecondaryStopcode] in (413,64)   
+					b.[primaryStopcode] in (413,64) or b.[SecondaryStopcode] in (413,64) or b.ConStopCode in (413,64)   
 					 -- There is a visit, but the StopCode is missing
 					or 	(
 								(
@@ -3680,7 +3695,7 @@ go
 		where not exists
 			(select * from [MyDB].[MySchema].[Lung_Sta3n528_3_Ins_9_Ex_3_VisitTIUconsult_joinByConsultSID] as b    --altered (ORD_...Dflt)
 			 where  (
-					((b.[primaryStopcode] in (316) or b.[SecondaryStopcode] in (316)) and [tiustandardtitle] like '%Tumor%Board%')
+					((b.[primaryStopcode] in (316) or b.[SecondaryStopcode] in (316) or b.ConStopCode in (316)) and [tiustandardtitle] like '%Tumor%Board%')
 			        or b.TIUStandardTitle like '%tumor%board%'					
 					)
 				    and isnull(b.PrimaryStopCodeName,'') not like '%telephone%' 
@@ -3738,9 +3753,9 @@ if (OBJECT_ID('[MyDB].[MySchema].Lung_Sta3n528_4_01_Count') is not null)    --al
 
 		CREATE TABLE [MyDB].[MySchema].Lung_Sta3n528_4_01_Count(    --altered (ORD_...Dflt)
 			Sta6a [varchar](10) NULL	
-			,[run_dt] [datetime] NULL
-			,[sp_start] [datetime] NULL
-			,[sp_end] [datetime] NULL
+			,[run_dt] datetime2(0) NULL
+			,[sp_start] datetime2(0) NULL
+			,[sp_end] datetime2(0) NULL
 			,NumOfTotalChestXRayCT int NULL
 			,NumOfTotalPatWithChestXRayCT int NULL
 			,NumOfRedFlaggedChestXRayCT int NULL
