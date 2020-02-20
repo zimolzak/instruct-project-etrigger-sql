@@ -6,3 +6,6 @@ list2.txt
 list_*.txt
 primitive_Fobt_list.txt
 *_altered.sql
+*.aux
+*.log
+*.docx

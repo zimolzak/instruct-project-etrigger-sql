@@ -2,13 +2,24 @@ pdfs = Fobt.pdf HCC.pdf IDA.pdf Lung.pdf Triggers-Overview.pdf LungOperational.p
 srctxt = list_src_Fobt.txt list_src_HCC.txt list_src_IDA.txt list_src_Lung.txt
 dsttxt = list_dst_Fobt.txt list_dst_HCC.txt list_dst_IDA.txt list_dst_Lung.txt
 mod_sql = Fobt_altered.sql HCC_altered.sql IDA_altered.sql Lung_altered.sql
+manual = instruct-trigger-manual.pdf instruct-trigger-manual.docx instruct-trigger-manual.txt
 
 .PHONY : all
-all : $(pdfs) primitive_Fobt_list.txt $(srctxt) $(dsttxt) $(mod_sql)
+all : $(pdfs) primitive_Fobt_list.txt $(srctxt) $(dsttxt) $(mod_sql) $(manual)
 
 %.pdf : ../%.sql
 	enscript --fancy-header --landscape --highlight=sql --font=Courier7 \
 	--media=Letter -o - $< | ps2pdf - > $@
+
+instruct-trigger-manual.pdf: instruct-trigger-manual.tex
+	pdflatex $<
+	pdflatex $<
+
+%.docx: %.tex
+	pandoc -o $@ $<
+
+instruct-trigger-manual.txt: instruct-trigger-manual.tex
+	pandoc -o $@ $<
 
 LungOperational.pdf : ../LungOperational.sql
 	enscript --fancy-header --landscape --highlight=sql --font=Courier7 \
@@ -31,7 +42,10 @@ list_dst_%.txt : ../%.sql list_tables_2.pl
 	python transform.py $< > $@
 
 .PHONY : clean cleanall
+
 clean :
-	rm -f primitive_Fobt_list.txt $(srctxt) $(dsttxt)
+	rm -f primitive_Fobt_list.txt $(srctxt) $(dsttxt) \
+	instruct-trigger-manual.aux instruct-trigger-manual.log
+
 cleanall : clean
-	rm -f $(pdfs) $(mod_sql)
+	rm -f $(pdfs) $(mod_sql) $(manual)
