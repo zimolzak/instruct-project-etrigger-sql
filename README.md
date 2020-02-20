@@ -10,7 +10,7 @@ Assuming you are reading this on github.com:
 it says above under "Latest commit 2a8f123 *xx* days ago" for future
 reference.
 
-2. Click on the SQL file you want above (such as LungOperational.sql).
+2. Click on the SQL file you want above (such as Lung.sql).
 
 3. Click on the grey button "Raw" at the top the page that comes up.
 
@@ -91,22 +91,22 @@ rights in the work worldwide (see LICENSE file).
 Advanced usage
 ========
 
-This will do some pretty-printing of SQL source code listings
-(enscript), listing the input and output tables of each SQL file
-(Perl), and string replacements to make the SQL work on the wider VA
-data warehouse.
+This has auxiliary scripts to do pretty-printing of SQL source code
+listings (enscript), listing the input and output tables of each SQL
+file (Perl), and string replacements to make the SQL work on the wider
+VA data warehouse.
 
 At command prompt, type `cd advanced` and then `make`. Most notably,
 the script `transform.py` does useful string replacements that should
-make the SQL work on the overall, generic VA data warehouse. The files
-`Fobt_altered.sql HCC_altered.sql IDA_altered.sql Lung_altered.sql`
-are output by this script. The makefile depends on:
+make the SQL work on the overall, generic VA data warehouse. Files
+called `xxxx_altered.sql` are output by this script. The makefile and
+other scripts depend on:
 
 - Python 3
 - Perl
 - Gnu make
 - pandoc
-- enscript, ps2pdf
+- enscript, ps2pdf, pdflatex
 - usual Unix/Linux toolchain like sort, uniq
 
 If you learn Git / GitHub:
