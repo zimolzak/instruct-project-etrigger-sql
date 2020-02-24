@@ -22,7 +22,8 @@ o l z a k **at** bcm.edu with any questions (delete those spaces
 first, and replace **at** with a real at sign). The SharePoint site
 for change package and other documentation can be found at
 https://dvagov.sharepoint.com/sites/VHAiquest/SitePages/Singh_InSTRuCt.aspx
-. Access this site from the VA network.
+. Access this site from the VA network. Soon to migrate to:
+https://dvagov.sharepoint.com/sites/VHAinstructprojectvbts
 
 Setting dates
 --------
