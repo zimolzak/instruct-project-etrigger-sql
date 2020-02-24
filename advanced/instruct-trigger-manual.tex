@@ -2,7 +2,7 @@
 \author{Sahar Memon, Andrew Zimolzak, Li Wei\\(VA Houston / Baylor
   College of Medicine)}
 \title{InSTRuCt Study E-Trigger Manual}
-\date{September, 2019}
+\date{February, 2020}
 \usepackage{listings}
 %\usepackage{indentfirst}
 \begin{document}
@@ -99,23 +99,14 @@ set @sp_end='2012-12-31 23:59:59'
 
 \subsection{Initial set up (one-time tasks)}
 
-\textbf{For Pioneer Site: Global modifications to adapt e-triggers to
-  the operational Data Warehouse: 80 person-hours}
+\textbf{Global modifications to adapt e-triggers to the operational
+  Data Warehouse: complete}
 
 The e-triggers were developed on the Corporate Data Warehouse using a
 research database and schema. Even though research data and
 operational data are both hosted on the CDW, their data schemas are
-not identical. Changes to the SQL code we have developed, although not
-major, are needed to make the code capable of running on the
-operational schema. Since we do not have access to operational data,
-we cannot confirm that adapting the code to the operational schema
-will work as expected. We need to find an analyst who has operational
-access to help with it. This is a one-time task that will be performed
-by \textbf{one site only, not by all sites.} Once this is complete,
-the updated SQL codes can be used directly by \emph{all} sites. We
-estimated 80 hours of effort to make code changes to all 5 triggers.
-(Actual time will depend on the extent of changes needed and the
-analyst's background.)
+not identical. In cooperation with cluster 1, we have made changes to
+the SQL code, and it now runs on the operational schema.
 
 \noindent\textbf{All sites: Local modifications to the SQL code: 40
   person-hours}
@@ -141,18 +132,15 @@ pioneer site in this process.
 
 \subsection{On-going tasks for the duration of the site's participation}
 
-\noindent\textbf{Run SQL code to retrieve data: 4 computer hours per
-  trigger per month}
+\noindent\textbf{Run SQL code to retrieve data: 17 minutes per trigger
+  per month}
 
 The time between pressing the `Run' button to retrieve data output (if
-run monthly on a single site) is few hours if no errors are
+run monthly on a single site) is a few minutes if no errors are
 encountered. This also depends on the size of the site, network
 speed/traffic, data servers' performance, and their concurrent load.
-The trigger run can be counted as computer hours since the analyst
-will be free to do other work once they hit the `Run' button. We have
-estimated that each trigger will take 4 hours to complete in a monthly
-run. Here is the breakdown based on 6 months: 4 hours x 6
-months x 5 triggers = 120 computer hours.
+Here is the breakdown based on 6 months: 17 minutes x 6 time points x
+2 triggers = 3.4 computer hours.
 
 \noindent\textbf{Ongoing modifications to SQL code: 40-person hours
   per year}
@@ -170,9 +158,7 @@ usage of both the historical and new codes).
 
 40 person-hours one-time effort.\\
 40 person-hours per year ongoing effort.\\
-(Optional 80 person-hours up-front effort, which \textbf{only one} of
-the approximately 10 sites needs to devote.)\\
-Total computer time: 120 hours during 6 month intervention.
+Total computer time: 3 hours during 6 month intervention.
 
 
 
