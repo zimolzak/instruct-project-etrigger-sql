@@ -2,7 +2,7 @@
 \author{Sahar Memon, Andrew Zimolzak, Li Wei\\(VA Houston / Baylor
   College of Medicine)}
 \title{InSTRuCt Study E-Trigger Manual}
-\date{February, 2020}
+\date{March, 2020}
 \usepackage{listings}
 %\usepackage{indentfirst}
 \begin{document}
@@ -48,8 +48,13 @@ than lower GI tract, and appropriate colonoscopy or GI referral.
   usual method (e.g.\ desktop or Citrix connection to SQL Server
   Management Studio software). Login to a SQL server
   (e.g.\ \texttt{vhacdwa01.vha.med.va.gov}) and authenticate (using
-  either username \texttt{vha01\textbackslash{}vhabhs\ldots{}}\ plus
+  either username such as \texttt{vha01\textbackslash{}vhabhs\ldots{}}\ plus
   password, or using Windows authentication).
+
+\item The most recent version of the code can be downloaded from
+  github.com/zimolzak/instruct-project-etrigger-sql where you can also
+  find additional procedures for setting dates, and guidance about
+  which tables to export for final reporting.
 
 \item Most changes to adapt the code to the operational database and
   schema names have been performed automatically (marked by comments
@@ -58,7 +63,9 @@ than lower GI tract, and appropriate colonoscopy or GI referral.
   local database environment. The SQL code as provided uses
   placeholder names of \texttt{MyDB} and \texttt{MySchema} schema for
   outputs. Replace these with any database/schema combination where
-  you have write permissions.
+  you have write permissions. \emph{You may have to request write
+    permissions} if you have never been granted access to write out an
+  intermediate table.
 
 \item For the final project, you will be limiting queries to
   approximately one month of data at a time, and you will be running
@@ -70,8 +77,8 @@ than lower GI tract, and appropriate colonoscopy or GI referral.
 set @VISN=12
 --set @Sta3n=580 -- -1 all sta3n
 set @run_date=getdate()
-set @sp_start='2012-01-01 00:00:00'
-set @sp_end='2012-12-31 23:59:59'
+set @sp_start='2020-01-01 00:00:00'
+set @sp_end='2020-01-31 23:59:59'
 \end{verbatim}
 
 \item Recommended: Run sections of the SQL file sequentially (for
@@ -86,9 +93,14 @@ set @sp_end='2012-12-31 23:59:59'
   validate via CPRS that the sample patients have a positive red flag
   inside the time period of interest.)
 
-\item ONLY when your site enters the ``action'' phase: translate output
-  tables into reports as requested by participants in the InSTRuCt
-  virtual breakthrough series (e.g.\ leadership, laboratory managers).
+\item ONLY when your site enters the ``action'' phase: translate
+  output tables into reports as requested by participants in the
+  InSTRuCt virtual breakthrough series (e.g.\ leadership, laboratory
+  managers). The most valuable tables are
+  \texttt{Lung\_Sta3n528\_3\_Ins\_U\_TriggerPos} (contains PHI, for your site's
+  internal use only) and \texttt{Lung\_Sta3n528\_4\_01\_Count} (aggregate data
+  only, suitable to copy/paste into Excel sheet for display on the
+  monthly phone calls).
 
 \end{enumerate}
 
@@ -158,7 +170,7 @@ usage of both the historical and new codes).
 
 40 person-hours one-time effort.\\
 40 person-hours per year ongoing effort.\\
-Total computer time: 3 hours during 6 month intervention.
+3 hours computer time during 6 month intervention.
 
 
 
@@ -173,13 +185,6 @@ Total computer time: 3 hours during 6 month intervention.
   INSTRUCT\_4.5.19.pdf}\\
 \emph{InSTRuCt Project Overview}, also known as \texttt{IIR Project
   Charter\_7.12.19.pdf}
-
-\subsection{SQL file descriptions as of December 2018 (numbers are approximate)}
-
-Fobt.sql: 2901 lines, 16 input tables, 69 output tables.  \\
-HCC.sql: 3286 lines, 25 input tables, 86 output tables.  \\
-IDA.sql: 3151 lines, 21 input tables, 79 output tables.  \\
-Lung.sql: 3747 lines, 27 input tables, 75 output tables.  \\
 
 \subsection{List of auxiliary files documenting the SQL code, November 2018}
 
