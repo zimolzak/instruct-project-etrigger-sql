@@ -10,7 +10,7 @@ Assuming you are reading this on github.com:
 it says above under "Latest commit 2a8f123 *xx* days ago" for future
 reference.
 
-2. Click on the SQL file you want above (such as Lung.sql).
+2. Click on the SQL file you want above (such as `Lung.sql`).
 
 3. Click on the grey button "Raw" at the top the page that comes up.
 
@@ -33,11 +33,11 @@ you rewind to find Feb 1).
 
 2. Subtract two more months from that (so you get Dec 1).
 
-3. Set sp_start equal to that (set @sp_start='2019-12-01 00:00:00').
+3. Set `sp_start` equal to that (such as `set @sp_start='2019-12-01 00:00:00'`).
 
-4. Set sp_end to the end of that month (set @sp_end='2019-12-31 23:59:59').
+4. Set `sp_end` to the end of that month (such as `set @sp_end='2019-12-31 23:59:59'`).
 
-5. Done! Other stuff like fu_period can be left as it is.
+5. Done! Other stuff like `fu_period` can be left as it is.
 
 Setting other parameters and viewing outputs
 --------
@@ -114,11 +114,11 @@ other scripts depend on:
 
 If you learn Git / GitHub:
 
-- this code can be "forked" so you can make your own changes
+- This code can be "forked" so you can make your own changes
 
-- all previous versions can be viewed
+- All previous versions can be viewed
 
-- you can suggest changes (pull request) to this repository or make
+- You can suggest changes (pull request) to this repository or make
 changes directly (push)
 
-- you can keep your local code in sync easily with this repository (pull)
+- You can keep your local code in sync easily with this repository (pull)
