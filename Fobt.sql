@@ -1,4 +1,3 @@
-
 --------------------------------------------
 --- FOBT Cancer Trigger 
 --------------------------------------------
@@ -17,36 +16,46 @@
 --			Table names:   We have mapped table names from Research data to Operational. But we currently do not have live access to Operational data to test the mappings. 
 
 --      TobeAltered:
---		4. FOBT_Sta3n528_0_xxx has all the input parameters, including site info, study period, standard codes( CPT, ICD, ICDproc etc.).
---		  Although these codes are standardized, if your local site uses them in different flavors, consider customization. Also exam these tables after being populated to make sure codes
---		  used in your site are all included.
---							--Set your site code sta6a,sta3n and study period.
---							set @Sta3n=528
---							set @Sta6a='528A8'   -- ALBANY,NY(528A8) as an example
+--		4. FOBT_Sta3n528_0_xxx has the input parameters, including site(s) info, study period, standard codes( CPT, ICD, ICDproc etc.).
+--		  Although these codes are standardized, if your local site(s) uses them in different flavors, consider customization. Also exam these tables after being populated to make sure codes
+--		  used in your site(s) are all included.
+--							--Set your study period.
 --							set @sp_start='2017-01-01 00:00:00'
 --							set @sp_end='2017-01-31 23:59:59' 
 --
+--		5. Set your site(s) code in table FOBT_Sta3n528_0_0_1_Sta3nSta6a:
+--		   Search for string "--Set site(s) codes here. Keep only your site(s) uncommented.". This table has the site(s) whose data trigger runs against.
+--							( 528,'528A8') --	(528) Upstate New York HCS, ALBANY,NY(528A8) as an example
+			
 --      TobeAltered:
---		5. Red-flagged FOBT test values
---		   5.1 Table FOBT_0_A_RedFlagFOBTTestResult will have the list of FOBT test values which will be marked as positive.
---			   Add any additional codes that your site might use, or remove any that your site does not use by setting isRedFlag=0.
+--		6. FOBT test names
+--		   5.1 Table FOBT_Sta3n528_0_7_FOBTLabTestName will have the list of FOBT tests your sta3n uses
+--			  select * from MyDB.MySchema.FOBT_Sta3n528_0_7_FOBTLabTestName
+--			  where sta3n= @Sta3n
+--			  Exam the FOBT tests that your site(s) uses. If your site(s) uses other FOBT tests, insert them to this table as well.
 --
---		6. Abnormal lab tests: search for string "-- Using Abnormal Flag. Make corresponsing change here if it does not apply to your site".
+--      TobeAltered:
+--		7. Red-flagged FOBT test values
+--		   7.1 Table FOBT_Sta3n528_0_A_RedFlagFOBTTestResult will have the list of FOBT test values which will be marked as positive.
+--			   Add any additional codes that your site(s) might use, or remove any that your site do(es) not use by setting isRedFlag=0.
+--		   7.2 Search for string "-- Using Abnormal Flag". Trigger will consider FOBT value which is marked as 'Hxxx' as positive. Make corresponsing change here if it does not apply to your site(s).
 --
---		7. Other possible changes
+--		8. Other possible changes
 --		   Standard codes ( CPT,ICD, ICDProcedure, LOINC etc.) might change every year, with addition of new codes and removal of old ones. These changes require corresponding updates of this script. 
 --		   Always add new codes to parameter tables. Do NOT remove old codes because script still checks back for clinical history.		  
 --
---		8. If running the query in data of year 2019 and after, parameter tables of ICD9 and ICD9Procedure code are set to empty
---
---		9. Numerator and denumerators table: FOBT_5_Ins_X_count
---
---      10. Data Set		    
-			--IDA_1_Inc_3_AllSta6aHGBMCV		-- 	All IDA tests from sta6a in the study period
-			--IDA_1_Inc_8_IncIns				--  Positive ( red_flagged) IDA tests  from sta6a in the study period
-			--IDA_5_Ins_U_TriggerPos			--  IDA tests from sta6a in the study period, which come out trigger positive
+--      9. Data Set		    
+			--FOBT_Sta3n528_1_Inc_1_AllFOBTSta6a		-- 	All FOBT tests from sta6a in the study period
+			--FOBT_Sta3n528_1_Inc_8_IncIns				--  Positive ( red_flagged) FOBT tests  from sta6a in the study period
+			--FOBT_Sta3n528_5_Ins_U_TriggerPos			--  FOBT tests from sta6a in the study period, which come out trigger positive
 			
---		11. If you want to delete the intermediate table generated during execution. uncomment the block at the end of the script.
+--		10. If you want to delete the intermediate table generated during execution. uncomment the block at the end of the script.
+--
+--		11. Numerator and denumerators table: FOBT_Sta3n528_5_Ins_X_count
+
+
+
+
 
 --------------------------------------------------------------------------------------------------------------------------------
 -----  1. Initial set up: Input parameters, CPT and ICD diagnosis code, and ICDProcedure code lists used in the trigger measurement
@@ -56,34 +65,13 @@ use master
 go
 -- Set study parameters.
 -----------------------
-use master
-
-if (OBJECT_ID('[MyDB].[MySchema].[FOBT_Sta3n528_0_1_inputP]') is not null)	    --altered (ORD_...Dflt)
-	drop table [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP    --altered (ORD_...Dflt)
-
-		CREATE TABLE [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP(    --altered (ORD_...Dflt)
-		[trigger] [varchar](20) NULL,
-		[VISN] [smallint] NULL,		 
-		Sta3n smallint null,
-		Sta6a varchar(10) null,
-		[run_dt] datetime2(0) NULL,
-		[sp_start] datetime2(0) NULL,
-		[sp_end] datetime2(0) NULL,
-		[fu_period] [smallint] NULL,
-		[age_Lower] [smallint] NULL,
-		[age_upper] [smallint] NULL,
-		[ICD9Needed] bit)
-go
-
-
-
 
 declare @trigger varchar(20)		
 declare @isVISN bit 				--Trigger runs on VISN data levle
 declare @VISN smallint				
 declare @isSta3n bit				--Trigger runs on Sta3n data levle
 declare @Sta3n smallint				
-declare @Sta6a varchar(10)			--Site Code
+--declare @Sta6a varchar(10)			--Site Code
 declare @run_date datetime2(0)			--Date time of trigger run
 declare @sp_start datetime2(0)			
 declare @sp_end datetime2(0)            
@@ -98,10 +86,9 @@ declare @ICD9Needed bit				--ICD9 and ICD9Proc are not searched if run trigger i
 set @trigger='FOBT'					--Name of the trigger
 set @isVISN=0						--Disabled. Trigger runs against data of sta3n level 
 set @VISN=-1
---Set your site code sta6a,sta3n and study period. 
-set @isSta3n=1						--Enabled. Trigger runs against data of sta3n level 
-set @Sta3n=528
-set @Sta6a='528A8'					-- ALBANY,NY(528A8) as an example
+set @isSta3n=0						--Enabled. Trigger runs against data of sta3n level 
+set @Sta3n=-1
+
 
 set @run_date=getdate()
 set @sp_start='2017-01-01 00:00:00' --Study starting date time
@@ -110,15 +97,68 @@ set @sp_end='2017-01-31 23:59:59'	--Study starting end time
 set @fu_period=60
 set @age_lower=40
 set @age_upper=75
-set @ICD9Needed=0 					--ICD9 and ICD9Proc are not searched if running trigger in year 2017 and beyond, set to 0
+set @ICD9Needed=1 					
 
 
+-- set your site code
+if (OBJECT_ID('[MyDB].[MySchema].[FOBT_Sta3n528_0_0_1_Sta3nSta6a]') is not null)	    --altered (ORD_...Dflt)
+	drop table [MyDB].[MySchema].FOBT_Sta3n528_0_0_1_Sta3nSta6a    --altered (ORD_...Dflt)
+	CREATE TABLE [MyDB].[MySchema].FOBT_Sta3n528_0_0_1_Sta3nSta6a (    --altered (ORD_...Dflt)
+	Sta3n smallint null,
+	Sta6a [varchar](10) NULL
+	) 
+
+insert into  [MyDB].[MySchema].FOBT_Sta3n528_0_0_1_Sta3nSta6a (Sta3n,Sta6a)     --altered (ORD_...Dflt)
+values 
+ (
+ --Set site(s) codes here. Keep only your site(s) uncommented. Comment out all the other sites.
+  -- Cohort 1
+ 528,'528A8') --	(528A8) ALBANY,NY
+--,(642,'642') --	(642) Philadelphia, PA, CorporalMichael K.Crescenz VA Medical center
+--,(644,'644') --	(644) Phoenix, AZ, Phoenix VA Health Care System
+--,(671,'671')	--	(671) South Texas HCS (San Antonio TX)-Audie
+
+-- -- Cohort 2
+--,(537,'537') --	(537) JESSE BROWN VAMC
+--,(549,'549') --	(549) North Texas HCS (Dallas TX)
+--,(589,'589') --	(589) VA Heartland West (Kansas City MO)
+--,(691,'691') --	(691)VA GREATER LOS ANGELES (691)
+
+-- -- Cohort 3
+--,(635,'635') --	(635) Oklahoma City, OK
+----Another 528 site:
+--,(528,'528A7') --	 (528A7) (Syracuse, NY)
+--,(540,'540') --	(540) Clarksburg, WV
+--,(523,'523') --	(523)BOSTON HCS VAMC
+
+---- Discovery
+---- Baltimore missing diagnosticcode, go with Note Title
+--,(512,'512') --	(512) Maryland HCS (Baltimore MD)
+--,(580,'580') --	(580) Houston, TX
+--,(541,'541') --(541) Cleveland, OH
+
+if (OBJECT_ID('[MyDB].[MySchema].[FOBT_Sta3n528_0_1_inputP]') is not null)	    --altered (ORD_...Dflt)
+	drop table [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP    --altered (ORD_...Dflt)
+
+		CREATE TABLE [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP(    --altered (ORD_...Dflt)
+		[trigger] [varchar](20) NULL,
+		[VISN] [smallint] NULL,		 
+		--Sta3n smallint null,
+		--Sta6a varchar(10) null,
+		[run_dt] datetime2(0) NULL,
+		[sp_start] datetime2(0) NULL,
+		[sp_end] datetime2(0) NULL,
+		[fu_period] [smallint] NULL,
+		[age_Lower] [smallint] NULL,
+		[age_upper] [smallint] NULL,
+		[ICD9Needed] bit)
+--go
 
 INSERT INTO [MyDB].[MySchema].[FOBT_Sta3n528_0_1_inputP]    --altered (ORD_...Dflt)
            ([trigger]
 		   ,[VISN]
-		   ,Sta3n
-		   ,Sta6a
+		   --,Sta3n
+		   --,Sta6a
            ,[run_dt]
            ,[sp_start]
            ,[sp_end]
@@ -131,8 +171,8 @@ INSERT INTO [MyDB].[MySchema].[FOBT_Sta3n528_0_1_inputP]    --altered (ORD_...Df
            (
            @trigger
 		   ,@VISN
-		   ,@Sta3n
-		   ,@sta6a
+		   --,@Sta3n
+		   --,@sta6a
 		   ,@run_date
            ,@sp_start
            ,@sp_end
@@ -145,8 +185,9 @@ INSERT INTO [MyDB].[MySchema].[FOBT_Sta3n528_0_1_inputP]    --altered (ORD_...Df
 
 go
 
+select * from [MyDB].[MySchema].[FOBT_Sta3n528_0_0_1_Sta3nSta6a]    --altered (ORD_...Dflt)
 select * from [MyDB].[MySchema].[FOBT_Sta3n528_0_1_inputP]    --altered (ORD_...Dflt)
-
+go
 -- Colon Cancer ICD9 Dx code list
 if (OBJECT_ID('[MyDB].[MySchema].FOBT_Sta3n528_0_8_ColonCancerDxICD9Code') is not null) 		    --altered (ORD_...Dflt)
 	drop table [MyDB].[MySchema].FOBT_Sta3n528_0_8_ColonCancerDxICD9Code    --altered (ORD_...Dflt)
@@ -176,7 +217,7 @@ begin
 	insert into [MyDB].[MySchema].FOBT_Sta3n528_0_8_ColonCancerDxICD9Code ([dx_code_type],	[dx_code_name] ,[ICD9Code])    --altered (ORD_...Dflt)
 	select distinct	'PrevColonCancer','ColonCancer',
 			ICD9Code from CDWWork.dim.icd9
-			where icd9code like '%153.[^0]%'	
+			where icd9code like '153%'--'%153.[^0]%'	
 end
 
 -- Colon Cancer ICD10 Dx code list
@@ -234,7 +275,7 @@ go
 
 
 	CREATE TABLE [MyDB].[MySchema].FOBT_Sta3n528_0_2_DxICD10CodeExc (    --altered (ORD_...Dflt)
-	UniqueID int Identity(1,1) not null,
+--	UniqueID int Identity(1,1) not null,
 	[dx_code_type] [varchar](50) NULL,
 	[dx_code_name] [varchar](50) NULL,
 	[ICD10Code] [varchar](10) NULL
@@ -264,6 +305,15 @@ insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type]
 select 'Terminal','Leukemia (Acute Only)','C92.60'
 insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
 select 'Terminal','Leukemia (Acute Only)','C92.A0'
+-- added 20200617
+insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
+select 'Terminal','Leukemia (Acute Only)','C92.61'
+insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
+select 'Terminal','Leukemia (Acute Only)','C92.62'
+insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
+select 'Terminal','Leukemia (Acute Only)','C92.A1'
+insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
+select 'Terminal','Leukemia (Acute Only)','C92.A2'
 
 insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
 select 'Terminal','Leukemia (Acute Only)','C93.00'
@@ -374,6 +424,15 @@ insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type]
 select 	'Terminal','Brain Cancer','C71.9'
 insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
 select 	'Terminal','Brain Cancer','C79.31'
+--added 20200617
+insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
+select 	'Terminal','Brain Cancer','C79.40'
+--missing
+insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
+select 	'Terminal','Brain Cancer','C79.32'
+insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
+select 	'Terminal','Brain Cancer','C79.49'
+
 
 insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
 select 	'Terminal','Ovarian Cancer','C56.9'
@@ -470,6 +529,12 @@ select 	'Terminal','Myeloma','D47.Z9'
 
 insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
 select 	'Terminal','Tracheal Cancer','C33.'
+--added 20200617
+insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
+select 	'Terminal','Tracheal Cancer','C78.39'
+insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
+select 	'Terminal','Tracheal Cancer','C78.30'
+
 insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
 select 	'Hospice','','Z51.5'
 
@@ -533,6 +598,12 @@ insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type]
 select 'OtherBleeding','','R31.1'
 insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
 select 'OtherBleeding','','R31.2'
+--added 20200617
+insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
+select 'OtherBleeding','','R31.21'
+insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
+select 'OtherBleeding','','R31.29'
+
 insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
 select 'OtherBleeding','','R04.0'
 insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
@@ -541,6 +612,10 @@ insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type]
 select 'OtherBleeding','','N92.5'
 insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
 select 'OtherBleeding','','N93.8'
+--20200617
+insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
+select 'OtherBleeding','','N93.1'
+
 insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
 select 'OtherBleeding','','R04.2'
 insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
@@ -558,6 +633,10 @@ insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type]
 select 'Pregnancy','','Z34.90'
 insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
 select 'Pregnancy','','Z33.1'
+--added 20200617
+insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
+select 'Pregnancy','','Z33.3'
+
 insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
 select 'Pregnancy','','O09.00'
 insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
@@ -598,6 +677,10 @@ insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type]
 select 'Pregnancy','','O09.92'
 insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
 select 'Pregnancy','','O09.93'
+--added 20200617
+insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
+select 'Pregnancy','','O09.A0'
+
 insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
 select 'Pregnancy','','O00.0'
 insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
@@ -608,7 +691,31 @@ insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type]
 select 'Pregnancy','','O00.8'
 insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
 select 'Pregnancy','','O00.9'
-
+--added 20200617
+insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
+select 'Pregnancy','','O00.101'
+insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
+select 'Pregnancy','','O00.102'
+insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
+select 'Pregnancy','','O00.109'
+insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
+select 'Pregnancy','','O00.201'
+insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
+select 'Pregnancy','','O00.202'
+insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
+select 'Pregnancy','','O00.209'
+insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
+select 'Pregnancy','','O00.211'
+insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
+select 'Pregnancy','','O00.212'
+insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
+select 'Pregnancy','','O00.219'
+insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
+select 'Pregnancy','','O00.80'
+insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
+select 'Pregnancy','','O00.81'
+insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
+select 'Pregnancy','','O00.90'
 
 insert into [MyDB].[MySchema].[FOBT_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
 select 'Thalassemia','','D56.9'
@@ -1037,49 +1144,383 @@ end
 
 go
 
--- FOBT test LOINC code list 
-	if (OBJECT_ID('[MyDB].[MySchema].[FOBT_Sta3n528_0_7_LOINC]') is not null) 		    --altered (ORD_...Dflt)
-	drop table [MyDB].[MySchema].FOBT_Sta3n528_0_7_LOINC    --altered (ORD_...Dflt)
+
+-- FOBT test  
+	if (OBJECT_ID('[MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName]') is not null) 		    --altered (ORD_...Dflt)
+	drop table [MyDB].[MySchema].FOBT_Sta3n528_0_7_FOBTLabTestName    --altered (ORD_...Dflt)
 go
 
-	CREATE TABLE [MyDB].[MySchema].FOBT_Sta3n528_0_7_LOINC (    --altered (ORD_...Dflt)
-	UniqueID int Identity(1,1) not null,
-	[LOINC_code_type] [varchar](50) NULL,
-	[LOINC_code_name] [varchar](50) NULL,
-	[LOINC] [varchar](10) NULL
-	) 
+	CREATE TABLE [MyDB].[MySchema].FOBT_Sta3n528_0_7_FOBTLabTestName (    --altered (ORD_...Dflt)
+	           Sta3n smallint NULL
+			,LabChemTestSID int NULL 
+           ,LOINC_Original varchar(50) NULL
+           --,LOINC_Mapped nvarchar(50) NULL
+           --,LabChemTestName varchar(50) NULL
+           --,TopographySID int NULL
+           --,Units varchar(50) NULL
+           --,Topography varchar(100) NULL
+           --,DOMAIN_ID varchar(20) NULL
+           --,CONCEPT_ID int NULL
+           --,SOURCE_CONCEPT_ID int NULL
+           --,CONCEPT_NAME varchar(500) NULL
+           --,SOURCE_CONCEPT_NAME varchar(500) NULL
+           --,VALUE_CONCEPT_ID int NULL
+		    )
 go
 
 
-insert into  [MyDB].[MySchema].FOBT_Sta3n528_0_7_LOINC (    --altered (ORD_...Dflt)
-	[LOINC_code_type],
-	[LOINC_code_name] ,
-	[LOINC] 
-	) 
-	Values
-	('FOBT','','2335-8')
-	,('FOBT','','27396-1')
-	,('FOBT','','80372-6')
-	,('FOBT','','29771-3')
-	,('FOBT','','58453-2')
-	,('FOBT','','57905-2')
-	,('FOBT','','56490-6')
-	,('FOBT','','56491-4')
-	,('FOBT','','14563-1')
-	,('FOBT','','14564-9')
-	,('FOBT','','14565-6')
-	,('FOBT','','12503-9')
-	,('FOBT','','12504-7')
-	,('FOBT','','27401-9')
-	,('FOBT','','27925-7')
-	,('FOBT','','27926-5')
-	,('FOBT','','57804-7')
-	,('FOBT','','38527-8')
-	,('FOBT','','38526-0')
-	,('FOBT','','50196-5')
-	,('FOBT','','57803-9')
-	,('FOBT','','59841-7')
-go
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (512, 1400000167, NULL)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (512, 1400000167, N'14565-6')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (512, 1400015216, NULL)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (512, 1400015216, N'14563-1')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (512, 1400020074, NULL)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (512, 1400020074, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (512, 1400020761, NULL)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (512, 1400020761, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (512, 1400049195, NULL)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (512, 1400049195, N'14564-9')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (512, 1400049217, NULL)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (512, 1400049217, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (512, 1400568392, N'14564-9')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (512, 1400575623, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (523, 1400006127, N'14565-6')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (523, 1400007168, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (523, 1400015832, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (523, 1400017856, N'14564-9')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (523, 1400023083, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (523, 1400024833, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (523, 1400047002, N'14563-1')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (523, 1400052622, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (523, 1400570743, N'29771-3')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (523, 1400574899, N'14563-1')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (528, 1400019763, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (528, 1400020529, N'14563-1')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (528, 1400020827, N'14564-9')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (528, 1400030173, N'14565-6')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (528, 1400041975, N'14564-9')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (528, 1400044644, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (528, 1400046138, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (528, 1400061146, N'14565-6')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (528, 1400063272, N'14563-1')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (528, 1400073764, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (528, 1400568735, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (528, 1400568736, N'14565-6')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (528, 1400568737, N'14565-6')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (528, 1400568738, N'29771-3')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (528, 1400593832, N'57905-2')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (537, 1000006096, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (537, 1000009685, NULL)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (537, 1000009685, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (537, 1000014516, NULL)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (537, 1000014516, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (537, 1000061002, NULL)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (537, 1000061002, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (537, 1000103300, N'29771-3')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (537, 1000105623, N'57905-2')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (540, 1400021875, N'14564-9')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (540, 1400021876, N'14565-6')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (540, 1400029888, N'14563-1')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (540, 1400035778, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (540, 1400568250, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (540, 1400571692, N'29771-3')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (541, 1200028313, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (541, 1200090066, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (541, 1200091575, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (541, 1200093683, N'14565-6')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (541, 1200093759, N'14563-1')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (541, 1200095497, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (541, 1200096072, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (541, 1200098811, N'14564-9')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (541, 1200112732, N'57905-2')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (541, 1200114625, N'29771-3')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (549, 1000002072, N'29771-3')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (549, 1000015681, N'14563-1')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (549, 1000015681, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (549, 1000018223, N'14563-1')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (549, 1000019611, N'14564-9')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (549, 1000029526, N'14565-6')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (549, 1000033851, N'14564-9')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (549, 1000033851, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (549, 1000038707, N'14563-1')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (549, 1000051967, N'14565-6')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (549, 1000051967, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (549, 1000104251, N'29771-3')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000000279, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000000325, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000022718, N'14563-1')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000025007, N'14564-9')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000027283, N'14564-9')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000027289, N'14564-9')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000027355, N'14565-6')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000032285, NULL)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000034075, N'14565-6')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000034854, NULL)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000035704, N'56491-4')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000038375, N'14565-6')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000050178, NULL)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000054406, N'57905-2')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000054407, N'56490-6')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000056183, N'14563-1')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000069542, N'14563-1')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000076255, NULL)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000108791, N'57905-2')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000121175, N'29771-3')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (589, 1000036925, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (589, 1000043219, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (589, 1000043224, N'14565-6')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (589, 1000068953, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (589, 1000068956, N'14564-9')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (589, 1000068956, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (589, 1000099307, N'14564-9')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (589, 1000106227, N'57905-2')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (635, 1000012300, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (635, 1000013003, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (635, 1000047039, N'14565-6')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (635, 1000050677, N'14563-1')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (635, 1000053306, N'14565-6')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (635, 1000054046, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (635, 1000059624, N'14564-9')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (635, 1000064483, N'14563-1')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (635, 1000069826, N'14564-9')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (635, 1000075628, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (635, 1000104243, N'14563-1')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (635, 1000122797, N'57905-2')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (635, 1000125995, N'29771-3')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (642, 1400005260, N'14563-1')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (642, 1400009511, N'14563-1')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (642, 1400012497, N'14564-9')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (642, 1400012498, N'14565-6')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (642, 1400078585, N'14563-1')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (642, 1400078586, N'14564-9')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (642, 1400078587, N'14565-6')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (642, 1400570283, N'29771-3')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (644, 800000675, N'14565-6')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (644, 800036890, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (644, 800074605, N'14563-1')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (644, 800075804, N'14564-9')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (644, 800224828, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (644, 800257151, NULL)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (671, 1000001444, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (671, 1000023514, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (671, 1000028047, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (671, 1000032176, N'14565-6')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (671, 1000035160, N'14565-6')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (671, 1000038595, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (671, 1000053200, N'14564-9')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (671, 1000097002, N'29771-3')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (671, 1000097003, N'29771-3')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (691, 800001613, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (691, 800001614, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (691, 800053904, N'2335-8')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (691, 800061861, N'14565-6')
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (691, 800064262, N'14564-9')
+GO
+
+
+
+
+
+---- FOBT test LOINC code list 
+--	if (OBJECT_ID('[MyDB].[MySchema].[FOBT_Sta3n528_0_7_LOINC]') is not null) 		    --altered (ORD_...Dflt)
+--	drop table [MyDB].[MySchema].FOBT_Sta3n528_0_7_LOINC    --altered (ORD_...Dflt)
+--go
+
+--	CREATE TABLE [MyDB].[MySchema].FOBT_Sta3n528_0_7_LOINC (    --altered (ORD_...Dflt)
+--	UniqueID int Identity(1,1) not null,
+--	[LOINC_code_type] [varchar](50) NULL,
+--	[LOINC_code_name] [varchar](50) NULL,
+--	[LOINC] [varchar](10) NULL
+--	) 
+--go
+
+
+--insert into  [MyDB].[MySchema].FOBT_Sta3n528_0_7_LOINC (    --altered (ORD_...Dflt)
+--	[LOINC_code_type],
+--	[LOINC_code_name] ,
+--	[LOINC] 
+--	) 
+--	Values
+--	 ('FOBT','','2335-8')
+--	,('FOBT','','27396-1')
+--	,('FOBT','','80372-6')
+--	,('FOBT','','29771-3')
+--	,('FOBT','','58453-2')
+--	,('FOBT','','57905-2')
+--	,('FOBT','','56490-6')
+--	,('FOBT','','56491-4')
+--	,('FOBT','','14563-1')
+--	,('FOBT','','14564-9')
+--	,('FOBT','','14565-6')
+--	,('FOBT','','12503-9')
+--	,('FOBT','','12504-7')
+--	,('FOBT','','27401-9')
+--	,('FOBT','','27925-7')
+--	,('FOBT','','27926-5')
+--	,('FOBT','','57804-7')
+--	,('FOBT','','38527-8')
+--	,('FOBT','','38526-0')
+--	,('FOBT','','50196-5')
+--	,('FOBT','','57803-9')
+--	,('FOBT','','59841-7')
+--  -- new found from OMOP
+--	,('FOBT','','77353-1')
+--	,('FOBT','','77354-9')
+--	,('FOBT','','LG2754-2')
+--	,('FOBT','','LG2755-9')
+--	,('FOBT','','LG2756-7')
+--	,('FOBT','','LG7849-5')
+--	,('FOBT','','LP193109-8')
+--	,('FOBT','','LP386738-1')
+--	,('FOBT','','LP387006-2')
+--	,('FOBT','','LP401871-1')
+--	,('FOBT','','LP42052-8')
+--go
+
+
 
 -- Positive FOBT value list 
 if (OBJECT_ID('[MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult]') is not null) 		    --altered (ORD_...Dflt)
@@ -1183,7 +1624,7 @@ INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [F
 GO
 INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 671, N'NEGATIVE', 0)    --altered (ORD_...Dflt)
 GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 540, N'1', 1)    --altered (ORD_...Dflt)
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 540, N'1', 0)    --altered (ORD_...Dflt)
 GO
 INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 523, N'POSITIVE', 1)    --altered (ORD_...Dflt)
 GO
@@ -1266,21 +1707,23 @@ if (OBJECT_ID('[MyDB].[MySchema].[FOBT_Sta3n528_1_Inc_1_AllFOBTSta6a]') is not n
   on labChem.RequestingLocationSID=loc.LocationSID
   inner join CDWWork.dim.Division as d
   on loc.DivisionSID=d.DivisionSID
-  inner join CDWWork.dim.VistASite as VistaSite
-  on VistaSite.Sta3n=labChem.Sta3n
+  --inner join CDWWork.dim.VistASite as VistaSite
+  --on VistaSite.Sta3n=labChem.Sta3n
   inner join cdwwork.dim.labchemtest as dimTest
   on labChem.[LabChemTestSID]=dimTest.LabChemTestSID
   inner join cdwwork.dim.LOINC as LOINC
   on labChem.LOINCSID=LOINC.LOINCSID
-  inner join [MyDB].[MySchema].FOBT_Sta3n528_0_7_LOINC as l    --altered (ORD_...Dflt)
- on LOINC.lOINC=l.LOINC
+  inner join [MyDB].[MySchema].FOBT_Sta3n528_0_7_FOBTLabTestName as n    --altered (ORD_...Dflt)
+  on labChem.sta3n=n.sta3n and labchem.LabChemTestSID=n.LabChemTestSID
+ -- left join [MyDB].[MySchema].FOBT_Sta3n528_0_7_LOINC as l    --altered (ORD_...Dflt)
+ --on LOINC.lOINC=l.LOINC
+ inner join [MyDB].[MySchema].FOBT_Sta3n528_0_0_1_Sta3nSta6a as s    --altered (ORD_...Dflt)
+  on d.sta3n=s.sta3n and d.Sta6a=s.Sta6a
  inner join [CDWWork].[SPatient].[SPatient] as VStatus    --altered (ORD_...Src)
 on labChem.PatientSID=VStatus.PatientSID and labChem.sta3n=VStatus.sta3n
   where --labchem.CohortName='Cohort20180712' and 
     labChem.[LabChemSpecimenDateTime] between (select sp_start from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
 											and(select sp_end from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
-	and sta6a in ( select Sta6a from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)		    --altered (ORD_...Dflt)
-
 go
 
 -- Red flagged FOBT tests
@@ -1310,6 +1753,21 @@ into [MyDB].[MySchema].FOBT_Sta3n528_1_Inc_8_IncIns    --altered (ORD_...Dflt)
 from [MyDB].[MySchema].[FOBT_Sta3n528_1_Inc_1_AllFOBTSta6a] as a    --altered (ORD_...Dflt)
 inner join [CDWWork].[SPatient].[SPatient] as VStatus    --altered (ORD_...Src)
 on a.PatientSID=VStatus.PatientSID and a.sta3n=VStatus.sta3n
+----PACTDiscovery
+--where
+-- [FOBT_dt] between (select sp_start from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)     --altered (ORD_...Dflt)
+--											and (select sp_end from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
+--and (Abnormal like 'H%'
+--	or( [LabChemResultValue] like 'P'
+--	 or [LabChemResultValue] like '%PO%'
+--	 or [LabChemResultValue] like '%PS%'
+--	 or [LabChemResultValue] like '%POS%'
+--	 or [LabChemResultValue] like '%Posi%'
+--	 or [LabChemResultValue] like '%Positive%'
+--	 or [LabChemResultValue] like '1'
+--	 )
+-- )
+----PACTDiscoveryEnd
 left join [MyDB].[MySchema].FOBT_Sta3n528_0_A_RedFlagFOBTTestResult as targetTestResult    --altered (ORD_...Dflt)
 on  ltrim(rtrim(a.[LabChemResultValue]))=targetTestResult.FOBTTestResult and targetTestResult.IsRedFlag=1 and a.Sta3n=targetTestResult.sta3n
 where
@@ -1317,8 +1775,9 @@ where
 											and (select sp_end from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
 and (
 targetTestResult.FOBTTestResult is not null
--- Using Abnormal Flag. Make corresponsing change here if it does not apply to your site
---or Abnormal like 'H%'  
+-- Using Abnormal Flag. Make corresponsing change here if it does not apply to your site.
+
+or Abnormal like 'H%'  
 )
 go
 
@@ -1818,7 +2277,7 @@ where ICD9dx_code_type is not null
 select patientSSN,sta3n,PatientSID,dx_dt,ICD9Code,ICD9dx_code_type as dx_code_type,'Dx-InPatFeeService' as dataSource
  from [MyDB].[MySchema].[FOBT_Sta3n528_2_ExcDx_3_C_FeeICDDxFromFeeServiceProvided_ICD9ICD10]    --altered (ORD_...Dflt)
 where ICD9dx_code_type is not null
---
+-------
 	UNION 
 select patientSSN,sta3n,PatientSID,dx_dt,ICD9Code as ICD9,ICD9dx_code_type as dx_code_type,'Dx-Census501Diagnosis' as dataSource
 from [MyDB].[MySchema].FOBT_Sta3n528_2_ExcDx_3_A_InPatDx_ICD9ICD10_Census501Diagnosis    --altered (ORD_...Dflt)
@@ -2577,7 +3036,7 @@ if (OBJECT_ID('[MyDB].[MySchema].FOBT_Sta3n528_5_Exc_NonDx_7_VisitTIU') is not n
 					,e.tiustandardtitle,T.ConsultSID
 					into [MyDB].[MySchema].FOBT_Sta3n528_5_Exc_NonDx_7_VisitTIU				    --altered (ORD_...Dflt)
 					from [MyDB].[MySchema].FOBT_Sta3n528_5_Exc_NonDx_5_AllVisits_StopCode as V    --altered (ORD_...Dflt)
-					left join [CDWWork].[TIU].[TIUDocument_8925] as T     --altered (ORD_...Src)
+					left join [CDWWork].[TIU].[TIUDocument] as T     --altered (ORD_...Src)
 					on T.VisitSID=V.Visitsid --and T.CohortName='Cohort20180712'
 					--more filter
 					--and T.[EntryDateTime] between dateAdd(yy,-1,(select sp_start from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP))    --altered (ORD_...Dflt)
@@ -3006,8 +3465,12 @@ go
        select * 
 	   into [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_U_TriggerPos    --altered (ORD_...Dflt)
 	   from [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_A01_GIRefer60d_joinByConsultSID    --altered (ORD_...Dflt)
+	   	where CBC_dt between (select sp_start from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
+		                  and (select sp_end from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
 	   union
 	   select *  from [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_A01_GIRefer60d_joinByConsultSID    --altered (ORD_...Dflt)
+		where CBC_dt between (select sp_start from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
+		                  and (select sp_end from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
 
 
 		if (OBJECT_ID('[MyDB].[MySchema].[FOBT_Sta3n528_5_Ins_V_FirstOfPat]') is not null)    --altered (ORD_...Dflt)
@@ -3038,154 +3501,172 @@ if (OBJECT_ID('[MyDB].[MySchema].FOBT_Sta3n528_5_Ins_X_count') is not null)    -
 			drop table [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_X_count    --altered (ORD_...Dflt)
 		go
 
-		CREATE TABLE [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_X_count(    --altered (ORD_...Dflt)
-			Sta6a [varchar](10) NULL	
-			,[run_dt] datetime2(0) NULL
-			,[sp_start] datetime2(0) NULL
-			,[sp_end] datetime2(0) NULL
-			,NumOfTotalFOBTTest int NULL
-			,NumOfTotalPatWithFOBTTest int NULL
-			,NumOfRedFlaggedFOBTTest int NULL
-			,NumOfPatWithRedFlaggedFOBTTest int NULL
-			,NumOfTriggerPosFOBTTest int NULL
-			,NumOfTriggerPosPat int NULL)
+-- Numerator and Denumerator
+if (OBJECT_ID('[MyDB].[MySchema].FOBT_Sta3n528_5_Ins_X_count') is not null)    --altered (ORD_...Dflt)
+			drop table [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_X_count    --altered (ORD_...Dflt)
 		go
-		
-		Insert into [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_x_count (    --altered (ORD_...Dflt)
-			Sta6a
-			,[run_dt]
-			,[sp_start]
-			,[sp_end]
-			,NumOfTotalFOBTTest
-			,NumOfTotalPatWithFOBTTest
-			,NumOfRedFlaggedFOBTTest
-			,NumOfPatWithRedFlaggedFOBTTest
-			,NumOfTriggerPosFOBTTest
-			,NumOfTriggerPosPat)
-		values (
-		(select  Sta6a from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
-		,(select  run_dt from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
-		,(select  sp_start from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
-		,(select  sp_end from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
-		-- number of FOBT test performed
-		,(select count(*) from (
-							select PatientSSN,FOBT_dt from [MyDB].[MySchema].FOBT_Sta3n528_1_Inc_1_AllFOBTSta6a    --altered (ORD_...Dflt)
-							where  FOBT_dt between (select sp_start from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
-											and (select sp_end from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
-								   and Sta6a in (select sta6a from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
-							group by PatientSSN,FOBT_dt
-							) sub)
+
+		With -- number of FOBT test performed
+		NumOfTotalFOBTTest (sta3n,sta6a,[Year],[Month],NumOfTotalFOBTTest) as 	 
+			(select  sta3n,sta6a,datepart(year,FOBT_dt) as [Year],datepart(MONTH,FOBT_dt) as[Month],count(distinct concat( PatientSSN,FOBT_dt )) as NumOfTotalFOBTTest
+				 from [MyDB].[MySchema].FOBT_Sta3n528_1_Inc_1_AllFOBTSta6a    --altered (ORD_...Dflt)
+				 where FOBT_dt >=(select sp_start from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
+					   and FOBT_dt <=(select sp_end from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
+				 group by sta3n,Sta6a,datepart(year,FOBT_dt),datepart(MONTH,FOBT_dt)--,PatientSSN,FOBT_dt
+			) 
 		-- number of patients with FOBT test performed
-		,(select count(distinct  PatientSSN ) from [MyDB].[MySchema].[FOBT_Sta3n528_1_Inc_1_AllFOBTSta6a]    --altered (ORD_...Dflt)
-									where  FOBT_dt between (select sp_start from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
-											and (select sp_end from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
-											and Sta6a in (select sta6a from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
-									)
+		,NumOfTotalPatWithFOBTTest (sta3n,sta6a,[Year],[Month],NumOfTotalPatWithFOBTTest) as
+			(select sta3n,sta6a, datepart(year,FOBT_dt) as [Year],datepart(MONTH,FOBT_dt) as[Month],count(distinct  patientssn ) as NumOfTotalPatWithFOBTTest
+				 from [MyDB].[MySchema].FOBT_Sta3n528_1_Inc_1_AllFOBTSta6a    --altered (ORD_...Dflt)
+				 where FOBT_dt >=(select sp_start from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
+					   and FOBT_dt <=(select sp_end from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
+				 group by sta3n,Sta6a,datepart(year,FOBT_dt),datepart(MONTH,FOBT_dt)
+			) 		
 		-- number of FOBT test which are red-flageed
-		,(select count(*) from (
-									select PatientSSN,CBC_dt from [MyDB].[MySchema].FOBT_Sta3n528_1_Inc_8_IncIns    --altered (ORD_...Dflt)
-									where  CBC_dt between (select sp_start from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
-											and (select sp_end from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
-											and Sta6a in (select sta6a from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
-									group by PatientSSN,CBC_dt
-									) sub)
-		-- number of patients with red-flagged FOBT test
-		,(select count(distinct  PatientSSN ) from [MyDB].[MySchema].FOBT_Sta3n528_1_Inc_8_IncIns)     --altered (ORD_...Dflt)
-		-- number of FOBT test which come out trigger positive
-		,(select count(*) from (
-									select PatientSSN,CBC_dt from [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_U_TriggerPos    --altered (ORD_...Dflt)
-									where  CBC_dt between (select sp_start from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
-											and (select sp_end from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
-											and Sta6a in (select sta6a from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
-									group by PatientSSN,CBC_dt
-									) sub)
-		-- number of patients with trigger positive FOBT test
-		,(select count(*) from (select PatientSSN,CBC_dt from [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_U_TriggerPos    --altered (ORD_...Dflt)
-											where  CBC_dt between (select sp_start from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
-											and (select sp_end from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
-											and Sta6a in (select sta6a from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
-									group by PatientSSN,CBC_dt) sub
-)
+		,NumOfRedFlaggedFOBTTest(sta3n,sta6a,[Year],[Month],NumOfRedFlaggedFOBTTest) as 
+				(select sta3n,sta6a,datepart(year,CBC_dt) as [Year],datepart(MONTH,CBC_dt) as[Month],count(distinct concat( PatientSSN,CBC_dt ) ) as NumOfRedFlaggedFOBTTest
+				from [MyDB].[MySchema].FOBT_Sta3n528_1_Inc_8_IncIns    --altered (ORD_...Dflt)
+					 where CBC_dt >=(select sp_start from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
+						   and CBC_dt <=(select sp_end from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
+				group by sta3n,sta6a,datepart(year,CBC_dt),datepart(MONTH,CBC_dt)
+			)
+		--  number of patients with red-flagged FOBT test
+		,NumOfPatWithRedFlaggedFOBTTest(sta3n,sta6a,[Year],[Month],NumOfPatWithRedFlaggedFOBTTest) as 
+				(select sta3n,sta6a,datepart(year,CBC_dt) as [Year],datepart(MONTH,CBC_dt) as[Month],count(distinct  patientssn ) as NumOfPatWithRedFlaggedFOBTTest
+				from [MyDB].[MySchema].FOBT_Sta3n528_1_Inc_8_IncIns    --altered (ORD_...Dflt)
+					 where CBC_dt >=(select sp_start from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
+						   and CBC_dt <=(select sp_end from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
+				group by sta3n,sta6a,datepart(year,CBC_dt),datepart(MONTH,CBC_dt)
+			)
+		-- number of FOBT tests which come out as trigger positive
+		,NumOfTriggerPosFOBTTest(sta3n,sta6a,[Year],[Month],NumOfTriggerPosFOBTTest) as
+			(select sta3n,sta6a,datepart(year,CBC_dt) as [Year],datepart(MONTH,CBC_dt) as[Month],count(distinct concat( PatientSSN,CBC_dt ) ) as NumOfTriggerPosFOBTTest
+				from [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_U_TriggerPos    --altered (ORD_...Dflt)
+					where CBC_dt >=(select sp_start from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
+						 and CBC_dt <=(select sp_end from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
+					group by sta3n,sta6a,datepart(year,CBC_dt),datepart(MONTH,CBC_dt)
+			)
+		--number of patients with trigger positive FOBT test
+		,NumOfTriggerPosPat(sta3n,sta6a,[Year],[Month],NumOfTriggerPosPat) as 
+				(select sta3n,sta6a,datepart(year,CBC_dt) as [Year],datepart(MONTH,CBC_dt) as[Month],count(distinct  patientssn ) as NumOfTriggerPosPat
+				 from [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_U_TriggerPos    --altered (ORD_...Dflt)
+							where CBC_dt >=(select sp_start from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
+					and CBC_dt <=(select sp_end from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
+					group by sta3n,sta6a,datepart(year,CBC_dt),datepart(MONTH,CBC_dt)
 		)
+
+			select 
+					(select  run_dt  from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP) as run_dt    --altered (ORD_...Dflt)
+					,(select  sp_start from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP) as sp_start    --altered (ORD_...Dflt)
+					,(select  sp_end from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP) as sp_end    --altered (ORD_...Dflt)
+					,a.sta3n,a.sta6a,a.[Year],a.[month]
+					,NumOfTotalFOBTTest
+					,NumOfTotalPatWithFOBTTest
+					,NumOfRedFlaggedFOBTTest
+					,NumOfPatWithRedFlaggedFOBTTest
+					,NumOfTriggerPosFOBTTest
+					,NumOfTriggerPosPat
+			into [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_X_count    --altered (ORD_...Dflt)
+			from  NumOfTotalFOBTTest as a
+			left join NumOfTotalPatWithFOBTTest as b
+			on a.sta3n=b.sta3n and a.sta6a=b.sta6a and a.[year]=b.[year] and a.[Month]=b.[Month]
+			left join NumOfRedFlaggedFOBTTest as c
+			on a.sta3n=c.sta3n and a.sta6a=c.sta6a and a.[year]=c.[year] and a.[Month]=c.[Month]
+			left join NumOfPatWithRedFlaggedFOBTTest as d
+			on a.sta3n=d.sta3n and a.sta6a=d.sta6a and a.[year]=d.[year] and a.[Month]=d.[Month]
+			left join NumOfTriggerPosFOBTTest as e
+			on a.sta3n=e.sta3n and a.sta6a=e.sta6a and a.[year]=e.[year] and a.[Month]=e.[Month]
+			left join NumOfTriggerPosPat as f
+			on a.sta3n=f.sta3n and a.sta6a=f.sta6a and a.[year]=f.[year] and a.[Month]=f.[Month]
+
 go
 
---data set
--- all fobt tests from sta6a in the study period
-select * from [MyDB].[MySchema].[FOBT_Sta3n528_1_Inc_1_AllFOBTSta6a]    --altered (ORD_...Dflt)
-where  FOBT_dt between (select sp_start from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
-		and (select sp_end from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
-		and Sta6a in (select sta6a from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
--- red flagged fobt tests from sta6a in the study period
-select * from [MyDB].[MySchema].FOBT_Sta3n528_1_Inc_8_IncIns    --altered (ORD_...Dflt)
-where  CBC_dt between (select sp_start from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
-		and (select sp_end from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
-		and Sta6a in (select sta6a from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
--- trigger positive fobt tests from sta6a in the study period
-select * from [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_U_TriggerPos    --altered (ORD_...Dflt)
-where  CBC_dt between (select sp_start from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
-		and (select sp_end from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
-		and Sta6a in (select sta6a from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
+select * from [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_X_count    --altered (ORD_...Dflt)
+order by sta3n,sta6a,[year],[month]
+
+----data set
+---- all fobt tests from sta6a in the study period
+--select * from [MyDB].[MySchema].[FOBT_Sta3n528_1_Inc_1_AllFOBTSta6a]    --altered (ORD_...Dflt)
+--where  FOBT_dt between (select sp_start from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
+--		and (select sp_end from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
+--		and Sta6a in (select sta6a from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
+---- red flagged fobt tests from sta6a in the study period
+--select * from [MyDB].[MySchema].FOBT_Sta3n528_1_Inc_8_IncIns    --altered (ORD_...Dflt)
+--where  CBC_dt between (select sp_start from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
+--		and (select sp_end from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
+--		and Sta6a in (select sta6a from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
+---- trigger positive fobt tests from sta6a in the study period
+--select * from [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_U_TriggerPos    --altered (ORD_...Dflt)
+--where  CBC_dt between (select sp_start from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
+--		and (select sp_end from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
+--		and Sta6a in (select sta6a from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
 
 
 ---- Uncomment below to delete intermediate tables created during execution
---drop table [MyDB].[MySchema].FOBT_Sta3n528_0_2_DxICD10CodeExc    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_0_3_PreProcICD10ProcExc    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_0_4_DxICD9CodeExc    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_0_5_PrevProcCPTCodeExc    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_0_6_PreProcICD9ProcExc    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_0_7_LOINC    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_0_8_ColonCancerDxICD9Code    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_0_9_ColonCancerDxICD10Code    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_0_A_RedFlagFOBTTestResult    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_1_Inc_1_AllFOBTSta6a    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_1_Inc_8_IncIns    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_1_Inc_9_IncPat    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_2_ExcDx_0_PrevCLCFromProblemList_ICD9ICD10    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_2_ExcDx_1_OutPatDx_ICD9ICD10    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_2_ExcDx_2_SurgDx_ICD9ICD10    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_2_ExcDx_3_A_InPatDx_ICD9ICD10    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_2_ExcDx_3_A_InPatDx_ICD9ICD10_Census501Diagnosis    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_2_ExcDx_3_A_InPatDx_ICD9ICD10_Inpat_CensusDiagnosis    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_2_ExcDx_3_A_InPatDx_ICD9ICD10_Inpat_Inpatient501TransactionDiagnosis    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_2_ExcDx_3_A_InPatDx_ICD9ICD10_InpatientDischargeDiagnosis    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_2_ExcDx_3_A_InPatDx_ICD9ICD10_PatientTransferDiagnosis    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_2_ExcDx_3_A_InPatDx_ICD9ICD10_SpecialtyTransferDiagnosis    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_2_ExcDx_3_B_InpatientFeeDiagnosisDx_ICD9ICD10    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_2_ExcDx_3_C_FeeICDDxFromFeeServiceProvided_ICD9ICD10    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_2_ExcDx_4_ALLDx_ICD10    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_2_ExcDx_4_ALLDx_ICD9    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_2_ExcDx_4_Union_ALLDx_ICD    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_3_Exc_NonDx_3_PrevProc_0_HLP_InPICDProc_Inpat_ICD9ProcICD10Proc    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_3_Exc_NonDx_3_PrevProc_1_HLP_CensusICDProc_Inpat_ICD9ProcICD10Proc    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_3_Exc_NonDx_3_PrevProc_2_HLP_InPSurgICD_Inpat_ICD9ProcICD10Proc    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_3_Exc_NonDx_3_PrevProc_3_HLP_CensusSurgICD_Inpat_ICD9ProcICD10Proc    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_3_Exc_NonDx_3_PrevProc_4_HLP_FeeICDProc_Inpat_ICD9ProcICD10Proc    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_3_Exc_NonDx_3_PrevProc_5_Union_Inpat_ICD10Proc    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_3_Exc_NonDx_3_PrevProc_5_Union_Inpat_ICD9Proc    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_3_Exc_NonDx_3_PrevProc_6_Outpat    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_3_Exc_NonDx_3_PrevProc_7_surg    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_3_Exc_NonDx_3_PrevProc_8_Inpat_CPT    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_3_Exc_NonDx_3_PrevProc_9_FeeCPT    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_3_Exc_NonDx_3_PrevProc_All_1_ColonScpy    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_3_Exc_NonDx_3_PrevProc_All_2_Colectomy    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_3_Exc_NonDx_6_AllImgProcFromRad    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_5_Exc_NonDx_3_AllVisit    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_5_Exc_NonDx_3_AllVisit_Hlp1    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_5_Exc_NonDx_5_AllVisits_StopCode    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_5_Exc_NonDx_7_VisitTIU    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_5_Exc_NonDx_9_VisitTIUConsult_joinByConsultSID    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_1_Age    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_2_ALive    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_3_PrevCRCCancer    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_4_colectomy    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_5_Term    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_6_Hospice    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_6B1_Inpat_HospiceSpecialty    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_6B2_Hospice_FeeInpatInvoice_PurposeOfVisit    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_6B3_Hospice_FeeServiceProvided_HCFAType    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_6D1_Hospice_Refer_joinByConsultSID    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_7_UGIBleed    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_8_ColonScpy    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_9_ColonScpy_60d    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_A01_GIRefer60d_joinByConsultSID    --altered (ORD_...Dflt)
---drop table [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_A01_GIRefer60d_joinByConsultSID_A    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_0_2_DxICD10CodeExc    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_0_3_PreProcICD10ProcExc    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_0_4_DxICD9CodeExc    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_0_5_PrevProcCPTCodeExc    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_0_6_PreProcICD9ProcExc    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_0_7_FOBTLabTestName    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_0_8_ColonCancerDxICD9Code    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_0_9_ColonCancerDxICD10Code    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_0_A_RedFlagFOBTTestResult    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_1_Inc_9_IncPat    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_2_ExcDx_0_PrevCLCFromProblemList_ICD9ICD10    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_2_ExcDx_1_OutPatDx_ICD9ICD10    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_2_ExcDx_2_SurgDx_ICD9ICD10    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_2_ExcDx_3_A_InPatDx_ICD9ICD10    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_2_ExcDx_3_A_InPatDx_ICD9ICD10_Census501Diagnosis    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_2_ExcDx_3_A_InPatDx_ICD9ICD10_Inpat_CensusDiagnosis    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_2_ExcDx_3_A_InPatDx_ICD9ICD10_Inpat_Inpatient501TransactionDiagnosis    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_2_ExcDx_3_A_InPatDx_ICD9ICD10_InpatientDischargeDiagnosis    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_2_ExcDx_3_A_InPatDx_ICD9ICD10_PatientTransferDiagnosis    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_2_ExcDx_3_A_InPatDx_ICD9ICD10_SpecialtyTransferDiagnosis    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_2_ExcDx_3_B_InpatientFeeDiagnosisDx_ICD9ICD10    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_2_ExcDx_3_C_FeeICDDxFromFeeServiceProvided_ICD9ICD10    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_2_ExcDx_4_ALLDx_ICD10    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_2_ExcDx_4_ALLDx_ICD9    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_2_ExcDx_4_Union_ALLDx_ICD    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_3_Exc_NonDx_3_PrevProc_0_HLP_InPICDProc_Inpat_ICD9ProcICD10Proc    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_3_Exc_NonDx_3_PrevProc_1_HLP_CensusICDProc_Inpat_ICD9ProcICD10Proc    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_3_Exc_NonDx_3_PrevProc_2_HLP_InPSurgICD_Inpat_ICD9ProcICD10Proc    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_3_Exc_NonDx_3_PrevProc_3_HLP_CensusSurgICD_Inpat_ICD9ProcICD10Proc    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_3_Exc_NonDx_3_PrevProc_4_HLP_FeeICDProc_Inpat_ICD9ProcICD10Proc    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_3_Exc_NonDx_3_PrevProc_5_Union_Inpat_ICD10Proc    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_3_Exc_NonDx_3_PrevProc_5_Union_Inpat_ICD9Proc    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_3_Exc_NonDx_3_PrevProc_6_Outpat    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_3_Exc_NonDx_3_PrevProc_7_surg    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_3_Exc_NonDx_3_PrevProc_8_Inpat_CPT    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_3_Exc_NonDx_3_PrevProc_9_FeeCPT    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_3_Exc_NonDx_3_PrevProc_All_1_ColonScpy    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_3_Exc_NonDx_3_PrevProc_All_2_Colectomy    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_3_Exc_NonDx_6_AllImgProcFromRad    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_5_Exc_NonDx_3_AllVisit    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_5_Exc_NonDx_3_AllVisit_Hlp1    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_5_Exc_NonDx_5_AllVisits_StopCode    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_5_Exc_NonDx_7_VisitTIU    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_5_Exc_NonDx_9_VisitTIUConsult_joinByConsultSID    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_1_Age    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_2_ALive    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_3_PrevCRCCancer    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_4_colectomy    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_5_Term    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_6_Hospice    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_6B1_Inpat_HospiceSpecialty    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_6B2_Hospice_FeeInpatInvoice_PurposeOfVisit    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_6B3_Hospice_FeeServiceProvided_HCFAType    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_6D1_Hospice_Refer_joinByConsultSID    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_7_UGIBleed    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_8_ColonScpy    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_9_ColonScpy_60d    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_A01_GIRefer60d_joinByConsultSID    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_A01_GIRefer60d_joinByConsultSID_A    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_A01_GIRefer60d_joinByConsultSID_B1    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_A01_GIRefer60d_joinByConsultSID_B2    --altered (ORD_...Dflt)
+--Drop Table [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_V_FirstOfPat    --altered (ORD_...Dflt)
+
+
+
+
+
