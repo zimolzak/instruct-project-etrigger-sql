@@ -1,3 +1,4 @@
+
 --------------------------------------------
 --- Lung Cancer Trigger 
 --------------------------------------------
@@ -16,36 +17,39 @@
 --			Table names:   We have mapped table names from Research data to Operational. But we currently do not have live access to Operational data to test the mappings. 
 
 --      TobeAltered:
---		4. Table Lung_Sta3n528_0_xxx has all the input parameters, including site info, study period, standard codes( CPT, ICD, ICDproc etc.).
+--		4. Table MyDB.[MySchema].Lung_Sta3n528_0_xxx has the input parameters, including study period, standard codes( CPT, ICD, ICDproc etc.).
 --		  Although these codes are standardized, if your local site uses them in different flavors, consider customization. Also exam these tables after being populated to make sure codes
 --		  used in your site are all included.
---							--Set your site code sta6a,sta3n and study period.
---							set @Sta3n=528
---							set @Sta6a='528A8'   -- ALBANY,NY(528A8) as an example
 --							set @sp_start='2017-01-01 00:00:00'
 --							set @sp_end='2017-01-31 23:59:59' 
 --
 --      TobeAltered:
---		5. Red-flagged chest image Diagnostic Codes
+--		5. Set site(s) code. Table Lung_Sta3n528_0_0_1_Sta3nSta6a has the site(s) whose data the trigger runs against. 
+--		  Search for string "--Set site(s) codes here. Keep only your site(s) uncommented". Comment out other sites.
+--							 (528,'528A8') 	(528) Upstate New York HCS, ALBANY,NY(528A8) as an example
+--
+--      TobeAltered:
+--		6. Red-flagged chest image Diagnostic Codes
 --		   Table MyDB.[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] will have the list of red-flagged chest image Diagnostic Codes.
 --		   Add any additional codes that your site might use, or remove any that your site does not use by setting isRedFlag=0.
 --							select * from [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] 
 --							where sta3n=@yourSta3n
 --						 
---		6. Other possible changes
+--		7. Other possible changes
 --		   Standard codes ( CPT,ICD, ICDProcedure, LOINC etc.) might change every year, with addition of new codes and removal of old ones. These changes require corresponding updates of this script. 
 --		   Always add new codes to parameter tables. Do NOT remove old codes because script still checks back for clinical history.		  
 --
---		7. Since we will be running the query in data of year 2019 and after, parameter tables of ICD9 and ICD9Procedure code are set to empty
 --
---		8. Numerator and denumerators: select * from [MyDB].[MySchema].Lung_Sta3n528_4_01_Count
+--      8. Data Set		    
+--			--[MyDB].[MySchema].Lung_Sta3n528_1_In_2_All_Chest_XRayCT_Sta6a		-- 	All chest images from sta6a in the study period
+--			--[MyDB].[MySchema].Lung_Sta3n528_1_In_3_RedFlagXRayCT				--  Abnormal (red_flagged) chest images from sta6a in the study period
+--			--[MyDB].[MySchema].Lung_Sta3n528_3_Ins_U_TriggerPos				--  Chest images from sta6a in the study period which come out trigger positive
 --
---      10. Data Set		    
---			--Lung_Sta3n528_1_In_2_All_Chest_XRayCT_Sta6a		-- 	All chest images from sta6a in the study period
---			--Lung_Sta3n528_1_In_6_IncIns						--  Abnormal (red_flagged) chest images from sta6a in the study period
---			--Lung_Sta3n528_3_Ins_U_TriggerPos					--  Chest images from sta6a in the study period, which come out trigger positive
+--		9. If you want to delete the intermediate table generated during execution. uncomment the block at the end of the script.
 --
---		11. If you want to delete the intermediate table generated during execution. uncomment the block at the end of the script.
+--		10. Numerator and denumerators: select * from [MyDB].[MySchema].Lung_Sta3n528_4_01_Count
+
+
 
 
 --------------------------------------------------------------------------------------------------------------------------------
@@ -59,8 +63,8 @@ declare @trigger varchar(20)		--Name of the trigger
 declare @isVISN bit 				--Trigger runs on VISN levle
 declare @VISN smallint				
 declare @isSta3n bit				--Trigger runs on Sta3n levle
-declare @Sta3n smallint				
-declare @Sta6a varchar(10)			--Site Code
+--declare @Sta3n smallint				
+--declare @Sta6a varchar(10)			--Site Code
 declare @run_date datetime2(0)			--Date time of trigger run
 declare @sp_start datetime2(0)			--Study starting date time
 declare @sp_end datetime2(0)			--Study ending date time
@@ -71,51 +75,84 @@ declare @ICD9Needed bit				--ICD9 and ICD9Proc are not searched if run trigger i
 -- Set study parameters
 set @trigger='LungCancer'
 set @isVISN=0						--Disabled. Trigger runs against data of sta3n level 
-set @VISN=-1
+set @VISN=12
 set @isSta3n=1
-
+set @VISN=12
 --Set your site code sta6a,sta3n and study period. 
-set @Sta3n=528
-set @Sta6a='528A8'					-- ALBANY,NY(528A8) as an example
+--set @Sta3n=528
+--set @Sta6a='528A8'					-- ALBANY,NY(528A8) as an example
 set @sp_start='2017-01-01 00:00:00'
 set @sp_end='2017-01-31 23:59:59' 
 
 set @run_date=getdate()
 set @fu_period=30
 set @age=18
-set @ICD9Needed=0
+set @ICD9Needed=1
+
+if (OBJECT_ID('[MyDB].[MySchema].[Lung_Sta3n528_0_0_1_Sta3nSta6a]') is not null)	    --altered (ORD_...Dflt)
+		drop table [MyDB].[MySchema].Lung_Sta3n528_0_0_1_Sta3nSta6a    --altered (ORD_...Dflt)
+	CREATE TABLE [MyDB].[MySchema].Lung_Sta3n528_0_0_1_Sta3nSta6a (    --altered (ORD_...Dflt)
+	Sta3n smallint null,
+	Sta6a [varchar](10) NULL
+	) 
+
+
+insert into  [MyDB].[MySchema].Lung_Sta3n528_0_0_1_Sta3nSta6a (Sta3n,Sta6a)     --altered (ORD_...Dflt)
+values 
+ (
+ --Set site(s) codes here. Keep only your site(s) uncommented.
+ -- Cohort 1
+ 528,'528A8') --	(528A8) ALBANY,NY 
+--,(642,'642') --	(642) Philadelphia, PA, CorporalMichael K.Crescenz VA Medical center
+--,(644,'644') --	(644) Phoenix, AZ, Phoenix VA Health Care System
+--,(671,'671')	--	(671) South Texas HCS (San Antonio TX)-Audie
+
+ -- Cohort 2
+--,(537,'537') --	(537) JESSE BROWN VAMC
+--,(549,'549') --	(549) North Texas HCS (Dallas TX)
+--,(589,'589') --	(589) VA Heartland West (Kansas City MO)
+--,(691,'691') --	(691)VA GREATER LOS ANGELES (691)
+
+ -- Cohort 3
+--,(635,'635') --	(635) Oklahoma City, OK
+--Another 528 site:
+--,(528,'528A7') --	 (528A7) (Syracuse, NY)
+--,(540,'540') --	(540) Clarksburg, WV
+--,(523,'523') --	(523)BOSTON HCS VAMC
+
+-- Discovery
+-- Baltimore is special,does not fill in diagnosticcode, has to go with Note Title
+--,(512,'512') --	(512) Maryland HCS (Baltimore MD)
+--,(580,'580') --	(580) Houston, TX
+--,(541,'541') --(541) Cleveland, OH
 
 
 if (OBJECT_ID('[MyDB].[MySchema].[Lung_Sta3n528_0_1_inputP]') is not null)	    --altered (ORD_...Dflt)
-	begin
-		delete from [MyDB].[MySchema].[Lung_Sta3n528_0_1_inputP]    --altered (ORD_...Dflt)
-	end
-	else
-	begin	
+	drop table [MyDB].[MySchema].[Lung_Sta3n528_0_1_inputP]    --altered (ORD_...Dflt)
+	
 		CREATE TABLE [MyDB].[MySchema].[Lung_Sta3n528_0_1_inputP](    --altered (ORD_...Dflt)
 		[trigger] [varchar](20) NULL,
 		isVISN bit null,
 		isSta3n bit null,
 		[VISN] [smallint] NULL,		 
-		Sta3n smallint null,
+		--Sta3n smallint null,
 		ICD9Needed bit null,
-		Sta6a [varchar](10) NULL,
+		--Sta6a [varchar](10) NULL,
 		[run_dt] datetime2(0) NULL,
 		[sp_start] datetime2(0) NULL,
 		[sp_end] datetime2(0) NULL,
 		[fu_period] [smallint] NULL,
 		[age] [smallint] NULL)
-	end
-
+	
 
 INSERT INTO [MyDB].[MySchema].[Lung_Sta3n528_0_1_inputP]    --altered (ORD_...Dflt)
            ([trigger]
 		   ,isVISN
 		   ,isSta3n
 		   ,[VISN]
-		   ,Sta3n
+		   --,Sta3n
 		   ,ICD9Needed
-		   ,Sta6a
+		   --,Sta6a
            ,[run_dt]
            ,[sp_start]
            ,[sp_end]
@@ -127,9 +164,9 @@ INSERT INTO [MyDB].[MySchema].[Lung_Sta3n528_0_1_inputP]    --altered (ORD_...Df
 		   ,@isVISN
 		   ,@isSta3n
 		   ,@VISN
-		   ,@Sta3n
+		   --,@Sta3n
 		   ,@ICD9Needed
-		   ,@Sta6a           
+		   --,@Sta6a           
 		   ,@run_date
            ,@sp_start
            ,@sp_end
@@ -139,7 +176,10 @@ INSERT INTO [MyDB].[MySchema].[Lung_Sta3n528_0_1_inputP]    --altered (ORD_...Df
 
 go
 
-select * from [MyDB].[MySchema].[Lung_Sta3n528_0_1_inputP]    --altered (ORD_...Dflt)
+select [trigger],ICD9Needed,run_dt,sp_start,sp_end,fu_period,age
+ from [MyDB].[MySchema].[Lung_Sta3n528_0_1_inputP]    --altered (ORD_...Dflt)
+
+select * from [MyDB].[MySchema].Lung_Sta3n528_0_0_1_Sta3nSta6a     --altered (ORD_...Dflt)
 
 
 -- CPT Code lists for Lung images
@@ -198,7 +238,7 @@ if (OBJECT_ID('[MyDB].[MySchema].Lung_Sta3n528_0_2_DxICD10CodeExc') is not null)
 	drop table [MyDB].[MySchema].[Lung_Sta3n528_0_2_DxICD10CodeExc]    --altered (ORD_...Dflt)
 
 	CREATE TABLE [MyDB].[MySchema].[Lung_Sta3n528_0_2_DxICD10CodeExc] (    --altered (ORD_...Dflt)
-	UniqueID int Identity(1,1) not null,
+	--UniqueID int Identity(1,1) not null,
 	[dx_code_type] [varchar](50) NULL,
 	[dx_code_name] [varchar](50) NULL,
 	[ICD10Code] [varchar](10) NULL
@@ -251,6 +291,16 @@ insert into [MyDB].[MySchema].[Lung_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type]
 select 	'Terminal','Leukemia (Acute Only)','C95.01'
 insert into [MyDB].[MySchema].[Lung_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
 select 	'Terminal','Leukemia (Acute Only)','C95.02'
+--added 20200617 was overlooked from Umair's new codes
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
+select 	'Terminal','Leukemia (Acute Only)','C92.61'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
+select 	'Terminal','Leukemia (Acute Only)','C92.62'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
+select 	'Terminal','Leukemia (Acute Only)','C92.A1'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
+select 	'Terminal','Leukemia (Acute Only)','C92.A2'
+
 
 
 insert into [MyDB].[MySchema].[Lung_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
@@ -337,12 +387,12 @@ select 	'Terminal','Brain Cancer','C71.9'
 insert into [MyDB].[MySchema].[Lung_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
 select 	'Terminal','Brain Cancer','C79.31'
 
---insert into [MyDB].[MySchema].[Lung_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
---select 	'Terminal','Brain Cancer','C79.32'
---insert into [MyDB].[MySchema].[Lung_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
---select 	'Terminal','Brain Cancer','C79.49'
---insert into [MyDB].[MySchema].[Lung_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
---select 	'Terminal','Brain Cancer', 'C79.40'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
+select 	'Terminal','Brain Cancer','C79.32'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
+select 	'Terminal','Brain Cancer','C79.49'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
+select 	'Terminal','Brain Cancer', 'C79.40'
 
 insert into [MyDB].[MySchema].[Lung_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
 select 	'Terminal','Ovarian Cancer','C56.9'
@@ -359,7 +409,17 @@ insert into [MyDB].[MySchema].[Lung_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type]
 select 	'Terminal','Pancreatic Cancer','C25.2'
 insert into [MyDB].[MySchema].[Lung_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
 select 	'Terminal','Pancreatic Cancer','C25.3'
+--added 20200617 which were missing
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
+select 	'Terminal','Pancreatic Cancer','C25.4'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
+select 	'Terminal','Pancreatic Cancer','C25.7'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
+select 	'Terminal','Pancreatic Cancer','C25.8'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
+select 	'Terminal','Pancreatic Cancer','C25.9'
 
+--'Pleural Cancer & Mesothelioma' is kind of Lung Cancer itself. Should not be in the exclusion 
 --insert into [MyDB].[MySchema].[Lung_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
 --select 	'Terminal','Pleural Cancer & Mesothelioma','C38.4'
 --insert into [MyDB].[MySchema].[Lung_Sta3n528_0_2_DxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
@@ -553,7 +613,39 @@ insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Pro
 select 	'LungBiopsy','ClosedBiopsyBronchus','0BBB7ZX'
 insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
 select 	'LungBiopsy','ClosedBiopsyBronchus','0BBB8ZX'
-
+--20200522
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'LungBiopsy','ClosedBiopsyBronchus','0BD34ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'LungBiopsy','ClosedBiopsyBronchus','0BD38ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'LungBiopsy','ClosedBiopsyBronchus','0BD44ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'LungBiopsy','ClosedBiopsyBronchus','0BD48ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'LungBiopsy','ClosedBiopsyBronchus','0BD54ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'LungBiopsy','ClosedBiopsyBronchus','0BD58ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'LungBiopsy','ClosedBiopsyBronchus','0BD64ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'LungBiopsy','ClosedBiopsyBronchus','0BD68ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'LungBiopsy','ClosedBiopsyBronchus','0BD74ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'LungBiopsy','ClosedBiopsyBronchus','0BD78ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'LungBiopsy','ClosedBiopsyBronchus','0BD84ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'LungBiopsy','ClosedBiopsyBronchus','0BD88ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'LungBiopsy','ClosedBiopsyBronchus','0BD94ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'LungBiopsy','ClosedBiopsyBronchus','0BD98ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'LungBiopsy','ClosedBiopsyBronchus','0BDB4ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'LungBiopsy','ClosedBiopsyBronchus','0BDB8ZX'
 
 insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
 select 	'LungBiopsy','OpenBiopsyBronchus','0B930ZX' 
@@ -660,6 +752,25 @@ insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Pro
 select 	'LungBiopsy','ClosedNneedleBiopsyLung','0BBL3ZX' 
 insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
 select 	'LungBiopsy','ClosedNneedleBiopsyLung','0BBM3ZX'
+--20200522
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'LungBiopsy','ClosedNneedleBiopsyLung','0BDC8ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'LungBiopsy','ClosedNneedleBiopsyLung','0BDD8ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'LungBiopsy','ClosedNneedleBiopsyLung','0BDF8ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'LungBiopsy','ClosedNneedleBiopsyLung','0BDG8ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'LungBiopsy','ClosedNneedleBiopsyLung','0BDH8ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'LungBiopsy','ClosedNneedleBiopsyLung','0BDJ8ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'LungBiopsy','ClosedNneedleBiopsyLung','0BDK8ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'LungBiopsy','ClosedNneedleBiopsyLung','0BDL8ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'LungBiopsy','ClosedNneedleBiopsyLung','0BDM8ZX'
 
 insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
 select 	'LungBiopsy','ClosedEndoscopicBiopsyLung','0B9K8ZX'
@@ -714,6 +825,11 @@ insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Pro
 select 	'LungBiopsy','ThoracoscopicPleuralBiopsy','0BBK4ZX' 
 insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
 select 	'LungBiopsy','ThoracoscopicPleuralBiopsy','0BBL4ZX'
+--20200522
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'LungBiopsy','ThoracoscopicPleuralBiopsy','0BBN4ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'LungBiopsy','ThoracoscopicPleuralBiopsy','0BBP4ZX'
 
 insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
 select 	'LungBiopsy','BiopsyChestWall','0W980ZX' 
@@ -762,6 +878,16 @@ insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Pro
 select 	'LungBiopsy','PleuraBiopsy','0W9B3ZX' 
 insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
 select 	'LungBiopsy','PleuraBiopsy','0W9B4ZX'
+--20200522
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'LungBiopsy','PleuraBiopsy','0B9N8ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'LungBiopsy','PleuraBiopsy','0B9P8ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'LungBiopsy','PleuraBiopsy','0BBN8ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'LungBiopsy','PleuraBiopsy','0BBP8ZX'
+
 
 
 insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
@@ -791,7 +917,49 @@ insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Pro
 select 	'Bronchoscopy','','0BJK8ZZ' 
 insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
 select 	'Bronchoscopy','','0BJL8ZZ'
-
+--20200522
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'Bronchoscopy','','0BBC4ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'Bronchoscopy','','0BBD4ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'Bronchoscopy','','0BBF4ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'Bronchoscopy','','0BBG4ZX' 
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'Bronchoscopy','','0BBH4ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'Bronchoscopy','','0BBJ4ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'Bronchoscopy','','0BBK4ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'Bronchoscopy','','0BBL4ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'Bronchoscopy','','0BBM4ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'Bronchoscopy','','0BDC4ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'Bronchoscopy','','0BDD4ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'Bronchoscopy','','0BDF4ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'Bronchoscopy','','0BDG4ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'Bronchoscopy','','0BDH4ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'Bronchoscopy','','0BDJ4ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'Bronchoscopy','',''
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'Bronchoscopy','','0BDL4ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'Bronchoscopy','','0BDM4ZX'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'Bronchoscopy','','0BJ08ZZ'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'Bronchoscopy','','0BJK8ZZ'
+insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
+select 	'Bronchoscopy','','0BJL8ZZ'
 
 -- Lung surgery
 insert into [MyDB].[MySchema].[Lung_Sta3n528_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[ICD10Proc_code_Name] ,[ICD10ProcCode])    --altered (ORD_...Dflt)
@@ -1411,6 +1579,7 @@ select 	'RecentActiveLungC','Lung Cancer','C78.01'
 insert into [MyDB].[MySchema].[Lung_Sta3n528_0_6_LungCancerDxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
 select 	'RecentActiveLungC','Lung Cancer','C78.02'
 
+--'Pleural Cancer & Mesothelioma' cancer is kind of lung cancer
 insert into [MyDB].[MySchema].[Lung_Sta3n528_0_6_LungCancerDxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
 select 	'RecentActiveLungC','Lung Cancer','C38.4'
 insert into [MyDB].[MySchema].[Lung_Sta3n528_0_6_LungCancerDxICD10CodeExc] ([dx_code_type],	[dx_code_name] ,[ICD10Code])    --altered (ORD_...Dflt)
@@ -1745,6 +1914,8 @@ go
 	GO
 	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (528, N'POSSIBLE MALIGNANCY, FOLLOWUP NEEDED', 1, 1400000716)    --altered (ORD_...Dflt)
 	GO
+	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (528, N'SUSPICIOUS FINDINGS,FU STUDY RECOM', 1, 1400000669)    --altered (ORD_...Dflt)
+	go
 	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (540, N'POSSIBLE MALIGNANCY', 1, 1400000805)    --altered (ORD_...Dflt)
 	GO
 	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (540, N'LUNGRADS 4A: SUSPICIOUS NODULE', 1, 1400000824)    --altered (ORD_...Dflt)
@@ -1769,6 +1940,33 @@ go
 	GO
 	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (642, N'MAJOR ABNORMALITY/POSSIBLE MALIGNANCY', 1, 1400002196)    --altered (ORD_...Dflt)
 	GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (580, N'POSSIBLE MALIGNANCY'						, 1, 1000000782)    --altered (ORD_...Dflt)
+go
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (580, N'CRITICAL ABNORMALITY'						, 1, 1000000781)    --altered (ORD_...Dflt)
+go
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (580, N'Abnormality Follow-up Needed'				, 1, 1000000836)    --altered (ORD_...Dflt)
+go
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (580, N'SIGNIFICANT ABNORMALITY, ATTN NEEDED'		, 1, 1000000780)    --altered (ORD_...Dflt)
+go
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (580, N'ABDOMINAL AORTIC ANEURYSM NOT PRESENT'	, 1, 1000000808)    --altered (ORD_...Dflt)
+go
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (580, N'BI-RADS CATEGORY 5'						, 1, 1000000795)    --altered (ORD_...Dflt)
+go
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (580, N'CRITICAL Imaging Test'					, 1, 1000000851)    --altered (ORD_...Dflt)
+go
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (580, N'INCIDENTAL LUNG NODULE(NONSCREENING)'		, 1, 1000000831)    --altered (ORD_...Dflt)
+go
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (580, N'TRUE STAT'								, 1, 1000000856)    --altered (ORD_...Dflt)
+go
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (580, N'BI-RADS CATEGORY 4'						, 1, 1000000794)    --altered (ORD_...Dflt)
+go
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (580, N'ABNORMALITY, ATTN. NEEDED'				, 1, 1000000849)    --altered (ORD_...Dflt)
+go
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (580, N'Critical Abnormality Needs Urgent Action'	, 1, 1000000833)    --altered (ORD_...Dflt)
+go
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (580, N'Suspicious for New Malignancy Need FU'	, 1, 1000000835)    --altered (ORD_...Dflt)
+go
+
 
 
 
@@ -1835,7 +2033,10 @@ on Rad.sta3n=diag.sta3n and Rad.[RadiologyDiagnosticCodeSID]=diag.[RadiologyDiag
 	  between (select sp_start from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP)     --altered (ORD_...Dflt)
 	  and DATEADD(dd,(select fu_period from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP),(select sp_end from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP)) --Clue Date Range+followup    --altered (ORD_...Dflt)
 	and sta.[RadiologyExamStatus] like'%COMPLETE%'
-	and d.sta3n=(select sta3n from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
+	--NeedToSwitch
+	--and d.sta3n=(select sta3n from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
+	--and d.sta3n in (select distinct sta3n from CDWWork.dim.VistASite 
+	--				where VISN=(select VISN from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP) )    --altered (ORD_...Dflt)
 
 
 go
@@ -1853,7 +2054,7 @@ if (OBJECT_ID('[MyDB].[MySchema].Lung_Sta3n528_1_In_1_All_Chest_XRayCTPET_SSN') 
 	--where CohortName='Cohort20180712' 
 
 	
-go
+
 
 -- All Chest_XRay/CT images during study period from local site sta6a
   if (OBJECT_ID('[MyDB].[MySchema].Lung_Sta3n528_1_In_2_All_Chest_XRayCT_Sta6a') is not null)    --altered (ORD_...Dflt)
@@ -1865,7 +2066,9 @@ go
 	and ExamDateTime
 	  between (select sp_start from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP)     --altered (ORD_...Dflt)
 	  and (select sp_end from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP)     --altered (ORD_...Dflt)
-	and Sta6a=(select Sta6a from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP)     --altered (ORD_...Dflt)
+	--NeedToSwitch
+	--and Sta6a=(select Sta6a from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP)     --altered (ORD_...Dflt)
+	--and Sta6a in (select Sta6a from [MyDB].[MySchema].Lung_Sta3n528_0_0_1_Sta3nSta6a)    --altered (ORD_...Dflt)
 
 go
 
@@ -1878,10 +2081,10 @@ select  Rad.* into [MyDB].[MySchema].Lung_Sta3n528_1_In_3_RedFlagXRayCT    --alt
 from [MyDB].[MySchema].[Lung_Sta3n528_1_In_2_All_Chest_XRayCT_Sta6a] as Rad    --altered (ORD_...Dflt)
 inner join 
 (
-	select distinct RadiologyDiagnosticCode,Sta3n  from [MyDB].[MySchema].Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode     --altered (ORD_...Dflt)
-				where [IsRedFlag]=1
+	select distinct PrimaryDiagnosticCode  from [MyDB].[MySchema].Rad_0_0_RadDiagIEN_ForDaniel_UpToYear2019_20200522     --altered (ORD_...Dflt)
+				where IncludedOrNot=1
 ) as code
-on rad.[RadiologyDiagnosticCode]=code.RadiologyDiagnosticCode and rad.Sta3n=code.Sta3n 
+on rad.[RadiologyDiagnosticCode]=code.PrimaryDiagnosticCode --and rad.Sta3n=code.Sta3n 
 go
 
 
@@ -3117,29 +3320,27 @@ go
 if (OBJECT_ID('[MyDB].[MySchema].[Lung_Sta3n528_3_Exc_NonDx_E_PrevProc_AllNonDxProcICD9ICD10Proc_XRay]') is not null)    --altered (ORD_...Dflt)
 		drop table [MyDB].[MySchema].Lung_Sta3n528_3_Exc_NonDx_E_PrevProc_AllNonDxProcICD9ICD10Proc_XRay    --altered (ORD_...Dflt)
 
-
-select patientSSN,sta3n,patientSID,[CPTProcedureDateTime] as img_dt,'XRAY-InPatCPT' as datasource,[CPTCode] as 'CPTOrICD','XRay' as code_type
-into  [MyDB].[MySchema].Lung_Sta3n528_3_Exc_NonDx_E_PrevProc_AllNonDxProcICD9ICD10Proc_XRay    --altered (ORD_...Dflt)
-from [MyDB].[MySchema].[Lung_Sta3n528_3_Exc_NonDx_4_PrevProc_Inpat_1_CPT]    --altered (ORD_...Dflt)
-		where [CPTProcedureDateTime] is not null
-		and CPT_code_type ='XRay'
-union
-select patientSSN,sta3n,patientSID,[VProcedureDateTime] as Img_dt ,'XRAY-OutPat' as datasource,[CPTCode] as 'CPTOrICD','XRay' as code_type
-from [MyDB].[MySchema].[Lung_Sta3n528_3_Exc_NonDx_5_PrevProc_Outpat]    --altered (ORD_...Dflt)
-		where [VProcedureDateTime] is not null
-		and CPT_code_type ='XRay'
-	UNION 
-select patientSSN,sta3n,patientSID,[DateOfOperation] as Img_dt,'XRAY-Surg' as datasource, [PrincipalProcedureCode] as 'CPTOrICD','XRay' as code_type
-from [MyDB].[MySchema].Lung_Sta3n528_3_Exc_NonDx_6_PrevProc_surg     --altered (ORD_...Dflt)
-		where isnull([PrincipalProcedureCode],'') in (select cptcode from [MyDB].[MySchema].Lung_Sta3n528_0_8_PrevProcCPTCodeExc    --altered (ORD_...Dflt)
-													  where cpt_code_type='XRay')
-	UNION 
-select patientSSN,sta3n,patientSID,[DateOfOperation] as Img_dt,'XRAY-Surg' as datasource, OtherProcedureCode as 'CPTOrICD','XRay' as code_type
-from [MyDB].[MySchema].Lung_Sta3n528_3_Exc_NonDx_6_PrevProc_surg     --altered (ORD_...Dflt)
-		where isnull(OtherProcedureCode,'') in (select cptcode from [MyDB].[MySchema].Lung_Sta3n528_0_8_PrevProcCPTCodeExc     --altered (ORD_...Dflt)
-													  where cpt_code_type='XRay')
-union
 select patientSSN,sta3n,patientSID,InitialTreatmentDateTime as Img_dt,'XRAY-FeeCPT' as datasource, [CPTCode] as 'CPTOrICD','XRay' as code_type
+into  [MyDB].[MySchema].Lung_Sta3n528_3_Exc_NonDx_E_PrevProc_AllNonDxProcICD9ICD10Proc_XRay    --altered (ORD_...Dflt)
+--union
+--from [MyDB].[MySchema].[Lung_Sta3n528_3_Exc_NonDx_4_PrevProc_Inpat_1_CPT]    --altered (ORD_...Dflt)
+--		where [CPTProcedureDateTime] is not null
+--		and CPT_code_type ='XRay'
+--union
+--select patientSSN,sta3n,patientSID,[VProcedureDateTime] as Img_dt ,'XRAY-OutPat' as datasource,[CPTCode] as 'CPTOrICD','XRay' as code_type
+--from [MyDB].[MySchema].[Lung_Sta3n528_3_Exc_NonDx_5_PrevProc_Outpat]    --altered (ORD_...Dflt)
+--		where [VProcedureDateTime] is not null
+--		and CPT_code_type ='XRay'
+--	UNION 
+--select patientSSN,sta3n,patientSID,[DateOfOperation] as Img_dt,'XRAY-Surg' as datasource, [PrincipalProcedureCode] as 'CPTOrICD','XRay' as code_type
+--from [MyDB].[MySchema].Lung_Sta3n528_3_Exc_NonDx_6_PrevProc_surg     --altered (ORD_...Dflt)
+--		where isnull([PrincipalProcedureCode],'') in (select cptcode from [MyDB].[MySchema].Lung_Sta3n528_0_8_PrevProcCPTCodeExc    --altered (ORD_...Dflt)
+--													  where cpt_code_type='XRay')
+--	UNION 
+--select patientSSN,sta3n,patientSID,[DateOfOperation] as Img_dt,'XRAY-Surg' as datasource, OtherProcedureCode as 'CPTOrICD','XRay' as code_type
+--from [MyDB].[MySchema].Lung_Sta3n528_3_Exc_NonDx_6_PrevProc_surg     --altered (ORD_...Dflt)
+--		where isnull(OtherProcedureCode,'') in (select cptcode from [MyDB].[MySchema].Lung_Sta3n528_0_8_PrevProcCPTCodeExc     --altered (ORD_...Dflt)
+--													  where cpt_code_type='XRay')
 from [MyDB].[MySchema].[Lung_Sta3n528_3_Exc_NonDx_7_PrevProc_FeeServiceProvidedCPT]    --altered (ORD_...Dflt)
 		where InitialTreatmentDateTime is not null
 		and CPT_code_type ='XRay'
@@ -3150,29 +3351,28 @@ go
 if (OBJECT_ID('[MyDB].[MySchema].[Lung_Sta3n528_3_Exc_NonDx_F_PrevProc_AllNonDxProcICD9ICD10Proc_CT]') is not null)    --altered (ORD_...Dflt)
 			drop table [MyDB].[MySchema].Lung_Sta3n528_3_Exc_NonDx_F_PrevProc_AllNonDxProcICD9ICD10Proc_CT    --altered (ORD_...Dflt)
 
-
-select patientSSN,sta3n,patientSID,[CPTProcedureDateTime] as img_dt,'CT-InPatCPT' as datasource,[CPTCode] as 'CPTOrICD','CT' as code_type
-into  [MyDB].[MySchema].Lung_Sta3n528_3_Exc_NonDx_F_PrevProc_AllNonDxProcICD9ICD10Proc_CT    --altered (ORD_...Dflt)
-from [MyDB].[MySchema].[Lung_Sta3n528_3_Exc_NonDx_4_PrevProc_Inpat_1_CPT]    --altered (ORD_...Dflt)
-		where [CPTProcedureDateTime] is not null
-		and CPT_code_type ='CT'
-union
-select patientSSN,sta3n,patientSID,[VProcedureDateTime] as Img_dt ,'CT-OutPat' as datasource,[CPTCode] as 'CPTOrICD','CT' as code_type
-from [MyDB].[MySchema].[Lung_Sta3n528_3_Exc_NonDx_5_PrevProc_Outpat]    --altered (ORD_...Dflt)
-		where [VProcedureDateTime] is not null
-		and CPT_code_type ='CT'
-	UNION 
-select patientSSN,sta3n,patientSID,[DateOfOperation] as Img_dt,'CT-Surg' as datasource, [PrincipalProcedureCode] as 'CPTOrICD','CT' as code_type
-from [MyDB].[MySchema].Lung_Sta3n528_3_Exc_NonDx_6_PrevProc_surg     --altered (ORD_...Dflt)
-		where isnull([PrincipalProcedureCode],'') in (select cptcode from [MyDB].[MySchema].Lung_Sta3n528_0_8_PrevProcCPTCodeExc    --altered (ORD_...Dflt)
-													  where cpt_code_type='CT')
-	UNION 
-select patientSSN,sta3n,patientSID,[DateOfOperation] as Img_dt,'CT-Surg' as datasource, OtherProcedureCode as 'CPTOrICD','CT' as code_type
-from [MyDB].[MySchema].Lung_Sta3n528_3_Exc_NonDx_6_PrevProc_surg     --altered (ORD_...Dflt)
-		where isnull(OtherProcedureCode,'') in (select cptcode from [MyDB].[MySchema].Lung_Sta3n528_0_8_PrevProcCPTCodeExc     --altered (ORD_...Dflt)
-													  where cpt_code_type='CT')
-union
 select patientSSN,sta3n,patientSID,InitialTreatmentDateTime as Img_dt,'CT-FeeCPT' as datasource, [CPTCode] as 'CPTOrICD','CT' as code_type
+into  [MyDB].[MySchema].Lung_Sta3n528_3_Exc_NonDx_F_PrevProc_AllNonDxProcICD9ICD10Proc_CT    --altered (ORD_...Dflt)
+--union
+--select patientSSN,sta3n,patientSID,[CPTProcedureDateTime] as img_dt,'CT-InPatCPT' as datasource,[CPTCode] as 'CPTOrICD','CT' as code_type
+--from [MyDB].[MySchema].[Lung_Sta3n528_3_Exc_NonDx_4_PrevProc_Inpat_1_CPT]    --altered (ORD_...Dflt)
+--		where [CPTProcedureDateTime] is not null
+--		and CPT_code_type ='CT'
+--union
+--select patientSSN,sta3n,patientSID,[VProcedureDateTime] as Img_dt ,'CT-OutPat' as datasource,[CPTCode] as 'CPTOrICD','CT' as code_type
+--from [MyDB].[MySchema].[Lung_Sta3n528_3_Exc_NonDx_5_PrevProc_Outpat]    --altered (ORD_...Dflt)
+--		where [VProcedureDateTime] is not null
+--		and CPT_code_type ='CT'
+--	UNION 
+--select patientSSN,sta3n,patientSID,[DateOfOperation] as Img_dt,'CT-Surg' as datasource, [PrincipalProcedureCode] as 'CPTOrICD','CT' as code_type
+--from [MyDB].[MySchema].Lung_Sta3n528_3_Exc_NonDx_6_PrevProc_surg     --altered (ORD_...Dflt)
+--		where isnull([PrincipalProcedureCode],'') in (select cptcode from [MyDB].[MySchema].Lung_Sta3n528_0_8_PrevProcCPTCodeExc    --altered (ORD_...Dflt)
+--													  where cpt_code_type='CT')
+--	UNION 
+--select patientSSN,sta3n,patientSID,[DateOfOperation] as Img_dt,'CT-Surg' as datasource, OtherProcedureCode as 'CPTOrICD','CT' as code_type
+--from [MyDB].[MySchema].Lung_Sta3n528_3_Exc_NonDx_6_PrevProc_surg     --altered (ORD_...Dflt)
+--		where isnull(OtherProcedureCode,'') in (select cptcode from [MyDB].[MySchema].Lung_Sta3n528_0_8_PrevProcCPTCodeExc     --altered (ORD_...Dflt)
+--													  where cpt_code_type='CT')
 from [MyDB].[MySchema].[Lung_Sta3n528_3_Exc_NonDx_7_PrevProc_FeeServiceProvidedCPT]    --altered (ORD_...Dflt)
 		where InitialTreatmentDateTime is not null
 		and CPT_code_type ='CT'
@@ -3183,28 +3383,28 @@ if (OBJECT_ID('[MyDB].[MySchema].[Lung_Sta3n528_3_Exc_NonDx_G_PrevProc_AllNonDxP
 			drop table [MyDB].[MySchema].Lung_Sta3n528_3_Exc_NonDx_G_PrevProc_AllNonDxProcICD9ICD10Proc_PET    --altered (ORD_...Dflt)
 
 
-select patientSSN,sta3n,patientSID,[CPTProcedureDateTime] as img_dt,'PET-InPatCPT' as datasource,[CPTCode] as 'CPTOrICD','PET' as code_type
-into  [MyDB].[MySchema].Lung_Sta3n528_3_Exc_NonDx_G_PrevProc_AllNonDxProcICD9ICD10Proc_PET    --altered (ORD_...Dflt)
-from [MyDB].[MySchema].[Lung_Sta3n528_3_Exc_NonDx_4_PrevProc_Inpat_1_CPT]    --altered (ORD_...Dflt)
-		where [CPTProcedureDateTime] is not null
-		and CPT_code_type ='PET'
-union
-select patientSSN,sta3n,patientSID,[VProcedureDateTime] as Img_dt ,'PET-OutPat' as datasource,[CPTCode] as 'CPTOrICD','PET' as code_type
-from [MyDB].[MySchema].[Lung_Sta3n528_3_Exc_NonDx_5_PrevProc_Outpat]    --altered (ORD_...Dflt)
-		where [VProcedureDateTime] is not null
-		and CPT_code_type ='PET'
-	UNION 
-select patientSSN,sta3n,patientSID,[DateOfOperation] as Img_dt,'PET-Surg' as datasource, [PrincipalProcedureCode] as 'CPTOrICD','PET' as code_type
-from [MyDB].[MySchema].Lung_Sta3n528_3_Exc_NonDx_6_PrevProc_surg     --altered (ORD_...Dflt)
-		where isnull([PrincipalProcedureCode],'') in (select cptcode from [MyDB].[MySchema].Lung_Sta3n528_0_8_PrevProcCPTCodeExc    --altered (ORD_...Dflt)
-													  where cpt_code_type='PET')
-	UNION 
-select patientSSN,sta3n,patientSID,[DateOfOperation] as Img_dt,'PET-Surg' as datasource, OtherProcedureCode as 'CPTOrICD','PET' as code_type
-from [MyDB].[MySchema].Lung_Sta3n528_3_Exc_NonDx_6_PrevProc_surg     --altered (ORD_...Dflt)
-		where isnull(OtherProcedureCode,'') in (select cptcode from [MyDB].[MySchema].Lung_Sta3n528_0_8_PrevProcCPTCodeExc     --altered (ORD_...Dflt)
-													  where cpt_code_type='PET')
-union
 select patientSSN,sta3n,patientSID,InitialTreatmentDateTime as Img_dt,'PET-FeeCPT' as datasource, [CPTCode] as 'CPTOrICD','PET' as code_type
+into  [MyDB].[MySchema].Lung_Sta3n528_3_Exc_NonDx_G_PrevProc_AllNonDxProcICD9ICD10Proc_PET    --altered (ORD_...Dflt)
+--union
+--select patientSSN,sta3n,patientSID,[CPTProcedureDateTime] as img_dt,'PET-InPatCPT' as datasource,[CPTCode] as 'CPTOrICD','PET' as code_type
+--from [MyDB].[MySchema].[Lung_Sta3n528_3_Exc_NonDx_4_PrevProc_Inpat_1_CPT]    --altered (ORD_...Dflt)
+--		where [CPTProcedureDateTime] is not null
+--		and CPT_code_type ='PET'
+--union
+--select patientSSN,sta3n,patientSID,[VProcedureDateTime] as Img_dt ,'PET-OutPat' as datasource,[CPTCode] as 'CPTOrICD','PET' as code_type
+--from [MyDB].[MySchema].[Lung_Sta3n528_3_Exc_NonDx_5_PrevProc_Outpat]    --altered (ORD_...Dflt)
+--		where [VProcedureDateTime] is not null
+--		and CPT_code_type ='PET'
+--	UNION 
+--select patientSSN,sta3n,patientSID,[DateOfOperation] as Img_dt,'PET-Surg' as datasource, [PrincipalProcedureCode] as 'CPTOrICD','PET' as code_type
+--from [MyDB].[MySchema].Lung_Sta3n528_3_Exc_NonDx_6_PrevProc_surg     --altered (ORD_...Dflt)
+--		where isnull([PrincipalProcedureCode],'') in (select cptcode from [MyDB].[MySchema].Lung_Sta3n528_0_8_PrevProcCPTCodeExc    --altered (ORD_...Dflt)
+--													  where cpt_code_type='PET')
+--	UNION 
+--select patientSSN,sta3n,patientSID,[DateOfOperation] as Img_dt,'PET-Surg' as datasource, OtherProcedureCode as 'CPTOrICD','PET' as code_type
+--from [MyDB].[MySchema].Lung_Sta3n528_3_Exc_NonDx_6_PrevProc_surg     --altered (ORD_...Dflt)
+--		where isnull(OtherProcedureCode,'') in (select cptcode from [MyDB].[MySchema].Lung_Sta3n528_0_8_PrevProcCPTCodeExc     --altered (ORD_...Dflt)
+--													  where cpt_code_type='PET')
 from [MyDB].[MySchema].[Lung_Sta3n528_3_Exc_NonDx_7_PrevProc_FeeServiceProvidedCPT]    --altered (ORD_...Dflt)
 		where InitialTreatmentDateTime is not null
 		and CPT_code_type ='PET'
@@ -3546,8 +3746,8 @@ go
 		where not exists
 			(select * from (select PatientSSN,ExamDateTime,img_code_type from [MyDB].[MySchema].[Lung_Sta3n528_1_In_1_All_Chest_XRayCTPET_SSN]     --altered (ORD_...Dflt)
 						where [img_code_type]='XRay'
-					 --union  select patientssn, img_dt as ExamDateTime,code_type as img_code_type from  [MyDB].[MySchema].Lung_Sta3n528_3_Exc_NonDx_E_PrevProc_AllNonDxProcICD9ICD10Proc_XRay    --altered (ORD_...Dflt)
-						--   where code_type='XRAY'
+					 union  select patientssn, img_dt as ExamDateTime,code_type as img_code_type from  [MyDB].[MySchema].Lung_Sta3n528_3_Exc_NonDx_E_PrevProc_AllNonDxProcICD9ICD10Proc_XRay    --altered (ORD_...Dflt)
+						   where code_type='XRAY'
 			   ) as b
 			 where a.PatientSSN = b.patientSSN and			 
 			 (b.ExamDateTime > a.examDateTime
@@ -3567,8 +3767,8 @@ go
 		where not exists
 				(select * from (select PatientSSN,ExamDateTime,img_code_type from [MyDB].[MySchema].[Lung_Sta3n528_1_In_1_All_Chest_XRayCTPET_SSN]     --altered (ORD_...Dflt)
 				       where [img_code_type]='CT'
-					 --union  select patientssn, img_dt as ExamDateTime,code_type as img_code_type from  [MyDB].[MySchema].Lung_Sta3n528_3_Exc_NonDx_F_PrevProc_AllNonDxProcICD9ICD10Proc_CT    --altered (ORD_...Dflt)
-						--   where code_type='CT'
+					 union  select patientssn, img_dt as ExamDateTime,code_type as img_code_type from  [MyDB].[MySchema].Lung_Sta3n528_3_Exc_NonDx_F_PrevProc_AllNonDxProcICD9ICD10Proc_CT    --altered (ORD_...Dflt)
+						   where code_type='CT'
 			   ) as b
 			 where a.PatientSSN = b.patientSSN and			 
 			 (b.ExamDateTime > a.ExamDateTime
@@ -3588,8 +3788,8 @@ go
 		where not exists
 				(select * from (select PatientSSN,ExamDateTime,img_code_type from [MyDB].[MySchema].[Lung_Sta3n528_1_In_1_All_Chest_XRayCTPET_SSN]     --altered (ORD_...Dflt)
 				where [img_code_type]='PET'
-					 --union  select patientssn, img_dt as ExamDateTime,code_type as img_code_type from  [MyDB].[MySchema].Lung_Sta3n528_3_Exc_NonDx_G_PrevProc_AllNonDxProcICD9ICD10Proc_PET    --altered (ORD_...Dflt)
-						--   where code_type='PET'
+					 union  select patientssn, img_dt as ExamDateTime,code_type as img_code_type from  [MyDB].[MySchema].Lung_Sta3n528_3_Exc_NonDx_G_PrevProc_AllNonDxProcICD9ICD10Proc_PET    --altered (ORD_...Dflt)
+						   where code_type='PET'
 			   ) as b
 			 where a.PatientSSN = b.patientSSN and			 
 			 (b.ExamDateTime > a.ExamDateTime
@@ -3695,7 +3895,9 @@ go
 		where not exists
 			(select * from [MyDB].[MySchema].[Lung_Sta3n528_3_Ins_9_Ex_3_VisitTIUconsult_joinByConsultSID] as b    --altered (ORD_...Dflt)
 			 where  (
-					((b.[primaryStopcode] in (316) or b.[SecondaryStopcode] in (316) or b.ConStopCode in (316)) and [tiustandardtitle] like '%Tumor%Board%')
+					((b.[primaryStopcode] in (316) or b.[SecondaryStopcode] in (316) or b.ConStopCode in (316)) --oncology
+												--and [tiustandardtitle] like '%Tumor%Board%'
+												)
 			        or b.TIUStandardTitle like '%tumor%board%'					
 					)
 				    and isnull(b.PrimaryStopCodeName,'') not like '%telephone%' 
@@ -3751,68 +3953,97 @@ if (OBJECT_ID('[MyDB].[MySchema].Lung_Sta3n528_4_01_Count') is not null)    --al
 			drop table [MyDB].[MySchema].Lung_Sta3n528_4_01_Count    --altered (ORD_...Dflt)
 		go
 
-		CREATE TABLE [MyDB].[MySchema].Lung_Sta3n528_4_01_Count(    --altered (ORD_...Dflt)
-			Sta6a [varchar](10) NULL	
-			,[run_dt] datetime2(0) NULL
-			,[sp_start] datetime2(0) NULL
-			,[sp_end] datetime2(0) NULL
-			,NumOfTotalChestXRayCT int NULL
-			,NumOfTotalPatWithChestXRayCT int NULL
-			,NumOfRedFlaggedChestXRayCT int NULL
-			,NumOfPatWithRedFlaggedChestXRayCT int NULL
-			,NumOfTriggerPosChestXRayC int NULL
-			,NumOfTriggerPosPat int NULL)
-		go
-		
-		Insert into [MyDB].[MySchema].Lung_Sta3n528_4_01_Count (    --altered (ORD_...Dflt)
-			Sta6a
-			,[run_dt]
-			,[sp_start]
-			,[sp_end]
-			,NumOfTotalChestXRayCT
-			,NumOfTotalPatWithChestXRayCT
-			,NumOfRedFlaggedChestXRayCT
-			,NumOfPatWithRedFlaggedChestXRayCT
-			,NumOfTriggerPosChestXRayC
-			,NumOfTriggerPosPat)
-		values (
-		(select  Sta6a from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
-		,(select  run_dt from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
-		,(select  sp_start from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
-		,(select  sp_end from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
-		-- number of Chest XRay/CT performed
-		,(select  count(distinct  RadiologyExamSID ) from [MyDB].[MySchema].Lung_Sta3n528_1_In_2_All_Chest_XRayCT_Sta6a)    --altered (ORD_...Dflt)
+		With -- number of Chest XRay/CT performed
+		NumOfTotalChestXRayCT (sta3n,sta6a,[Year],[Month],NumOfTotalChestXRayCT) as 	 
+			(select  sta3n,sta6a,datepart(year,ExamDateTime) as [Year],datepart(MONTH,ExamDateTime) as[Month],count(distinct  RadiologyExamSID ) as NumOfTotalChestXRayCT
+				 from [MyDB].[MySchema].Lung_Sta3n528_1_In_2_All_Chest_XRayCT_Sta6a    --altered (ORD_...Dflt)
+				 where ExamDateTime >=(select sp_start from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
+					   and ExamDateTime <=(select sp_end from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
+				 group by sta3n,Sta6a,datepart(year,ExamDateTime),datepart(MONTH,ExamDateTime)
+			) 
 		-- number of patients with Chest XRay/CT performed
-		,(select count(distinct  patientssn ) from [MyDB].[MySchema].Lung_Sta3n528_1_In_2_All_Chest_XRayCT_Sta6a)    --altered (ORD_...Dflt)
+		,NumOfTotalPatWithChestXRayCT (sta3n,sta6a,[Year],[Month],NumOfTotalPatWithChestXRayCT) as
+			(select sta3n,sta6a, datepart(year,ExamDateTime) as [Year],datepart(MONTH,ExamDateTime) as[Month],count(distinct  patientssn ) as NumOfTotalPatWithChestXRayCT
+				 from [MyDB].[MySchema].Lung_Sta3n528_1_In_2_All_Chest_XRayCT_Sta6a    --altered (ORD_...Dflt)
+				 where ExamDateTime >=(select sp_start from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
+					   and ExamDateTime <=(select sp_end from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
+				 group by sta3n,Sta6a,datepart(year,ExamDateTime),datepart(MONTH,ExamDateTime)
+			) 
 		-- number of Chest XRay/CT which are red-flageed
-		,(select count(distinct  RadiologyExamSID ) from [MyDB].[MySchema].Lung_Sta3n528_1_In_3_RedFlagXRayCT)    --altered (ORD_...Dflt)
+		,NumOfRedFlaggedChestXRayCT(sta3n,sta6a,[Year],[Month],NumOfRedFlaggedChestXRayCT) as 
+				(select sta3n,sta6a,datepart(year,ExamDateTime) as [Year],datepart(MONTH,ExamDateTime) as[Month],count(distinct  RadiologyExamSID ) as NumOfRedFlaggedChestXRayCT
+				from [MyDB].[MySchema].Lung_Sta3n528_1_In_3_RedFlagXRayCT    --altered (ORD_...Dflt)
+					 where ExamDateTime >=(select sp_start from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
+						   and ExamDateTime <=(select sp_end from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
+				group by sta3n,sta6a,datepart(year,ExamDateTime),datepart(MONTH,ExamDateTime)
+			)
 		-- number of patients with red-flagged Chest XRay/CT
-		,(select count(distinct  patientssn ) from [MyDB].[MySchema].Lung_Sta3n528_1_In_3_RedFlagXRayCT)     --altered (ORD_...Dflt)
+		,NumOfPatWithRedFlaggedChestXRayCT(sta3n,sta6a,[Year],[Month],NumOfPatWithRedFlaggedChestXRayCT) as 
+				(select sta3n,sta6a,datepart(year,ExamDateTime) as [Year],datepart(MONTH,ExamDateTime) as[Month],count(distinct  patientssn ) as NumOfPatWithRedFlaggedChestXRayCT
+				from [MyDB].[MySchema].Lung_Sta3n528_1_In_3_RedFlagXRayCT    --altered (ORD_...Dflt)
+					 where ExamDateTime >=(select sp_start from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
+						   and ExamDateTime <=(select sp_end from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
+				group by sta3n,sta6a,datepart(year,ExamDateTime),datepart(MONTH,ExamDateTime)
+			)
 		-- number of Chest XRay/CT which come out trigger positive
-		,(select count(distinct  RadiologyExamSID ) from [MyDB].[MySchema].Lung_Sta3n528_3_Ins_U_TriggerPos)    --altered (ORD_...Dflt)
+		,NumOfTriggerPosChestXRayCT(sta3n,sta6a,[Year],[Month],NumOfTriggerPosChestXRayCT) as
+			(select sta3n,sta6a,datepart(year,ExamDateTime) as [Year],datepart(MONTH,ExamDateTime) as[Month],count(distinct  RadiologyExamSID ) as NumOfTriggerPosChestXRayCT
+				from [MyDB].[MySchema].Lung_Sta3n528_3_Ins_U_TriggerPos    --altered (ORD_...Dflt)
+					where ExamDateTime >=(select sp_start from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
+						 and ExamDateTime <=(select sp_end from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
+					group by sta3n,sta6a,datepart(year,ExamDateTime),datepart(MONTH,ExamDateTime)
+			)
 		-- number of patients with trigger positive Chest XRay/CT
-		,(select count(distinct  patientssn ) from [MyDB].[MySchema].Lung_Sta3n528_3_Ins_U_TriggerPos)    --altered (ORD_...Dflt)
+		,NumOfTriggerPosPat(sta3n,sta6a,[Year],[Month],NumOfTriggerPosPat) as 
+				(select sta3n,sta6a,datepart(year,ExamDateTime) as [Year],datepart(MONTH,ExamDateTime) as[Month],count(distinct  patientssn ) as NumOfTriggerPosPat
+				 from [MyDB].[MySchema].Lung_Sta3n528_3_Ins_U_TriggerPos    --altered (ORD_...Dflt)
+							where ExamDateTime >=(select sp_start from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
+					and ExamDateTime <=(select sp_end from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
+					group by sta3n,sta6a,datepart(year,ExamDateTime),datepart(MONTH,ExamDateTime)
 		)
+
+			select 
+					(select  run_dt  from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP) as run_dt    --altered (ORD_...Dflt)
+					,(select  sp_start from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP) as sp_start    --altered (ORD_...Dflt)
+					,(select  sp_end from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP) as sp_end    --altered (ORD_...Dflt)
+					,a.sta3n,a.sta6a,a.[Year],a.[month]
+					,NumOfTotalChestXRayCT
+					,NumOfTotalPatWithChestXRayCT
+					,NumOfRedFlaggedChestXRayCT
+					,NumOfPatWithRedFlaggedChestXRayCT
+					,NumOfTriggerPosChestXRayCT
+					,NumOfTriggerPosPat
+			into [MyDB].[MySchema].Lung_Sta3n528_4_01_Count    --altered (ORD_...Dflt)
+			from  NumOfTotalChestXRayCT as a
+			left join NumOfTotalPatWithChestXRayCT as b
+			on a.sta3n=b.sta3n and a.sta6a=b.sta6a and a.[year]=b.[year] and a.[Month]=b.[Month]
+			left join NumOfRedFlaggedChestXRayCT as c
+			on a.sta3n=c.sta3n and a.sta6a=c.sta6a and a.[year]=c.[year] and a.[Month]=c.[Month]
+			left join NumOfPatWithRedFlaggedChestXRayCT as d
+			on a.sta3n=d.sta3n and a.sta6a=d.sta6a and a.[year]=d.[year] and a.[Month]=d.[Month]
+			left join NumOfTriggerPosChestXRayCT as e
+			on a.sta3n=e.sta3n and a.sta6a=e.sta6a and a.[year]=e.[year] and a.[Month]=e.[Month]
+			left join NumOfTriggerPosPat as f
+			on a.sta3n=f.sta3n and a.sta6a=f.sta6a and a.[year]=f.[year] and a.[Month]=f.[Month]
+
 go
 
 select * from [MyDB].[MySchema].Lung_Sta3n528_4_01_Count    --altered (ORD_...Dflt)
+order by sta3n,sta6a,[year],[month]
 
--- data set:  Chest XRay/CT performed
-select * from [MyDB].[MySchema].Lung_Sta3n528_1_In_2_All_Chest_XRayCT_Sta6a    --altered (ORD_...Dflt)
--- data set:  patients with Chest XRay/CT performed
-select * from [MyDB].[MySchema].Lung_Sta3n528_1_In_2_All_Chest_XRayCT_Sta6a    --altered (ORD_...Dflt)
--- data set:  Chest XRay/CT which are red-flaged
-select * from [MyDB].[MySchema].Lung_Sta3n528_1_In_3_RedFlagXRayCT    --altered (ORD_...Dflt)
--- data set:  patients with red-flagged Chest XRay/CT
-select * from [MyDB].[MySchema].Lung_Sta3n528_1_In_3_RedFlagXRayCT    --altered (ORD_...Dflt)
--- data set:  Chest XRay/CT which come out trigger positive
-select * from [MyDB].[MySchema].Lung_Sta3n528_3_Ins_U_TriggerPos    --altered (ORD_...Dflt)
--- data set:  patients with trigger positive Chest XRay/CT
-select * from [MyDB].[MySchema].Lung_Sta3n528_3_Ins_U_TriggerPos    --altered (ORD_...Dflt)
+---- data set:  Chest XRay/CT performed
+--select * from [MyDB].[MySchema].Lung_Sta3n528_1_In_2_All_Chest_XRayCT_Sta6a    --altered (ORD_...Dflt)
+---- data set:  Chest XRay/CT which are red-flaged
+--select * from [MyDB].[MySchema].Lung_Sta3n528_1_In_3_RedFlagXRayCT    --altered (ORD_...Dflt)
+---- data set:  Chest XRay/CT which come out trigger positive
+--select * from [MyDB].[MySchema].Lung_Sta3n528_3_Ins_U_TriggerPos    --altered (ORD_...Dflt)
+
 
 
 ---- Delete intermediate tables
 
+--Drop table [MyDB].[MySchema].Lung_Sta3n528_0_0_1_Sta3nSta6a    --altered (ORD_...Dflt)
+--Drop table [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP    --altered (ORD_...Dflt)
 --Drop table [MyDB].[MySchema].Lung_Sta3n528_0_2_0_LungImg    --altered (ORD_...Dflt)
 --Drop table [MyDB].[MySchema].Lung_Sta3n528_0_2_DxICD10CodeExc    --altered (ORD_...Dflt)
 --Drop table [MyDB].[MySchema].Lung_Sta3n528_0_3_PreProcICD10ProcExc    --altered (ORD_...Dflt)
@@ -3883,7 +4114,7 @@ select * from [MyDB].[MySchema].Lung_Sta3n528_3_Ins_U_TriggerPos    --altered (O
 --Drop table [MyDB].[MySchema].Lung_Sta3n528_3_Ins_D_OutCome_refer_1_pulm_joinByConsultSID    --altered (ORD_...Dflt)
 --Drop table [MyDB].[MySchema].Lung_Sta3n528_3_Ins_D_OutCome_refer_3_ThoracicSurgery_joinByConsultSID    --altered (ORD_...Dflt)
 --Drop table [MyDB].[MySchema].Lung_Sta3n528_3_Ins_D_OutCome_refer_4_TumorBoard_joinByConsultSID    --altered (ORD_...Dflt)
+--Drop table [MyDB].[MySchema].Lung_Sta3n528_3_Ins_U_TriggerPos    --altered (ORD_...Dflt)
 --Drop table [MyDB].[MySchema].Lung_Sta3n528_3_Ins_V_TriggerPos_FirstOfPat_SP    --altered (ORD_...Dflt)
-
 
  
