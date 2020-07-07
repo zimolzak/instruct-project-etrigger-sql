@@ -48,6 +48,8 @@ Setting other parameters and viewing outputs
 
 - For lung, the most interesting outputs are
 `Lung_Sta3n528_3_Ins_U_TriggerPos` and `Lung_Sta3n528_4_01_Count`.
+- For FOBT, the most interesting outputs are
+`FOBT_Sta3n528_5_Ins_U_TriggerPos` and `FOBT_Sta3n528_5_Ins_X_count`.
 
 
 
