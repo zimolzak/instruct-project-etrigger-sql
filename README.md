@@ -6,13 +6,14 @@ Downloading the SQL code
 
 Assuming you are reading this on github.com:
 
-1. Before downloading, you might want to jot down or copy/paste what
-it says above under "Latest commit 2a8f123 *xx* days ago" for future
-reference.
+1. Before downloading, you might want to jot down or copy/paste the
+text above, such as "LWeiBCM committed abc1234 *xx* days ago." This
+will identify the exact version of the code you downloaded, for
+future reference.
 
 2. Click on the SQL file you want above (such as `Lung.sql`).
 
-3. Click on the grey button "Raw" at the top the page that comes up.
+3. Click on the grey button "Raw" near the top the page that comes up.
 
 4. Use your browser menu to save file to disk (such as "File / Save
 Page As...").
@@ -28,7 +29,7 @@ https://dvagov.sharepoint.com/sites/VHAinstructprojectvbts
 Setting dates
 --------
 
-1. Find the first day of the current month (e.g. today is Feb 19, so
+1. Find the first day of the current month (e.g. if today is Feb 19,
 you rewind to find Feb 1).
 
 2. Subtract two more months from that (so you get Dec 1).
