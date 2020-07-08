@@ -24,9 +24,11 @@
 --							set @sp_end='2017-01-31 23:59:59' 
 --
 --      TobeAltered:
---		5. Set site(s) code. Table Lung_Sta3n528_0_0_1_Sta3nSta6a has the site(s) whose data the trigger runs against. 
---		  Search for string "--Set site(s) codes here. Keep only your site(s) uncommented". Comment out other sites.
---							 (528,'528A8') 	(528) Upstate New York HCS, ALBANY,NY(528A8) as an example
+--		5. Set site(s) code. Table Lung_Sta3n528_0_0_1_Sta3nSta6a has the site(s) whose data the trigger runs against. The site can be CBOC as well as Hospital.
+--		  Search for string "--Set site(s) codes here. Keep only your site(s) uncommented". Here you input the site(s) you are interested in running and comment out the others.
+--                       Example:
+--                       ( 528,'528A8') -- (528) Upstate New York HCS; ALBANY, NY VAMC 
+--                      ,(642,'642GA') --  (642) Philadelphia, PA; FORT DIX OUTPATIENT CLINIC/CBC
 --
 --      TobeAltered:
 --		6. Red-flagged chest image Diagnostic Codes
