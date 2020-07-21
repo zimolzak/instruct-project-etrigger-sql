@@ -59,6 +59,8 @@
 
 
 
+
+
 --------------------------------------------------------------------------------------------------------------------------------
 -----  1. Initial set up: Input parameters, CPT and ICD diagnosis code, and ICDProcedure code lists used in the trigger measurement
 --------------------------------------------------------------------------------------------------------------------------------
@@ -93,8 +95,8 @@ set @Sta3n=-1
 
 
 set @run_date=getdate()
-set @sp_start='2017-01-01 00:00:00' --Study starting date time
-set @sp_end='2017-01-31 23:59:59'	--Study starting end time
+set @sp_start='2020-01-01 00:00:00' --Study starting date time
+set @sp_end='2020-05-31 23:59:59'	--Study starting end time
 --  Follow-up period
 set @fu_period=60
 set @age_lower=40
@@ -110,6 +112,9 @@ if (OBJECT_ID('[MyDB].[MySchema].[FOBT_Sta3n528_0_0_1_Sta3nSta6a]') is not null)
 	Sta6a [varchar](10) NULL
 	) 
 
+
+
+
 insert into  [MyDB].[MySchema].FOBT_Sta3n528_0_0_1_Sta3nSta6a (Sta3n,Sta6a)     --altered (ORD_...Dflt)
 values 
  (
@@ -120,21 +125,21 @@ values
 --,(644,'644') --	(644) Phoenix, AZ, Phoenix VA Health Care System
 --,(671,'671')	--	(671) South Texas HCS (San Antonio TX)-Audie
 
--- -- Cohort 2
+ -- Cohort 2
 --,(537,'537') --	(537) JESSE BROWN VAMC
 --,(549,'549') --	(549) North Texas HCS (Dallas TX)
 --,(589,'589') --	(589) VA Heartland West (Kansas City MO)
 --,(691,'691') --	(691)VA GREATER LOS ANGELES (691)
 
--- -- Cohort 3
+ -- Cohort 3
 --,(635,'635') --	(635) Oklahoma City, OK
-----Another 528 site:
+--Another 528 site:
 --,(528,'528A7') --	 (528A7) (Syracuse, NY)
 --,(540,'540') --	(540) Clarksburg, WV
 --,(523,'523') --	(523)BOSTON HCS VAMC
 
----- Discovery
----- Baltimore missing diagnosticcode, go with Note Title
+-- Discovery
+-- Baltimore missing diagnosticcode, go with Note Title
 --,(512,'512') --	(512) Maryland HCS (Baltimore MD)
 --,(580,'580') --	(580) Houston, TX
 --,(541,'541') --(541) Cleveland, OH
@@ -1157,7 +1162,8 @@ go
 			,LabChemTestSID int NULL 
            ,LOINC_Original varchar(50) NULL
            --,LOINC_Mapped nvarchar(50) NULL
-           --,LabChemTestName varchar(50) NULL
+           ,LabChemTestName varchar(50) NULL
+		   ,[LabChemPrintTestName] varchar(50) NULL
            --,TopographySID int NULL
            --,Units varchar(50) NULL
            --,Topography varchar(100) NULL
@@ -1171,299 +1177,297 @@ go
 go
 
 
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (512, 1400000167, NULL)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (512, 1400000167, N'14565-6')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (512, 1400015216, NULL)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (512, 1400015216, N'14563-1')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (512, 1400020074, NULL)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (512, 1400020074, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (512, 1400020761, NULL)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (512, 1400020761, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (512, 1400049195, NULL)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (512, 1400049195, N'14564-9')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (512, 1400049217, NULL)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (512, 1400049217, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (512, 1400568392, N'14564-9')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (512, 1400575623, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (523, 1400006127, N'14565-6')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (523, 1400007168, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (523, 1400015832, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (523, 1400017856, N'14564-9')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (523, 1400023083, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (523, 1400024833, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (523, 1400047002, N'14563-1')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (523, 1400052622, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (523, 1400570743, N'29771-3')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (523, 1400574899, N'14563-1')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (528, 1400019763, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (528, 1400020529, N'14563-1')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (528, 1400020827, N'14564-9')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (528, 1400030173, N'14565-6')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (528, 1400041975, N'14564-9')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (528, 1400044644, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (528, 1400046138, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (528, 1400061146, N'14565-6')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (528, 1400063272, N'14563-1')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (528, 1400073764, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (528, 1400568735, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (528, 1400568736, N'14565-6')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (528, 1400568737, N'14565-6')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (528, 1400568738, N'29771-3')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (528, 1400593832, N'57905-2')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (537, 1000006096, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (537, 1000009685, NULL)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (537, 1000009685, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (537, 1000014516, NULL)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (537, 1000014516, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (537, 1000061002, NULL)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (537, 1000061002, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (537, 1000103300, N'29771-3')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (537, 1000105623, N'57905-2')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (540, 1400021875, N'14564-9')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (540, 1400021876, N'14565-6')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (540, 1400029888, N'14563-1')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (540, 1400035778, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (540, 1400568250, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (540, 1400571692, N'29771-3')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (541, 1200028313, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (541, 1200090066, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (541, 1200091575, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (541, 1200093683, N'14565-6')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (541, 1200093759, N'14563-1')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (541, 1200095497, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (541, 1200096072, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (541, 1200098811, N'14564-9')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (541, 1200112732, N'57905-2')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (541, 1200114625, N'29771-3')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (549, 1000002072, N'29771-3')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (549, 1000015681, N'14563-1')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (549, 1000015681, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (549, 1000018223, N'14563-1')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (549, 1000019611, N'14564-9')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (549, 1000029526, N'14565-6')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (549, 1000033851, N'14564-9')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (549, 1000033851, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (549, 1000038707, N'14563-1')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (549, 1000051967, N'14565-6')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (549, 1000051967, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (549, 1000104251, N'29771-3')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000000279, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000000325, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000022718, N'14563-1')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000025007, N'14564-9')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000027283, N'14564-9')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000027289, N'14564-9')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000027355, N'14565-6')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000032285, NULL)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000034075, N'14565-6')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000034854, NULL)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000035704, N'56491-4')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000038375, N'14565-6')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000050178, NULL)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000054406, N'57905-2')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000054407, N'56490-6')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000056183, N'14563-1')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000069542, N'14563-1')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000076255, NULL)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000108791, N'57905-2')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (580, 1000121175, N'29771-3')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (589, 1000036925, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (589, 1000043219, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (589, 1000043224, N'14565-6')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (589, 1000068953, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (589, 1000068956, N'14564-9')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (589, 1000068956, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (589, 1000099307, N'14564-9')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (589, 1000106227, N'57905-2')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (635, 1000012300, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (635, 1000013003, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (635, 1000047039, N'14565-6')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (635, 1000050677, N'14563-1')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (635, 1000053306, N'14565-6')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (635, 1000054046, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (635, 1000059624, N'14564-9')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (635, 1000064483, N'14563-1')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (635, 1000069826, N'14564-9')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (635, 1000075628, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (635, 1000104243, N'14563-1')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (635, 1000122797, N'57905-2')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (635, 1000125995, N'29771-3')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (642, 1400005260, N'14563-1')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (642, 1400009511, N'14563-1')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (642, 1400012497, N'14564-9')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (642, 1400012498, N'14565-6')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (642, 1400078585, N'14563-1')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (642, 1400078586, N'14564-9')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (642, 1400078587, N'14565-6')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (642, 1400570283, N'29771-3')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (644, 800000675, N'14565-6')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (644, 800036890, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (644, 800074605, N'14563-1')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (644, 800075804, N'14564-9')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (644, 800224828, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (644, 800257151, NULL)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (671, 1000001444, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (671, 1000023514, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (671, 1000028047, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (671, 1000032176, N'14565-6')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (671, 1000035160, N'14565-6')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (671, 1000038595, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (671, 1000053200, N'14564-9')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (671, 1000097002, N'29771-3')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (671, 1000097003, N'29771-3')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (691, 800001613, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (691, 800001614, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (691, 800053904, N'2335-8')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (691, 800061861, N'14565-6')
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original]) VALUES (691, 800064262, N'14564-9')
-GO
 
-
-
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (635, 1000064483, N'14563-1', N'FOBT#1, 1/2007 thru 12/2009', N'FOBT#1')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (635, 1000069826, N'14564-9', N'OCCULT BLOOD (FIT) #2 OF 3,12/09-1/16', N'FIT 2/3')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (635, 1000075628, N'2335-8', N'OCCULT BLOOD,SINGLE CARD,1/07 thru 12/09', N'FOBT,R')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (635, 1000104243, N'14563-1', N'OCCULT BLOOD (FIT-R) #1 OF 1', N'FITrsch 1/1')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (635, 1000122797, N'57905-2', N'OCCULT BLOOD (FIT) #1 OF 1', N'FIT1/1')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (635, 1000125995, N'29771-3', N'OCCULT BLOOD FIT RANDOM', N'FIT Ran')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (642, 1400005260, N'14563-1', N'OCCULT BLOOD #1', N'OCC BL1')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (642, 1400009511, N'14563-1', N'POCT-OCCULT BLOOD', N'POC OCC')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (642, 1400012497, N'14564-9', N'OCCULT BLOOD #2', N'OCC BL2')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (642, 1400012498, N'14565-6', N'OCCULT BLOOD #3', N'OCC BL3')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (642, 1400078585, N'14563-1', N'IFOBT #1', N'IFOBT #1')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (642, 1400078586, N'14564-9', N'IFOBT #2', N'IFOBT #2')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (642, 1400078587, N'14565-6', N'IFOBT #3', N'IFOBT #3')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (642, 1400570283, N'29771-3', N'CSP-577 OCCULT BLOOD(FIT)', N'CSP-577 FIT')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (644, 800000675, N'14565-6', N'Occult Blood #3', N'FOBT#3')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (644, 800036890, N'2335-8', N'OCCULT BLOOD SPOT TEST', N'GUAIAC')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (644, 800074605, N'14563-1', N'Occult Blood #1', N'FOBT#1')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (644, 800075804, N'14564-9', N'Occult Blood #2', N'FOBT#2')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (644, 800224828, N'2335-8', N'CSP#577 OCCULT BLOOD(FIT)#1OF1', N'FIT1/1')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (644, 800257151, NULL, N'Occult Blood (FIT) #1 of 1', N'FIT')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (671, 1000001444, N'2335-8', N'ZZZOCCULT BLOOD (KERRVILLE ONLY)', N'ZZZOCCULT')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (671, 1000023514, N'2335-8', N'OCCULT BLOOD DAY 1', N'OCC1')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (671, 1000028047, N'2335-8', N'POC OCCULT BLOOD ANCILLARY', N'POC OCB')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (671, 1000032176, N'14565-6', N'OCCULT BLOOD DAY 3', N'OCC3')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (671, 1000035160, N'14565-6', N'IFOBT3', N'FOBT3')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (671, 1000038595, N'2335-8', N'FOBT ACCUCHECK (ED/TRIAGE ONLY)', N'FOBT(TRIAGE ONLY)')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (671, 1000053200, N'14564-9', N'ZZZIFOBT2', N'ZZZFOBT2')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (671, 1000097002, N'29771-3', N'IFOBT(SINGLE TEST),SCREEN', N'FOBT1')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (671, 1000097003, N'29771-3', N'IFOBT1', N'IFOBT1')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (691, 800001613, N'2335-8', N'OCCULT BLOOD, STOOL', N'OCC BLD')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (691, 800001614, N'2335-8', N'FIT', N'FIT')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (691, 800053904, N'2335-8', N'OCCULT BLOOD, STOOL (SPOT)', N'OCCBLDs')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (691, 800061861, N'14565-6', N'Occult Blood, Stool #3 disc 7/12/19', N'zOCCBLD3')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (691, 800064262, N'14564-9', N'Occult Blood, Stool #2 disc 7/12/19', N'zOCCBLD2')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (512, 1400000167, NULL, N'ZZOCCULT BLOOD #3', N'FOBT#3')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (512, 1400000167, N'14565-6', N'ZZOCCULT BLOOD #3', N'FOBT#3')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (512, 1400015216, NULL, N'ZZOCCULT BLOOD #1', N'FOBT#1')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (512, 1400015216, N'14563-1', N'ZZOCCULT BLOOD #1', N'FOBT#1')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (512, 1400020074, NULL, N'OCCULT BLOOD CNTRL 1', N'OBC1')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (512, 1400020074, N'2335-8', N'OCCULT BLOOD CNTRL 1', N'OBC1')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (512, 1400020761, NULL, N'OCCULT BLOOD CNTRL 2', N'OCBLDC2')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (512, 1400020761, N'2335-8', N'OCCULT BLOOD CNTRL 2', N'OCBLDC2')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (512, 1400049195, NULL, N'ZZOCCULT BLOOD #2', N'FOBT#2')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (512, 1400049195, N'14564-9', N'ZZOCCULT BLOOD #2', N'FOBT#2')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (512, 1400049217, NULL, N'OCCULT BLOOD CNTRL 3', N'OCBLDC3')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (512, 1400049217, N'2335-8', N'OCCULT BLOOD CNTRL 3', N'OCBLDC3')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (512, 1400568392, N'14564-9', N'OCCULT BLD FIT #1of1', N'OC-FIT')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (512, 1400575623, N'2335-8', N'OCCULT BLOOD FIT #1 OF 1', N'FIT')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (523, 1400006127, N'14565-6', N'  OCCULT BLOOD (#3)', N'FOBT#3')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (523, 1400007168, N'2335-8', N'OCCULT BLOOD(RANDOM)', N'FOBT-R')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (523, 1400015832, N'2335-8', N'ZZOCCULT BLOOD (WX-WO)', N'ZOCCBLD')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (523, 1400017856, N'14564-9', N'  OCCULT BLOOD (#2)', N'FOBT#2')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (523, 1400023083, N'2335-8', N'  OCCULT BLOOD (X3) (THRU 6/01)', N'OB(X3)')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (523, 1400024833, N'2335-8', N'  OCCULT BLOOD(X1)(THRU 7/17/01)', N'OB(X1)')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (523, 1400047002, N'14563-1', N'  OCCULT BLOOD (#1)', N'FOBT#1')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (523, 1400052622, N'2335-8', N'  OCCULT BLOOD (LO)(dc''d)', N'O.B.')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (523, 1400570743, N'29771-3', N'CSP#577 OCCULT BLOOD(FIT)1OF1', N'CSP#577 FIT1')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (523, 1400574899, N'14563-1', N'OCCULT BLOOD (FIT)#1 OF 1', N'FIT1/1')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (528, 1400019763, N'2335-8', N'ZZOCCULT BLOOD (V2<6/28/02)', N'OCCULT ')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (528, 1400020529, N'14563-1', N'ZZOCCULT BLOOD (Slide 1)', N'OCCUL B')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (528, 1400020827, N'14564-9', N'ZZOCCULT BLOOD (Slide 2)', N'OCCUL B')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (528, 1400030173, N'14565-6', N'ZZOCCULT BLOOD (Slide 3)', N'OCCUL B')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (528, 1400041975, N'14564-9', N'2ND OCCULT BLD (AL/BH/CN/SY)', N'FOBT#2')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (528, 1400044644, N'2335-8', N'OCCULT BLOOD SPOT (AL/BH/CN/SY)', N'OB SPOT')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (528, 1400046138, N'2335-8', N'OCCULT BLOOD SPOT POC (BH/SY)', N'OB POC')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (528, 1400061146, N'14565-6', N'3RD OCCULT BLD (AL/BH/CN/SY)', N'FOBT#3')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (528, 1400063272, N'14563-1', N'1ST OCCULT BLD (AL/BH/CN/SY)', N'FOBT#1')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (528, 1400073764, N'2335-8', N'ZZOCCULT BLOOD FECES (SY<6/23/00)', N'OCCUL')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (528, 1400568735, N'2335-8', N'OCCULT BLOOD (FIT) #1 OF 3 (SY/CN/BH/AL)', N'FIT1/3')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (528, 1400568736, N'14565-6', N'OCCULT BLOOD (FIT) #2 OF 3 (SY/CN/BH/AL)', N'FIT2/3')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (528, 1400568737, N'14565-6', N'OCCULT BLOOD (FIT) #3 OF 3 (SY/CN/BH/AL)', N'FIT3/3')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (528, 1400568738, N'29771-3', N'OCCULT BLOOD FIT RANDOM (BU/BH)', N'FIT Ran')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (528, 1400593832, N'57905-2', N'OCCULT BLOOD (FIT) #1 OF 1* (CRS) (BU)', N'FIT1/1')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (537, 1000006096, N'2335-8', N'OP OCCULT BLOOD (dc''d 11/5/07)', N'OP-OCCU')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (537, 1000009685, NULL, N'OCCULT BLOOD #2', N'FOBT#2')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (537, 1000009685, N'2335-8', N'OCCULT BLOOD #2', N'FOBT#2')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (537, 1000014516, NULL, N'OCCULT BLOOD #1', N'FOBT#1')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (537, 1000014516, N'2335-8', N'OCCULT BLOOD #1', N'FOBT#1')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (537, 1000061002, NULL, N'OCCULT BLOOD #3', N'FOBT#3')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (537, 1000061002, N'2335-8', N'OCCULT BLOOD #3', N'FOBT#3')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (537, 1000103300, N'29771-3', N'OCCULT FIT', N'FIT')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (537, 1000105623, N'57905-2', N'CSP#577 OCCULT BLOOD (FIT) #1 of 1', N'CSP#577')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (540, 1400021875, N'14564-9', N'OB#2', N'OB#2')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (540, 1400021876, N'14565-6', N'OB#3', N'OB#3')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (540, 1400029888, N'14563-1', N'OB#1', N'OB#1')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (540, 1400035778, N'2335-8', N'OCCULT BLOOD//DC''d 11-2016', N'OCCULT ')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (540, 1400568250, N'2335-8', N'CSP#577 OCCULT BLOOD(FIT)#1OF1', N'CSP#577')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (540, 1400571692, N'29771-3', N'OCCULT BLOOD (FIT) #1 OF 1', N'FIT1/1')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (541, 1200028313, N'2335-8', N'OCC.BLD,RANDOM (Pre 4.2.07)', N'.OCCBLD')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (541, 1200090066, N'2335-8', N'OCCBLD#1(Pre 4.2.07', N'.OCC1')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (541, 1200091575, N'2335-8', N'OCC.BLD.,SINGLE CARD(Pre to 4.23.12)', N'.FOBT-R')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (541, 1200093683, N'14565-6', N'OCC.BLD.,CARD#3(Pre 4.23.12', N'.OCC#3')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (541, 1200093759, N'14563-1', N'OCC.BLD.,CARD#1(Pre 4.23.12)', N'.FOBT#1')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (541, 1200095497, N'2335-8', N'OCCBLD#3(Pre 4.2.07', N'.OCC3')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (541, 1200096072, N'2335-8', N'OCCBLD#2(Pre 4.2.07', N'.OCC#2')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (541, 1200098811, N'14564-9', N'OCC.BLD.,CARD#2(Pre 4.23.12', N'.FOBT#2')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (541, 1200112732, N'57905-2', N'OCCULT BLOOD (FIT) #1 OF 1', N'FIT1/1')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (541, 1200114625, N'29771-3', N'OCCULT BLD (CSP#577) FIT 1/1', N'FITCSP')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (549, 1000002072, N'29771-3', N'.OCCULT BLOOD (FIT) #1 OF 1', N'FIT 1/1')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (549, 1000015681, N'14563-1', N'ZZZ.OCCULT BLOOD,FECES 1', N'FOBT#1')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (549, 1000015681, N'2335-8', N'ZZZ.OCCULT BLOOD,FECES 1', N'FOBT#1')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (549, 1000018223, N'14563-1', N'OCCULT BLOOD,GUAIAC CARD,FECESx1', N'FOBT-S')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (549, 1000019611, N'14564-9', N'ZZZ.OCCULT BLOOD,FECES 2 (iFOBT)', N'ZZZiFOBT#2')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (549, 1000029526, N'14565-6', N'ZZZ.OCCULT BLOOD,FECES 3 (iFOBT)', N'ZZZiFOBT#3')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (549, 1000033851, N'14564-9', N'ZZZ.OCCULT BLOOD,FECES 2', N'ZFOBT#2')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (549, 1000033851, N'2335-8', N'ZZZ.OCCULT BLOOD,FECES 2', N'ZFOBT#2')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (549, 1000038707, N'14563-1', N'ZZZ.OCCULT BLOOD,FECES 1 (iFOBT)', N'ZZZiFOBT#1')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (549, 1000051967, N'14565-6', N'ZZZ.OCCULT BLOOD,FECES 3', N'ZFOBT#3')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (549, 1000051967, N'2335-8', N'ZZZ.OCCULT BLOOD,FECES 3', N'ZFOBT#3')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (549, 1000104251, N'29771-3', N'CSP#577 OCCULT BLOOD(FIT)#1OF1', N'FIT1/1')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (580, 1000000279, N'2335-8', N'ER FOBT', N'ER FOBT')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (580, 1000000325, N'2335-8', N'OCCULT BLOOD FIT RANDOM', N'FIT Ran')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (580, 1000022718, N'14563-1', N'ZZFOBT CARD 1(B)', N'CARD 1(B)')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (580, 1000025007, N'14564-9', N'ZZFOBT CARD 2(L)', N'CARD 2(L)')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (580, 1000027283, N'14564-9', N'ZZFOBT #2', N'CARD 2')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (580, 1000027289, N'14564-9', N'ZZFOBT CARD 2(B)', N'CARD 2(B)')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (580, 1000027355, N'14565-6', N'ZZFOBT CARD 3(L)', N'CARD 3(L)')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (580, 1000032285, NULL, N'ZZER FOBT #3', N'ER FOBT #3')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (580, 1000034075, N'14565-6', N'ZZFOBT CARD 3(B)', N'CARD3(B)')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (580, 1000034854, NULL, N'ZZER FOBT #2', N'ER FOBT #2')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (580, 1000035704, N'56491-4', N'OCCULT BLOOD (FIT) #3 OF 3', N'FIT 3/3')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (580, 1000038375, N'14565-6', N'ZZFOBT #3', N'CARD 3')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (580, 1000050178, NULL, N'OCCULT BLOOD-PROV(LUF)dc''d 062420', N'OCC BLD-PV')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (580, 1000054406, N'57905-2', N'OCCULT BLOOD (FIT) #1 OF 3', N'FIT 1/3')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (580, 1000054407, N'56490-6', N'OCCULT BLOOD (FIT) #2 OF 3', N'FIT 2/3')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (580, 1000056183, N'14563-1', N'ZZFOBT #1', N'CARD 1')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (580, 1000069542, N'14563-1', N'ZZFOBT CARD 1(L)', N'CARD 1(L)')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (580, 1000076255, NULL, N'ZZER FOBT #1', N'ER FOBT #1')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (580, 1000108791, N'57905-2', N'CSP#577 FIT #1 OF 1', N'CSP#577 FIT')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (580, 1000121175, N'29771-3', N'OCCULT BLOOD (FIT) #1 OF 1', N'FIT1/1')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (589, 1000036925, N'2335-8', N'OCCULT BLOOD RANDOM', N'FOB RAN')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (589, 1000043219, N'2335-8', N'POC OCCULT BLOOD-CO', N'POC_FOB')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (589, 1000043224, N'14565-6', N'OCCULT BLOOD #3', N'FOBT #3')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (589, 1000068953, N'2335-8', N'OCCULT BLOOD #1', N'FOBT #1')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (589, 1000068956, N'14564-9', N'OCCULT BLOOD #2', N'FOBT #2')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (589, 1000068956, N'2335-8', N'OCCULT BLOOD #2', N'FOBT #2')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (589, 1000099307, N'14564-9', N'OCCULT BLOOD (FIT) #1 OF 1', N'FIT1/1')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (589, 1000106227, N'57905-2', N'CSP#577 OCCULT BLOOD(FIT)#1of1', N'FIT1/ 1')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (635, 1000012300, N'2335-8', N'OCCULT BLOOD,SINGLE CARD,1998 to 2/2007', N'Occ.Bl.')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (635, 1000013003, N'2335-8', N'L-OCCULT BLOOD-MULTIPLE,thru Jan.2007', N'OcBld')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (635, 1000047039, N'14565-6', N'FOBT#3, 1/2007 thru 12/2009', N'FOBT#3')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (635, 1000050677, N'14563-1', N'OCCULT BLOOD (FIT) #1 OF 3,12/09-1/16', N'FIT 1/3')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (635, 1000053306, N'14565-6', N'OCCULT BLOOD (FIT) #3 OF 3,12/09-1/16', N'FIT 3/3')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (635, 1000054046, N'2335-8', N'OCCULT BLD FIT RANDOM(1of1),12/09-1/16', N'FITRAN')    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_7_FOBTLabTestName] ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (635, 1000059624, N'14564-9', N'FOBT#2, 1/2007 thru 12/2009', N'FOBT#2')    --altered (ORD_...Dflt)
+GO
 
 
 ---- FOBT test LOINC code list 
@@ -1540,144 +1544,92 @@ go
 
 -- Add red-flagged FOBT test result. Check if all the codes used in your site are included
 
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (589, N'comment', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (691, N'P', 1)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (642, N'P', 1)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (644, N'comment', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (528, N'comment', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (644, N'POS', 1)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (549, N'canc', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (528, N'pending', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (671, N'comment', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 540, N'POSITIVE', 1)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 691, N'canc', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 671, N'POS', 1)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 635, N'Negative', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 644, N'pending', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 540, N'POS', 1)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 644, N'NEG', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 540, N'canc', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 549, N'Negative', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 528, N'canc', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 644, N'POSITIVE', 1)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 528, N'NEGTAIVE', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 589, N'canc', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 671, N'N', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 537, N'comment', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 635, N'comment', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 528, N'POS', 1)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 642, N'canc', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 540, N'N', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 691, N'POSITIVE', 1)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 589, N'Negative', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 644, N'canc', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 671, N'canc', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 549, N'POS', 1)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 523, N'comment', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 523, N'canc', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 537, N'Negative', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 642, N'N', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 671, N'Positive', 1)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 635, N'POSITIVE', 1)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 691, N'Negative', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 523, N'Negative', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 540, N'0', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 671, N'NEGATIVE', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 540, N'1', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 523, N'POSITIVE', 1)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 528, N'NEG', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 642, N'comment', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 589, N'POSITIVE', 1)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 691, N'N', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 540, NULL, 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 537, N'Positive', 1)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 549, N'comment', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 528, N'Negative', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 537, N'canc', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 540, N'NEG', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 642, N'Positive', 1)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 671, N'MEGATIVE', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 635, N'canc', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 540, N'pending', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 671, N'NEG', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 642, N'Negative', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 691, N'comment', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 540, N'Negative', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 528, N'POSITIVE', 1)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 549, N'Positive', 1)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 549, N'Neg', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 644, N'Negative', 0)    --altered (ORD_...Dflt)
-GO
-INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ( [Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 671, N'P', 1)    --altered (ORD_...Dflt)
-GO
 
-go
+
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (512, N'P', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (523, N'P', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (528, N'P', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (537, N'P', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (540, N'P', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (541, N'P', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (549, N'P', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (580, N'P', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (589, N'P', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (635, N'P', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (642, N'P', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (644, N'P', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (671, N'P', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (691, N'P', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (512, N'POS', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (523, N'POS', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (528, N'POS', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (537, N'POS', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (540, N'POS', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (541, N'POS', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (549, N'POS', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (580, N'POS', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (589, N'POS', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (635, N'POS', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (642, N'POS', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (644, N'POS', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (671, N'POS', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (691, N'POS', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (512, N'Positive', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (523, N'Positive', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (528, N'Positive', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (537, N'Positive', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (540, N'Positive', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (541, N'Positive', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (549, N'Positive', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (580, N'Positive', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (589, N'Positive', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (635, N'Positive', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (642, N'Positive', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (644, N'Positive', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (671, N'Positive', 1)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[FOBT_Sta3n528_0_A_RedFlagFOBTTestResult] ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (691, N'Positive', 1)    --altered (ORD_...Dflt)
+GO
 
 --------------------------------------------------------------------------------------------------------------------------------
 -----  2. Extract positive (red-flagged) FOBT tests from sta6a in the study period
