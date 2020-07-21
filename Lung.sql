@@ -1,4 +1,3 @@
-
 --------------------------------------------
 --- Lung Cancer Trigger 
 --------------------------------------------
@@ -83,8 +82,8 @@ set @VISN=12
 --Set your site code sta6a,sta3n and study period. 
 --set @Sta3n=528
 --set @Sta6a='528A8'					-- ALBANY,NY(528A8) as an example
-set @sp_start='2017-01-01 00:00:00'
-set @sp_end='2017-01-31 23:59:59' 
+set @sp_start='2020-01-01 00:00:00'
+set @sp_end='2020-05-31 23:59:59' 
 
 set @run_date=getdate()
 set @fu_period=30
@@ -104,26 +103,24 @@ values
  (
  --Set site(s) codes here. Keep only your site(s) uncommented.
  -- Cohort 1
- 528,'528A8') --	(528A8) ALBANY,NY 
+ 528,'528A8') --	(528A8) ALBANY,NY [7/1/00]
 --,(642,'642') --	(642) Philadelphia, PA, CorporalMichael K.Crescenz VA Medical center
 --,(644,'644') --	(644) Phoenix, AZ, Phoenix VA Health Care System
 --,(671,'671')	--	(671) South Texas HCS (San Antonio TX)-Audie
-
- -- Cohort 2
+-- -- Cohort 2
 --,(537,'537') --	(537) JESSE BROWN VAMC
 --,(549,'549') --	(549) North Texas HCS (Dallas TX)
 --,(589,'589') --	(589) VA Heartland West (Kansas City MO)
 --,(691,'691') --	(691)VA GREATER LOS ANGELES (691)
-
- -- Cohort 3
+-- -- Cohort 3
 --,(635,'635') --	(635) Oklahoma City, OK
---Another 528 site:
+----Another 528 site:
 --,(528,'528A7') --	 (528A7) (Syracuse, NY)
 --,(540,'540') --	(540) Clarksburg, WV
 --,(523,'523') --	(523)BOSTON HCS VAMC
 
--- Discovery
--- Baltimore is special,does not fill in diagnosticcode, has to go with Note Title
+---- Discovery
+---- Baltimore is special,does not fill in diagnosticcode, has to go with Note Title
 --,(512,'512') --	(512) Maryland HCS (Baltimore MD)
 --,(580,'580') --	(580) Houston, TX
 --,(541,'541') --(541) Cleveland, OH
@@ -1766,210 +1763,240 @@ go
 
 -- Add red-flagged RadiologyDiagnosticCode. Check if all the codes used in your site are included
 
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (644, N'POSSIBLE MALIGNANCY', 1, 800001068)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (644, N'LUNGRADS 4A: SUSPICIOUS NODULE', 1, 800001096)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (644, N'LUNGRADS 4B: SUSPICIOUS NODULE', 1, 800001097)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (644, N'LUNGRADS 4X: SUSPICIOUS NODULE WITH ADDITIONAL FEATURES', 1, 800001098)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (644, N'INCIDENTAL LUNG NODULE(NONSCREENING)', 1, 800001113)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (644, N'HIGHLY SUGGESTIVE OF MALIGNANCY', 1, 800001142)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (644, N'POSSIBLE MALIGNANCY, FOLLOW-UP NEEDED', 1, 800001146)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (691, N'POSSIBLE MALIGNANCY', 1, 800001883)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (691, N'LUNGRADS 4A: SUSPICIOUS NODULE', 1, 800001904)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (691, N'LUNGRADS 4B: SUSPICIOUS NODULE', 1, 800001905)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (691, N'LUNGRADS 4X: SUSPICIOUS NODULE WITH ADDITIONAL FEATURES', 1, 800001906)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (691, N'INCIDENTAL LUNG NODULE(NONSCREENING)', 1, 800001921)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (691, N'LESION SUSPICIOUS FOR LUNG CA', 1, 800001925)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (691, N'ABNORMALITY: POSSIBLE MALIGNANCY, ATTN. NEEDED', 1, 800001928)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (691, N'POSSIBLE MALIGNANCY, FOLLOW-UP NEEDED', 1, 800001933)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (644, N'PULMONARY NODULE PRESENT', 1, 800002109)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (549, N'HIGHLY SUG OF MALIG, TK ACTION', 1, 1000000002)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (549, N'SUSPICIOUS ABNORM, CONSIDER BX', 1, 1000000003)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (537, N'POSSIBLE MALIGNANCY', 1, 1000000340)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (537, N'LUNGRADS 4A: SUSPICIOUS NODULE', 1, 1000000361)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (537, N'LUNGRADS 4B: SUSPICIOUS NODULE', 1, 1000000362)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (537, N'LUNGRADS 4X: SUSPICIOUS NODULE WITH ADDITIONAL FEATURES', 1, 1000000363)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (537, N'INCIDENTAL LUNG NODULE(NONSCREENING)', 1, 1000000378)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (537, N'POSSIBLE MALIGNANCY, FOLLOW-UP NEEDED', 1, 1000000416)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (549, N'POSSIBLE MALIGNANCY', 1, 1000000423)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (549, N'LUNGRADS 4A: SUSPICIOUS NODULE', 1, 1000000446)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (549, N'LUNGRADS 4B: SUSPICIOUS NODULE', 1, 1000000447)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (549, N'LUNGRADS 4X: SUSPICIOUS NODULE WITH ADDITIONAL FEATURES', 1, 1000000448)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (549, N'IMPORTANT REPORT/POSSIBLE MALIGNANCY', 1, 1000000462)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (549, N'INCIDENTAL LUNG NODULE(NONSCREENING)', 1, 1000000463)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (589, N'POSSIBLE MALIGNANCY', 1, 1000001015)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (589, N'LUNGRADS 4A: SUSPICIOUS NODULE', 1, 1000001036)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (589, N'LUNGRADS 4B: SUSPICIOUS NODULE', 1, 1000001037)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (589, N'LUNGRADS 4X: SUSPICIOUS NODULE WITH ADDITIONAL FEATURES', 1, 1000001038)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (589, N'INCIDENTAL LUNG NODULE(NONSCREENING)', 1, 1000001053)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (589, N'CLINICAL ALERT-POSS. MALIGNANCY-E-MAIL', 1, 1000001064)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (589, N'CLINICAL ALERT-POSSIBLE MALIGNANCY', 1, 1000001069)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (589, N'POSSIBLE MALIGNACY, FOLLOW-UP NEEDED', 1, 1000001073)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (635, N'POSSIBLE MALIGNANCY', 1, 1000001552)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (635, N'Suspicious for Malignancy-Clinical Follow-up Action Needed', 1, 1000001555)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (635, N'LUNGRADS 4A: SUSPICIOUS NODULE', 1, 1000001583)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (635, N'LUNGRADS 4B: SUSPICIOUS NODULE', 1, 1000001584)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (635, N'LUNGRADS 4X: SUSPICIOUS NODULE WITH ADDITIONAL FEATURES', 1, 1000001585)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (635, N'INCIDENTAL LUNG NODULE(NONSCREENING)', 1, 1000001600)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (635, N'Suspicious for New Malignancy Need FU', 1, 1000001605)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (635, N'PULMONARY EMBOLISM, IMMEDIATE ATTN NEEDED', 1, 1000001615)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (635, N'PULMONARY EMBOLISM, IMMEDIATE ATTN NEEDED', 1, 1000001617)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (635, N'NODULES 4mm TO LESS THAN 2cm', 1, 1000001619)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (635, N'NODULES/MASSES GREATER THAN 2cm', 1, 1000001620)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (635, N'POSSIBLE MALIGNANCY, FOLLOW-UP NEEDED', 1, 1000001628)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (671, N'POSSIBLE MALIGNANCY', 1, 1000002243)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (671, N'LUNGRADS 4A: SUSPICIOUS NODULE', 1, 1000002263)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (671, N'LUNGRADS 4B: SUSPICIOUS NODULE', 1, 1000002264)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (671, N'LUNGRADS 4X: SUSPICIOUS NODULE WITH ADDITIONAL FEATURES', 1, 1000002265)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (671, N'INCIDENTAL LUNG NODULE(NONSCREENING)', 1, 1000002279)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (671, N'POSSIBLE MALIGNANCY, FOLLOW-UP NEEDED', 1, 1000002307)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (523, N'POSSIBLE MALIGNANCY', 1, 1400000451)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (523, N'LUNGRADS 4A: SUSPICIOUS NODULE', 1, 1400000472)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (523, N'LUNGRADS 4B: SUSPICIOUS NODULE', 1, 1400000473)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (523, N'LUNGRADS 4X: SUSPICIOUS NODULE WITH ADDITIONAL FEATURES', 1, 1400000474)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (523, N'INCIDENTAL LUNG NODULE(NONSCREENING)', 1, 1400000489)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (523, N'POSSIBLE MALIGNANCY, FOLLOW-UP NEEDED', 1, 1400000495)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (523, N'POSSIBLE MALIGNANCY', 1, 1400000529)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (523, N'Lung Lesion for follow-up team', 1, 1400000530)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (523, N'POSSIBLE MALIGNANCY', 1, 1400000537)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (523, N'Lung Lesion for follow up team', 1, 1400000538)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (523, N'LUNG NODULE FOLLOW UP', 1, 1400000540)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (528, N'POSSIBLE MALIGNANCY', 1, 1400000629)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (528, N'LUNGRADS 4A: SUSPICIOUS NODULE', 1, 1400000650)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (528, N'LUNGRADS 4B: SUSPICIOUS NODULE', 1, 1400000651)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (528, N'LUNGRADS 4X: SUSPICIOUS NODULE WITH ADDITIONAL FEATURES', 1, 1400000652)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (528, N'INCIDENTAL LUNG NODULE(NONSCREENING)', 1, 1400000667)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (528, N'POSS PROBABLE TUMOR, PROVIDER NOTIFIED', 1, 1400000672)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (528, N'CATEGORY 5 HIGHLY SUGG MALIGNANCY', 1, 1400000688)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (528, N'POSSIBLE MALIGNANCY, FOLLOWUP NEEDED', 1, 1400000716)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (528, N'SUSPICIOUS FINDINGS,FU STUDY RECOM', 1, 1400000669)    --altered (ORD_...Dflt)
-	go
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (540, N'POSSIBLE MALIGNANCY', 1, 1400000805)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (540, N'LUNGRADS 4A: SUSPICIOUS NODULE', 1, 1400000824)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (540, N'LUNGRADS 4B: SUSPICIOUS NODULE', 1, 1400000825)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (540, N'LUNGRADS 4X: SUSPICIOUS NODULE WITH ADDITIONAL FEATURES', 1, 1400000826)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (540, N'INCIDENTAL LUNG NODULE(NONSCREENING)', 1, 1400000840)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (540, N'POSS MALIGN, F/U NEEDED, ALERT SENT    ', 1, 1400000843)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (642, N'POSSIBLE MALIGNANCY', 1, 1400001450)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (642, N'LUNGRADS 4A: SUSPICIOUS NODULE', 1, 1400001471)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (642, N'LUNGRADS 4B: SUSPICIOUS NODULE', 1, 1400001472)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (642, N'LUNGRADS 4X: SUSPICIOUS NODULE WITH ADDITIONAL FEATURES', 1, 1400001473)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (642, N'INCIDENTAL LUNG NODULE(NONSCREENING)', 1, 1400001488)    --altered (ORD_...Dflt)
-	GO
-	INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (642, N'MAJOR ABNORMALITY/POSSIBLE MALIGNANCY', 1, 1400002196)    --altered (ORD_...Dflt)
-	GO
-INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (580, N'POSSIBLE MALIGNANCY'						, 1, 1000000782)    --altered (ORD_...Dflt)
-go
-INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (580, N'CRITICAL ABNORMALITY'						, 1, 1000000781)    --altered (ORD_...Dflt)
-go
-INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (580, N'Abnormality Follow-up Needed'				, 1, 1000000836)    --altered (ORD_...Dflt)
-go
-INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (580, N'SIGNIFICANT ABNORMALITY, ATTN NEEDED'		, 1, 1000000780)    --altered (ORD_...Dflt)
-go
-INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (580, N'ABDOMINAL AORTIC ANEURYSM NOT PRESENT'	, 1, 1000000808)    --altered (ORD_...Dflt)
-go
-INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (580, N'BI-RADS CATEGORY 5'						, 1, 1000000795)    --altered (ORD_...Dflt)
-go
-INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (580, N'CRITICAL Imaging Test'					, 1, 1000000851)    --altered (ORD_...Dflt)
-go
-INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (580, N'INCIDENTAL LUNG NODULE(NONSCREENING)'		, 1, 1000000831)    --altered (ORD_...Dflt)
-go
-INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (580, N'TRUE STAT'								, 1, 1000000856)    --altered (ORD_...Dflt)
-go
-INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (580, N'BI-RADS CATEGORY 4'						, 1, 1000000794)    --altered (ORD_...Dflt)
-go
-INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (580, N'ABNORMALITY, ATTN. NEEDED'				, 1, 1000000849)    --altered (ORD_...Dflt)
-go
-INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (580, N'Critical Abnormality Needs Urgent Action'	, 1, 1000000833)    --altered (ORD_...Dflt)
-go
-INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (580, N'Suspicious for New Malignancy Need FU'	, 1, 1000000835)    --altered (ORD_...Dflt)
-go
-
-
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (644, N'POSSIBLE MALIGNANCY', 1, 800001068)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (644, N'LUNGRADS 4A: SUSPICIOUS NODULE', 1, 800001096)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (644, N'LUNGRADS 4B: SUSPICIOUS NODULE', 1, 800001097)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (644, N'LUNGRADS 4X: SUSPICIOUS NODULE WITH ADDITIONAL FEATURES', 1, 800001098)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (644, N'INCIDENTAL LUNG NODULE(NONSCREENING)', 1, 800001113)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (644, N'HIGHLY SUGGESTIVE OF MALIGNANCY', 1, 800001142)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (644, N'POSSIBLE MALIGNANCY, FOLLOW-UP NEEDED', 1, 800001146)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (691, N'POSSIBLE MALIGNANCY', 1, 800001883)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (691, N'LUNGRADS 4A: SUSPICIOUS NODULE', 1, 800001904)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (691, N'LUNGRADS 4B: SUSPICIOUS NODULE', 1, 800001905)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (691, N'LUNGRADS 4X: SUSPICIOUS NODULE WITH ADDITIONAL FEATURES', 1, 800001906)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (691, N'INCIDENTAL LUNG NODULE(NONSCREENING)', 1, 800001921)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (691, N'LESION SUSPICIOUS FOR LUNG CA', 1, 800001925)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (691, N'ABNORMALITY: POSSIBLE MALIGNANCY, ATTN. NEEDED', 1, 800001928)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (691, N'POSSIBLE MALIGNANCY, FOLLOW-UP NEEDED', 1, 800001933)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (644, N'PULMONARY NODULE PRESENT', 1, 800002109)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (549, N'HIGHLY SUG OF MALIG, TK ACTION', 1, 1000000002)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (549, N'SUSPICIOUS ABNORM, CONSIDER BX', 1, 1000000003)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (537, N'POSSIBLE MALIGNANCY', 1, 1000000340)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (537, N'LUNGRADS 4A: SUSPICIOUS NODULE', 1, 1000000361)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (537, N'LUNGRADS 4B: SUSPICIOUS NODULE', 1, 1000000362)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (537, N'LUNGRADS 4X: SUSPICIOUS NODULE WITH ADDITIONAL FEATURES', 1, 1000000363)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (537, N'INCIDENTAL LUNG NODULE(NONSCREENING)', 1, 1000000378)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (537, N'POSSIBLE MALIGNANCY, FOLLOW-UP NEEDED', 1, 1000000416)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (549, N'POSSIBLE MALIGNANCY', 1, 1000000423)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (549, N'LUNGRADS 4A: SUSPICIOUS NODULE', 1, 1000000446)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (549, N'LUNGRADS 4B: SUSPICIOUS NODULE', 1, 1000000447)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (549, N'LUNGRADS 4X: SUSPICIOUS NODULE WITH ADDITIONAL FEATURES', 1, 1000000448)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (549, N'IMPORTANT REPORT/POSSIBLE MALIGNANCY', 1, 1000000462)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (549, N'INCIDENTAL LUNG NODULE(NONSCREENING)', 1, 1000000463)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (580, N'POSSIBLE MALIGNANCY', 1, 1000000782)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (580, N'NEW UNSUSPECTED MALIGNANCY F/U ACTION NEEDED', 1, 1000000785)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (580, N'LUNGRADS 4A: SUSPICIOUS NODULE', 1, 1000000815)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (580, N'LUNGRADS 4B: SUSPICIOUS NODULE', 1, 1000000816)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (580, N'LUNGRADS 4X: SUSPICIOUS NODULE WITH ADDITIONAL FEATURES', 1, 1000000817)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (580, N'INCIDENTAL LUNG NODULE(NONSCREENING)', 1, 1000000831)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (580, N'Suspicious for New Malignancy Need FU', 1, 1000000835)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (580, N'POSSIBLE MALIGNANCY, FOLLOW-UP NEEDED', 1, 1000000854)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (589, N'POSSIBLE MALIGNANCY', 1, 1000001015)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (589, N'LUNGRADS 4A: SUSPICIOUS NODULE', 1, 1000001036)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (589, N'LUNGRADS 4B: SUSPICIOUS NODULE', 1, 1000001037)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (589, N'LUNGRADS 4X: SUSPICIOUS NODULE WITH ADDITIONAL FEATURES', 1, 1000001038)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (589, N'INCIDENTAL LUNG NODULE(NONSCREENING)', 1, 1000001053)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (589, N'CLINICAL ALERT-POSS. MALIGNANCY-E-MAIL', 1, 1000001064)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (589, N'CLINICAL ALERT-POSSIBLE MALIGNANCY', 1, 1000001069)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (589, N'POSSIBLE MALIGNACY, FOLLOW-UP NEEDED', 1, 1000001073)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (635, N'POSSIBLE MALIGNANCY', 1, 1000001552)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (635, N'SUSPICIOUS FOR MALIGNANCY-CLINICAL FOLLOW-UP ACTION NEEDED', 1, 1000001555)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (635, N'LUNGRADS 4A: SUSPICIOUS NODULE', 1, 1000001583)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (635, N'LUNGRADS 4B: SUSPICIOUS NODULE', 1, 1000001584)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (635, N'LUNGRADS 4X: SUSPICIOUS NODULE WITH ADDITIONAL FEATURES', 1, 1000001585)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (635, N'INCIDENTAL LUNG NODULE(NONSCREENING)', 1, 1000001600)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (635, N'Suspicious for New Malignancy Need FU ', 1, 1000001605)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (635, N'PULMONARY EMBOLISM, IMMEDIATE ATTN NEEDED', 1, 1000001615)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (635, N'PULMONARY EMBOLISM, IMMEDIATE ATTN NEEDED', 1, 1000001617)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (635, N'NODULES 4mm TO LESS THAN 2cm', 1, 1000001619)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (635, N'NODULES/MASSES GREATER THAN 2cm', 1, 1000001620)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (635, N'POSSIBLE MALIGNANCY, FOLLOW-UP NEEDED', 1, 1000001628)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (671, N'POSSIBLE MALIGNANCY', 1, 1000002243)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (671, N'LUNGRADS 4A: SUSPICIOUS NODULE', 1, 1000002263)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (671, N'LUNGRADS 4B: SUSPICIOUS NODULE', 1, 1000002264)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (671, N'LUNGRADS 4X: SUSPICIOUS NODULE WITH ADDITIONAL FEATURES', 1, 1000002265)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (671, N'INCIDENTAL LUNG NODULE(NONSCREENING)', 1, 1000002279)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (671, N'POSSIBLE MALIGNANCY, FOLLOW-UP NEEDED', 1, 1000002307)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (635, N'NODULES LESS THAN 6 MM', 1, 1000002593)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (635, N'NODULES 6MM TO LESS THEN 2CM', 1, 1000002594)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (541, N'POSSIBLE MALIGNANCY', 1, 1200000692)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (541, N'MASS LESION', 1, 1200000694)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (541, N'POSSIBLE MALIGNANCY, FOLLOW-UP NEEDED', 1, 1200000698)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (541, N'LUNG - SUSPICION FOR CANCER', 1, 1200000722)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (541, N'LUNGRADS 4A: SUSPICIOUS NODULE', 1, 1200000727)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (541, N'LUNGRADS 4B: SUSPICIOUS NODULE', 1, 1200000728)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (541, N'LUNGRADS 4X: SUSPICIOUS NODULE WITH ADDITIONAL FEATURES', 1, 1200000729)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (541, N'INCIDENTAL LUNG NODULE(NONSCREENING)', 1, 1200000745)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (541, N'POSSIBLE MALIGNANCY, FOLLOW-UP NEEDED', 1, 1200000747)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (541, N'LUNG MASS-IMMEDIATE ATTENTION NEEDED.', 1, 1200000753)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (512, N'POSSIBLE MALIGNANCY', 1, 1400000304)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (512, N'POSSIBLE MALIGNANCY, FOLLOW-UP NEEDED', 1, 1400000317)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (512, N'LUNGRADS 4A: SUSPICIOUS NODULE', 1, 1400000325)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (512, N'LUNGRADS 4B: SUSPICIOUS NODULE', 1, 1400000326)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (512, N'LUNGRADS 4X: SUSPICIOUS NODULE WITH ADDITIONAL FEATURES', 1, 1400000327)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (512, N'INCIDENTAL LUNG NODULE(NONSCREENING)', 1, 1400000342)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (523, N'POSSIBLE MALIGNANCY', 1, 1400000451)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (523, N'LUNGRADS 4A: SUSPICIOUS NODULE', 1, 1400000472)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (523, N'LUNGRADS 4B: SUSPICIOUS NODULE', 1, 1400000473)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (523, N'LUNGRADS 4X: SUSPICIOUS NODULE WITH ADDITIONAL FEATURES', 1, 1400000474)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (523, N'INCIDENTAL LUNG NODULE(NONSCREENING)', 1, 1400000489)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (523, N'POSSIBLE MALIGNANCY, FOLLOW-UP NEEDED', 1, 1400000495)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (523, N'Possible Malignancy', 1, 1400000529)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (523, N'Lung Lesion for follow-up team', 1, 1400000530)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (523, N'Possible Malignancy ', 1, 1400000537)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (523, N'Lung lesion for follow up team', 1, 1400000538)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (523, N'LUNG NODULE FOLLOW UP', 1, 1400000540)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (528, N'POSSIBLE MALIGNANCY', 1, 1400000629)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (528, N'LUNGRADS 4A: SUSPICIOUS NODULE', 1, 1400000650)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (528, N'LUNGRADS 4B: SUSPICIOUS NODULE', 1, 1400000651)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (528, N'LUNGRADS 4X: SUSPICIOUS NODULE WITH ADDITIONAL FEATURES', 1, 1400000652)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (528, N'INCIDENTAL LUNG NODULE(NONSCREENING)', 1, 1400000667)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (528, N'SUSPICIOUS FINDINGS,FU STUDY RECOM', 1, 1400000669)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (528, N'POSS PROBABLE TUMOR, PROVIDER NOTIFIED', 1, 1400000672)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (528, N'CATEGORY 5 HIGHLY SUGG MALIGNANCY', 1, 1400000688)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (528, N'POSSIBLE MALIGNANCY, FOLLOWUP NEEDED', 1, 1400000716)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (540, N'POSSIBLE MALIGNANCY', 1, 1400000805)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (540, N'LUNGRADS 4A: SUSPICIOUS NODULE', 1, 1400000824)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (540, N'LUNGRADS 4B: SUSPICIOUS NODULE', 1, 1400000825)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (540, N'LUNGRADS 4X: SUSPICIOUS NODULE WITH ADDITIONAL FEATURES', 1, 1400000826)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (540, N'INCIDENTAL LUNG NODULE(NONSCREENING)', 1, 1400000840)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (540, N'POSS MALIGN, F/U NEEDED, ALERT SENT    ', 1, 1400000843)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (642, N'POSSIBLE MALIGNANCY', 1, 1400001450)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (642, N'LUNGRADS 4A: SUSPICIOUS NODULE', 1, 1400001471)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (642, N'LUNGRADS 4B: SUSPICIOUS NODULE', 1, 1400001472)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (642, N'LUNGRADS 4X: SUSPICIOUS NODULE WITH ADDITIONAL FEATURES', 1, 1400001473)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (642, N'INCIDENTAL LUNG NODULE(NONSCREENING)', 1, 1400001488)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (642, N'MAJOR ABNORMALITY/POSSIBLE MALIGNANCY', 1, 1400002196)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (549, N'SOLID MASS, IRREGULAR MARGINS', 1, 1000000476)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (549, N'NEW LESIONS, ATTN. NEEDED', 1, 1000000466)    --altered (ORD_...Dflt)
+GO
+INSERT [MyDB].[MySchema].[Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode] ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (580, N'POSSIBLE NEW LUNG CANCER', 1, 1000002624)    --altered (ORD_...Dflt)
+GO
 
 
 --------------------------------------------------------------------------------------------------------------------------------
@@ -2014,6 +2041,9 @@ select [RadiologyExamSID]
       ,[NuclearMedicineExamSID]
 into [MyDB].[MySchema].Lung_Sta3n528_1_In_1_All_Chest_XRayCTPET     --altered (ORD_...Dflt)
 FROM [CDWWork].[Rad].[RadiologyExam] as Rad    --altered (ORD_...Src)
+--NeedToSwitch
+inner join [MyDB].[MySchema].[Lung_Sta3n528_0_0_1_Sta3nSta6a] as s    --altered (ORD_...Dflt)
+on Rad.Sta3n=s.sta3n
 left join CDWWork.Dim.location as b
 		on Rad.RequestingLocationSID=b.LocationSID
 left join CDWWork.dim.Division as d
@@ -2035,10 +2065,6 @@ on Rad.sta3n=diag.sta3n and Rad.[RadiologyDiagnosticCodeSID]=diag.[RadiologyDiag
 	  between (select sp_start from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP)     --altered (ORD_...Dflt)
 	  and DATEADD(dd,(select fu_period from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP),(select sp_end from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP)) --Clue Date Range+followup    --altered (ORD_...Dflt)
 	and sta.[RadiologyExamStatus] like'%COMPLETE%'
-	--NeedToSwitch
-	--and d.sta3n=(select sta3n from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt)
-	--and d.sta3n in (select distinct sta3n from CDWWork.dim.VistASite 
-	--				where VISN=(select VISN from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP) )    --altered (ORD_...Dflt)
 
 
 go
@@ -2062,15 +2088,15 @@ if (OBJECT_ID('[MyDB].[MySchema].Lung_Sta3n528_1_In_1_All_Chest_XRayCTPET_SSN') 
   if (OBJECT_ID('[MyDB].[MySchema].Lung_Sta3n528_1_In_2_All_Chest_XRayCT_Sta6a') is not null)    --altered (ORD_...Dflt)
 	drop table [MyDB].[MySchema].Lung_Sta3n528_1_In_2_All_Chest_XRayCT_Sta6a    --altered (ORD_...Dflt)
 
-	select * into [MyDB].[MySchema].Lung_Sta3n528_1_In_2_All_Chest_XRayCT_Sta6a    --altered (ORD_...Dflt)
-	from [MyDB].[MySchema].[Lung_Sta3n528_1_In_1_All_Chest_XRayCTPET_SSN]    --altered (ORD_...Dflt)
+	select Rad.* into [MyDB].[MySchema].Lung_Sta3n528_1_In_2_All_Chest_XRayCT_Sta6a    --altered (ORD_...Dflt)
+	from [MyDB].[MySchema].[Lung_Sta3n528_1_In_1_All_Chest_XRayCTPET_SSN] as Rad    --altered (ORD_...Dflt)
+	--NeedToSwitch
+	inner join [MyDB].[MySchema].[Lung_Sta3n528_0_0_1_Sta3nSta6a] as s    --altered (ORD_...Dflt)
+	on Rad.Sta6a=s.sta6a
     where [img_code_type] in ('CT','XRay')
 	and ExamDateTime
 	  between (select sp_start from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP)     --altered (ORD_...Dflt)
 	  and (select sp_end from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP)     --altered (ORD_...Dflt)
-	--NeedToSwitch
-	--and Sta6a=(select Sta6a from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP)     --altered (ORD_...Dflt)
-	--and Sta6a in (select Sta6a from [MyDB].[MySchema].Lung_Sta3n528_0_0_1_Sta3nSta6a)    --altered (ORD_...Dflt)
 
 go
 
@@ -2081,12 +2107,9 @@ if (OBJECT_ID('[MyDB].[MySchema].Lung_Sta3n528_1_In_3_RedFlagXRayCT') is not nul
 
 select  Rad.* into [MyDB].[MySchema].Lung_Sta3n528_1_In_3_RedFlagXRayCT    --altered (ORD_...Dflt)
 from [MyDB].[MySchema].[Lung_Sta3n528_1_In_2_All_Chest_XRayCT_Sta6a] as Rad    --altered (ORD_...Dflt)
-inner join 
-(
-	select distinct PrimaryDiagnosticCode  from [MyDB].[MySchema].Rad_0_0_RadDiagIEN_ForDaniel_UpToYear2019_20200522     --altered (ORD_...Dflt)
-				where IncludedOrNot=1
-) as code
-on rad.[RadiologyDiagnosticCode]=code.PrimaryDiagnosticCode --and rad.Sta3n=code.Sta3n 
+--NeedToSwitch
+inner join [MyDB].[MySchema].Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode as code    --altered (ORD_...Dflt)
+on rad.[RadiologyDiagnosticCode]=code.[RadiologyDiagnosticCode] and rad.Sta3n=code.Sta3n 
 go
 
 
