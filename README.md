@@ -6,10 +6,11 @@ Downloading the SQL code
 
 Assuming you are reading this on github.com:
 
-1. Before downloading, you might want to jot down or copy/paste the
-text above, such as "LWeiBCM committed abc1234 *xx* days ago." This
-will identify the exact version of the code you downloaded, for
-future reference.
+1. Before downloading, jot down or copy/paste the text in the light
+blue bar above, especially the **seven random-looking letters and
+numbers** such as "LWeiBCM Update Lung.sql ... **8c2f54a** 2 days
+ago." This will identify the exact version of the code you downloaded,
+for future reference.
 
 2. Click on the SQL file you want above (such as `Lung.sql`).
 
