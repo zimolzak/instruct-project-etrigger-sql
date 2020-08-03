@@ -53,7 +53,10 @@ Setting other parameters and viewing outputs
 - For FOBT, the most interesting outputs are
 `FOBT_Sta3n528_5_Ins_U_TriggerPos` and `FOBT_Sta3n528_5_Ins_X_count`.
 
-
+The site personnel doing **validation** should receive the
+"Ins_U_TriggerPos" tables (which will contain PHI, so don't send
+outside your station). The **data display** spreadsheet should receive
+the data from the "_Count" tables.
 
 
 Details
