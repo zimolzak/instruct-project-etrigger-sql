@@ -67,6 +67,9 @@
 
 use master	
 go
+
+set lock_timeout -1
+
 -- Set study parameters.
 -----------------------
 
@@ -3514,12 +3517,12 @@ if (OBJECT_ID('[MyDB].[MySchema].FOBT_Sta3n528_5_Ins_X_count') is not null)    -
 					,(select  sp_start from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP) as sp_start    --altered (ORD_...Dflt)
 					,(select  sp_end from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP) as sp_end    --altered (ORD_...Dflt)
 					,a.sta3n,a.sta6a,a.[Year],a.[month]
-					,NumOfTotalFOBTTest
-					,NumOfTotalPatWithFOBTTest
-					,NumOfRedFlaggedFOBTTest
-					,NumOfPatWithRedFlaggedFOBTTest
-					,NumOfTriggerPosFOBTTest
-					,NumOfTriggerPosPat
+					,isnull(NumOfTotalFOBTTest,0) as NumOfTotalFOBTTest
+					,isnull(NumOfTotalPatWithFOBTTest,0) as NumOfTotalPatWithFOBTTest
+					,isnull(NumOfRedFlaggedFOBTTest,0) as NumOfRedFlaggedFOBTTest
+					,isnull(NumOfPatWithRedFlaggedFOBTTest,0) as NumOfPatWithRedFlaggedFOBTTest
+					,isnull(NumOfTriggerPosFOBTTest,0) as NumOfTriggerPosFOBTTest
+					,isnull(NumOfTriggerPosPat,0) as NumOfTriggerPosPat
 			into [MyDB].[MySchema].FOBT_Sta3n528_5_Ins_X_count    --altered (ORD_...Dflt)
 			from  NumOfTotalFOBTTest as a
 			left join NumOfTotalPatWithFOBTTest as b
