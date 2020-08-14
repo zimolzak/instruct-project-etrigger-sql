@@ -60,6 +60,8 @@
 use master
 go
 
+set lock_timeout -1
+
 declare @trigger varchar(20)		--Name of the trigger
 declare @isVISN bit 				--Trigger runs on VISN levle
 declare @VISN smallint				
@@ -4032,12 +4034,12 @@ if (OBJECT_ID('[MyDB].[MySchema].Lung_Sta3n528_4_01_Count') is not null)    --al
 					,(select  sp_start from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP) as sp_start    --altered (ORD_...Dflt)
 					,(select  sp_end from [MyDB].[MySchema].Lung_Sta3n528_0_1_inputP) as sp_end    --altered (ORD_...Dflt)
 					,a.sta3n,a.sta6a,a.[Year],a.[month]
-					,NumOfTotalChestXRayCT
-					,NumOfTotalPatWithChestXRayCT
-					,NumOfRedFlaggedChestXRayCT
-					,NumOfPatWithRedFlaggedChestXRayCT
-					,NumOfTriggerPosChestXRayCT
-					,NumOfTriggerPosPat
+					,isnull(NumOfTotalChestXRayCT,0) as NumOfTotalChestXRayCT
+					,isnull(NumOfTotalPatWithChestXRayCT,0) as NumOfTotalPatWithChestXRayCT
+					,isnull(NumOfRedFlaggedChestXRayCT,0) as NumOfRedFlaggedChestXRayCT
+					,isnull(NumOfPatWithRedFlaggedChestXRayCT,0) as NumOfPatWithRedFlaggedChestXRayCT
+					,isnull(NumOfTriggerPosChestXRayCT,0) as NumOfTriggerPosChestXRayCT
+					,isnull(NumOfTriggerPosPat,0) as NumOfTriggerPosPat
 			into [MyDB].[MySchema].Lung_Sta3n528_4_01_Count    --altered (ORD_...Dflt)
 			from  NumOfTotalChestXRayCT as a
 			left join NumOfTotalPatWithChestXRayCT as b
