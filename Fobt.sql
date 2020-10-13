@@ -1968,7 +1968,7 @@ on ICD10CodeList.ICD10Code=DimICD10.ICD10Code
   inner join [MyDB].[MySchema].[FOBT_Sta3n528_1_Inc_9_IncPat] as p    --altered (ORD_...Dflt)
   on InpatDiag.sta3n=p.sta3n and InpatDiag.patientsid=p.patientsid
 where --CohortName='Cohort20180712' and
-	CensusDateTime= DATEADD(yy,-1,(select sp_start from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP))	     --altered (ORD_...Dflt)
+	CensusDateTime>= DATEADD(yy,-1,(select sp_start from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP))	     --altered (ORD_...Dflt)
 	and CensusDateTime<= DATEADD(dd,(select fu_period from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP),(select sp_end from [MyDB].[MySchema].FOBT_Sta3n528_0_1_inputP))     --altered (ORD_...Dflt)
 and (TargetCode.dx_code_type is not null or ICD10CodeList.dx_code_type is not null)	
 go
