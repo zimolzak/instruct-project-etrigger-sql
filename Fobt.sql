@@ -131,7 +131,8 @@ values
  -- Cohort 2
 --,(537,'537') --	(537) JESSE BROWN VAMC
 --,(549,'549') --	(549) North Texas HCS (Dallas TX)
---,(589,'589') --	(589) VA Heartland West (Kansas City MO)
+--,(589,'589A5') --	(589) VA Heartland West (Kansas City MO)- Colmery-O'Neil VA Medical CENTER - TOPEKA VAMC DIVISION
+--,(589,'589A6') --	(589) VA Heartland West (Kansas City MO)- Dwight D. Eisenhower VA Medical Center- LEAVENWORTH VAMC DIVISION
 --,(691,'691') --	(691)VA GREATER LOS ANGELES (691)
 
  -- Cohort 3
