@@ -92,7 +92,7 @@ set @fu_period=30
 set @age=18
 set @ICD9Needed=1
 
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_0_0_1_Sta3nSta6a]') is not null)	    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_0_0_1_Sta3nSta6a') is not null)	    --altered (ORD_...Dflt)
 		drop table #Lung_Sta3n671_0_0_1_Sta3nSta6a    --altered (ORD_...Dflt)
 	CREATE TABLE #Lung_Sta3n671_0_0_1_Sta3nSta6a (    --altered (ORD_...Dflt)
 	Sta3n smallint null,
@@ -128,7 +128,7 @@ values
 --,(541,'541') --(541) Cleveland, OH
 
 
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_0_1_inputP]') is not null)	    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_0_1_inputP') is not null)	    --altered (ORD_...Dflt)
 	drop table [#Lung_Sta3n671_0_1_inputP]    --altered (ORD_...Dflt)
 	
 		CREATE TABLE [#Lung_Sta3n671_0_1_inputP](    --altered (ORD_...Dflt)
@@ -474,7 +474,7 @@ select 	'Tuberculosis','','A15.7'
 
 
 -- ICD10Proc Code lists
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_0_3_PreProcICD10ProcExc]') is not null) 		    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_0_3_PreProcICD10ProcExc') is not null) 		    --altered (ORD_...Dflt)
 	drop table [#Lung_Sta3n671_0_3_PreProcICD10ProcExc]    --altered (ORD_...Dflt)
 
 
@@ -1341,7 +1341,7 @@ insert into [#Lung_Sta3n671_0_3_PreProcICD10ProcExc] ([ICD10Proc_code_type],	[IC
 select 	'LungSurgery','','0BTM0ZZ'
 
 -- ICD9 Diagnostic Code list
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_0_4_DxICD9CodeExc]') is not null) 		    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_0_4_DxICD9CodeExc') is not null) 		    --altered (ORD_...Dflt)
 	drop table #Lung_Sta3n671_0_4_DxICD9CodeExc    --altered (ORD_...Dflt)
 
 	CREATE TABLE [#Lung_Sta3n671_0_4_DxICD9CodeExc] (    --altered (ORD_...Dflt)
@@ -1475,7 +1475,7 @@ update  [#Lung_Sta3n671_0_4_DxICD9CodeExc]     --altered (ORD_...Dflt)
 	
 
 -- ICD9Proc Code list
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_0_5_PreProcICD9ProcExc]') is not null) 		    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_0_5_PreProcICD9ProcExc') is not null) 		    --altered (ORD_...Dflt)
 	drop table #Lung_Sta3n671_0_5_PreProcICD9ProcExc    --altered (ORD_...Dflt)
 
 	CREATE TABLE #Lung_Sta3n671_0_5_PreProcICD9ProcExc (    --altered (ORD_...Dflt)
@@ -1589,7 +1589,7 @@ insert into [#Lung_Sta3n671_0_6_LungCancerDxICD10CodeExc] ([dx_code_type],	[dx_c
 select 	'RecentActiveLungC','Lung Cancer','C78.2'
 
 -- ICD9 diagnostic code list for lung cancer
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_0_7_LungCancerDxICD9CodeExc]') is not null) 		    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_0_7_LungCancerDxICD9CodeExc') is not null) 		    --altered (ORD_...Dflt)
 	drop table #Lung_Sta3n671_0_7_LungCancerDxICD9CodeExc    --altered (ORD_...Dflt)
 
 	CREATE TABLE #Lung_Sta3n671_0_7_LungCancerDxICD9CodeExc (    --altered (ORD_...Dflt)
@@ -1620,7 +1620,7 @@ where	(select ICD9Needed from #Lung_Sta3n671_0_1_inputP)=1    --altered (ORD_...
 go
 
 -- CPT procedure code list
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_0_8_PrevProcCPTCodeExc]') is not null) 		    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_0_8_PrevProcCPTCodeExc') is not null) 		    --altered (ORD_...Dflt)
 	drop table #Lung_Sta3n671_0_8_PrevProcCPTCodeExc    --altered (ORD_...Dflt)
 go
 
@@ -1749,7 +1749,7 @@ go
 
 
 -- Chest XRay/CT RadiologyDiagnosticCode list ( which will be red-flagged)
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_0_A_RedFlagXRayCTDiagnosticCode]') is not null) 		    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_0_A_RedFlagXRayCTDiagnosticCode') is not null) 		    --altered (ORD_...Dflt)
 	drop table #Lung_Sta3n671_0_A_RedFlagXRayCTDiagnosticCode    --altered (ORD_...Dflt)
 go
 
@@ -2186,7 +2186,7 @@ left join [CDWWork].[SPatient].[SPatient]  as VStatus    --altered (ORD_...Src)
 --------------------------------------------------------------------------------------------------------------------------------
 
 -- Extract of all DX Codes for all potential patients from surgical files
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_2_Ex_1_SurgDx_ICD9ICD10]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_2_Ex_1_SurgDx_ICD9ICD10') is not null)    --altered (ORD_...Dflt)
 	drop table #Lung_Sta3n671_2_Ex_1_SurgDx_ICD9ICD10    --altered (ORD_...Dflt)
 ;											 
 
@@ -2260,7 +2260,7 @@ SELECT distinct
 
 
 --  Extract of all DX codes from outpatient table for all potential patients
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_2_Ex_2_OutPatDx_ICD9ICD10]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_2_Ex_2_OutPatDx_ICD9ICD10') is not null)    --altered (ORD_...Dflt)
 	drop table #Lung_Sta3n671_2_Ex_2_OutPatDx_ICD9ICD10    --altered (ORD_...Dflt)
 ;
 SELECT 
@@ -2298,7 +2298,7 @@ go
 
 
 --  Extract of all DX codes from inpatient tables for all potential patients
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_2_Ex_3_A_InPatDx_ICD9ICD10]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_2_Ex_3_A_InPatDx_ICD9ICD10') is not null)    --altered (ORD_...Dflt)
 	drop table #Lung_Sta3n671_2_Ex_3_A_InPatDx_ICD9ICD10  ;  --altered (ORD_...Dflt)
 SELECT 
 	  [InpatientDiagnosisSID] 
@@ -2332,7 +2332,7 @@ and (TargetCode.dx_code_type is not null or ICD10CodeList.dx_code_type is not nu
 	go
 
 
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_2_Ex_3_A_InPatDx_ICD9ICD10_Census501Diagnosis]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_2_Ex_3_A_InPatDx_ICD9ICD10_Census501Diagnosis') is not null)    --altered (ORD_...Dflt)
 	drop table #Lung_Sta3n671_2_Ex_3_A_InPatDx_ICD9ICD10_Census501Diagnosis    --altered (ORD_...Dflt)
 ;
 SELECT 
@@ -2364,7 +2364,7 @@ where --CohortName='Cohort20180712' and
 	and (TargetCode.dx_code_type is not null or ICD10CodeList.dx_code_type is not null)	
 go
 
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_2_Ex_3_A_InPatDx_ICD9ICD10_Inpat_CensusDiagnosis]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_2_Ex_3_A_InPatDx_ICD9ICD10_Inpat_CensusDiagnosis') is not null)    --altered (ORD_...Dflt)
 	drop table #Lung_Sta3n671_2_Ex_3_A_InPatDx_ICD9ICD10_Inpat_CensusDiagnosis    --altered (ORD_...Dflt)
 ;
 SELECT 
@@ -2397,7 +2397,7 @@ where --CohortName='Cohort20180712' and
 AND InpatDiag.Sta3n=671 
 go
 
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_2_Ex_3_A_InPatDx_ICD9ICD10_Inpat_Inpatient501TransactionDiagnosis]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_2_Ex_3_A_InPatDx_ICD9ICD10_Inpat_Inpatient501TransactionDiagnosis') is not null)    --altered (ORD_...Dflt)
 				drop table #Lung_Sta3n671_2_Ex_3_A_InPatDx_ICD9ICD10_Inpat_Inpatient501TransactionDiagnosis    --altered (ORD_...Dflt)
 ;
 SELECT 
@@ -2430,7 +2430,7 @@ where --CohortName='Cohort20180712' and
 AND InpatDiag.Sta3n=671 
 go
 
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_2_Ex_3_A_InPatDx_ICD9ICD10_InpatientDischargeDiagnosis]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_2_Ex_3_A_InPatDx_ICD9ICD10_InpatientDischargeDiagnosis') is not null)    --altered (ORD_...Dflt)
 	drop table #Lung_Sta3n671_2_Ex_3_A_InPatDx_ICD9ICD10_InpatientDischargeDiagnosis    --altered (ORD_...Dflt)
 ;
 SELECT 
@@ -2463,7 +2463,7 @@ where --inpatDiag.CohortName='Cohort20180712' and
 AND InpatDiag.Sta3n=671
 go
 
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_2_Ex_3_A_InPatDx_ICD9ICD10_PatientTransferDiagnosis]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_2_Ex_3_A_InPatDx_ICD9ICD10_PatientTransferDiagnosis') is not null)    --altered (ORD_...Dflt)
 	drop table #Lung_Sta3n671_2_Ex_3_A_InPatDx_ICD9ICD10_PatientTransferDiagnosis  ;  --altered (ORD_...Dflt)
 SELECT 
 	  PatientTransferDiagnosisSID ,
@@ -2495,7 +2495,7 @@ where --CohortName='Cohort20180712' and
 AND InpatDiag.Sta3n=671
 go
 
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_2_Ex_3_A_InPatDx_ICD9ICD10_SpecialtyTransferDiagnosis]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_2_Ex_3_A_InPatDx_ICD9ICD10_SpecialtyTransferDiagnosis') is not null)    --altered (ORD_...Dflt)
 	drop table #Lung_Sta3n671_2_Ex_3_A_InPatDx_ICD9ICD10_SpecialtyTransferDiagnosis  ;  --altered (ORD_...Dflt)
 SELECT 
 	  SpecialtyTransferDiagnosisSID ,
@@ -2529,7 +2529,7 @@ go
 
 -- Extract of all DX Codes for all potential patients from Purchased Care
 
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_2_Ex_3_B_InpatientFeeDiagnosisDx_ICD9ICD10]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_2_Ex_3_B_InpatientFeeDiagnosisDx_ICD9ICD10') is not null)    --altered (ORD_...Dflt)
 	drop table #Lung_Sta3n671_2_Ex_3_B_InpatientFeeDiagnosisDx_ICD9ICD10    --altered (ORD_...Dflt)
 ;
 SELECT 
@@ -2565,7 +2565,7 @@ go
 
 
 -- Extract of all DX Codes for all potential patients from Purchased Care 
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_2_Ex_3_C_FeeICDDxFromFeeServiceProvided_ICD9ICD10]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_2_Ex_3_C_FeeICDDxFromFeeServiceProvided_ICD9ICD10') is not null)    --altered (ORD_...Dflt)
 				drop table #Lung_Sta3n671_2_Ex_3_C_FeeICDDxFromFeeServiceProvided_ICD9ICD10    --altered (ORD_...Dflt)
 
 ;
@@ -2604,7 +2604,7 @@ go
 
 
 	--  Extract of all exclusion diagnoses from surgical, inpatient, and outpatient tables
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_2_Ex_4_AllDx_ICD9]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_2_Ex_4_AllDx_ICD9') is not null)    --altered (ORD_...Dflt)
 	drop table #Lung_Sta3n671_2_Ex_4_AllDx_ICD9    --altered (ORD_...Dflt)
 go
 
@@ -2678,7 +2678,7 @@ where ICD9dx_code_type is not null
  go
 
 
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_2_Ex_4_AllDx_ICD10]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_2_Ex_4_AllDx_ICD10') is not null)    --altered (ORD_...Dflt)
 	drop table #Lung_Sta3n671_2_Ex_4_AllDx_ICD10    --altered (ORD_...Dflt)
 go
 
@@ -2753,7 +2753,7 @@ where ICD10dx_code_type is not null
 
 
 
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_2_Ex_4_UnionAllDx_ICD9ICD10]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_2_Ex_4_UnionAllDx_ICD9ICD10') is not null)    --altered (ORD_...Dflt)
 	drop table #Lung_Sta3n671_2_Ex_4_UnionAllDx_ICD9ICD10    --altered (ORD_...Dflt)
 go
 
@@ -2768,7 +2768,7 @@ go
 
 --  Look into ProblemList for Previous ACTIVE lung canccer 
 -- ProblemList data is very spotty
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_2_Ex_7_ProblemListLC_Dx_ICD9ICD10]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_2_Ex_7_ProblemListLC_Dx_ICD9ICD10') is not null)    --altered (ORD_...Dflt)
 	drop table #Lung_Sta3n671_2_Ex_7_ProblemListLC_Dx_ICD9ICD10    --altered (ORD_...Dflt)
 go
 
@@ -2807,7 +2807,7 @@ go
 --Inpatient Procedure from all potential patients
 -- Previous ICD procedures from inpatient tables 
 
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_3_Exc_NonDx_3_PrevProc_0_HLP_InPICDProc_Inpat_ICD9ProcICD10Proc]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_3_Exc_NonDx_3_PrevProc_0_HLP_InPICDProc_Inpat_ICD9ProcICD10Proc') is not null)    --altered (ORD_...Dflt)
 				drop table #Lung_Sta3n671_3_Exc_NonDx_3_PrevProc_0_HLP_InPICDProc_Inpat_ICD9ProcICD10Proc			    --altered (ORD_...Dflt)
 ;
 select pat.patientssn,ICDProc.sta3n,ICDProc.patientsid	,ICDProc.[ICDProcedureDateTime]
@@ -2834,7 +2834,7 @@ into #Lung_Sta3n671_3_Exc_NonDx_3_PrevProc_0_HLP_InPICDProc_Inpat_ICD9ProcICD10P
  go
 
 
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_3_Exc_NonDx_3_PrevProc_1_HLP_CensusICDProc_Inpat_ICD9ProcICD10Proc]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_3_Exc_NonDx_3_PrevProc_1_HLP_CensusICDProc_Inpat_ICD9ProcICD10Proc') is not null)    --altered (ORD_...Dflt)
 			drop table #Lung_Sta3n671_3_Exc_NonDx_3_PrevProc_1_HLP_CensusICDProc_Inpat_ICD9ProcICD10Proc    --altered (ORD_...Dflt)
 ;
 select pat.patientssn,ICDProc.sta3n,ICDProc.patientsid	,ICDProc.ICDProcedureDateTime
@@ -2862,7 +2862,7 @@ go
 
 
 
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_3_Exc_NonDx_3_PrevProc_2_HLP_InPSurgICD_Inpat_ICD9ProcICD10Proc]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_3_Exc_NonDx_3_PrevProc_2_HLP_InPSurgICD_Inpat_ICD9ProcICD10Proc') is not null)    --altered (ORD_...Dflt)
 			drop table #Lung_Sta3n671_3_Exc_NonDx_3_PrevProc_2_HLP_InPSurgICD_Inpat_ICD9ProcICD10Proc    --altered (ORD_...Dflt)
 ;
 select pat.patientssn,a.sta3n,a.patientsid,a.[SurgicalProcedureDateTime]
@@ -2891,7 +2891,7 @@ go
 
 
 
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_3_Exc_NonDx_3_PrevProc_3_HLP_CensusSurgICD_Inpat_ICD9ProcICD10Proc]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_3_Exc_NonDx_3_PrevProc_3_HLP_CensusSurgICD_Inpat_ICD9ProcICD10Proc') is not null)    --altered (ORD_...Dflt)
 			drop table #Lung_Sta3n671_3_Exc_NonDx_3_PrevProc_3_HLP_CensusSurgICD_Inpat_ICD9ProcICD10Proc    --altered (ORD_...Dflt)
 ;
 select pat.patientssn,a.sta3n,a.patientsid	,a.SurgicalProcedureDateTime
@@ -2919,7 +2919,7 @@ go
 
 
 
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_3_Exc_NonDx_3_PrevProc_4_HLP_FeeICDProc_Inpat_ICD9ProcICD10Proc]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_3_Exc_NonDx_3_PrevProc_4_HLP_FeeICDProc_Inpat_ICD9ProcICD10Proc') is not null)    --altered (ORD_...Dflt)
 				drop table #Lung_Sta3n671_3_Exc_NonDx_3_PrevProc_4_HLP_FeeICDProc_Inpat_ICD9ProcICD10Proc	    --altered (ORD_...Dflt)
 ;
 select pat.patientssn,a.sta3n,b.patientsid	,b.[TreatmentFromDateTime]
@@ -3007,7 +3007,7 @@ go
 
 -- combine all Icd10Procedure from inpatient tables
 
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_3_Exc_NonDx_3_PrevProc_Inpat_0_UnionAllInpICD10Proc]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_3_Exc_NonDx_3_PrevProc_Inpat_0_UnionAllInpICD10Proc') is not null)    --altered (ORD_...Dflt)
 	drop table #Lung_Sta3n671_3_Exc_NonDx_3_PrevProc_Inpat_0_UnionAllInpICD10Proc    --altered (ORD_...Dflt)
 ;
 
@@ -3069,7 +3069,7 @@ go
 
 
 -- Inpatien CPT procedure
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_3_Exc_NonDx_4_PrevProc_Inpat_1_CPT]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_3_Exc_NonDx_4_PrevProc_Inpat_1_CPT') is not null)    --altered (ORD_...Dflt)
 	drop table #Lung_Sta3n671_3_Exc_NonDx_4_PrevProc_Inpat_1_CPT    --altered (ORD_...Dflt)
 ;
 select pat.patientssn,pat.scrssn,CPTProc.sta3n,CPTProc.patientsid,CPTProc.[CPTProcedureDateTime]
@@ -3129,7 +3129,7 @@ where
 go
 
 -- Surgical CPT procedures
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_3_Exc_NonDx_6_PrevProc_surg]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_3_Exc_NonDx_6_PrevProc_surg') is not null)    --altered (ORD_...Dflt)
 	drop table #Lung_Sta3n671_3_Exc_NonDx_6_PrevProc_surg    --altered (ORD_...Dflt)
 ;	
 
@@ -3183,7 +3183,7 @@ go
 
 
  --Fee CPT procedure
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_3_Exc_NonDx_7_PrevProc_FeeServiceProvidedCPT]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_3_Exc_NonDx_7_PrevProc_FeeServiceProvidedCPT') is not null)    --altered (ORD_...Dflt)
 		drop table #Lung_Sta3n671_3_Exc_NonDx_7_PrevProc_FeeServiceProvidedCPT    --altered (ORD_...Dflt)
 ;							 
 SELECT  
@@ -3217,7 +3217,7 @@ go
 											
 	
 -- LungBiopsy procedure
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_3_Exc_NonDx_8_PrevProc_AllNonDxProcICD9ICD10Proc_LungBiopsy]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_3_Exc_NonDx_8_PrevProc_AllNonDxProcICD9ICD10Proc_LungBiopsy') is not null)    --altered (ORD_...Dflt)
 			drop table #Lung_Sta3n671_3_Exc_NonDx_8_PrevProc_AllNonDxProcICD9ICD10Proc_LungBiopsy    --altered (ORD_...Dflt)
 ;
 
@@ -3260,7 +3260,7 @@ go
 
 
 -- Bronchoscopy procedure
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_3_Exc_NonDx_9_PrevProc_AllNonDxProcICD9ICD10Proc_Bronchoscopy]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_3_Exc_NonDx_9_PrevProc_AllNonDxProcICD9ICD10Proc_Bronchoscopy') is not null)    --altered (ORD_...Dflt)
 			drop table #Lung_Sta3n671_3_Exc_NonDx_9_PrevProc_AllNonDxProcICD9ICD10Proc_Bronchoscopy    --altered (ORD_...Dflt)
 ;
 select patientSSN,sta3n,patientSID,[Proc_dt] as Bronchoscopy_dt,'Bronchoscopy-InPatICD' as datasource,ICD9ProcedureCode as 'CPTOrICD','Bronchoscopy' as code_type
@@ -3302,7 +3302,7 @@ go
 
 
 --Lung Surgery
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_3_Exc_NonDx_A_PrevProc_AllNonDxProcICD9ICD10Proc_LungSurgery]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_3_Exc_NonDx_A_PrevProc_AllNonDxProcICD9ICD10Proc_LungSurgery') is not null)    --altered (ORD_...Dflt)
 			drop table #Lung_Sta3n671_3_Exc_NonDx_A_PrevProc_AllNonDxProcICD9ICD10Proc_LungSurgery    --altered (ORD_...Dflt)
 ;
 
@@ -3345,7 +3345,7 @@ go
 
 
 -- Chest XRay
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_3_Exc_NonDx_E_PrevProc_AllNonDxProcICD9ICD10Proc_XRay]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_3_Exc_NonDx_E_PrevProc_AllNonDxProcICD9ICD10Proc_XRay') is not null)    --altered (ORD_...Dflt)
 		drop table #Lung_Sta3n671_3_Exc_NonDx_E_PrevProc_AllNonDxProcICD9ICD10Proc_XRay    --altered (ORD_...Dflt)
 ;
 select patientSSN,sta3n,patientSID,InitialTreatmentDateTime as Img_dt,'XRAY-FeeCPT' as datasource, [CPTCode] as 'CPTOrICD','XRay' as code_type
@@ -3376,7 +3376,7 @@ from [#Lung_Sta3n671_3_Exc_NonDx_7_PrevProc_FeeServiceProvidedCPT]    --altered 
 go
 
 --Chest CT
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_3_Exc_NonDx_F_PrevProc_AllNonDxProcICD9ICD10Proc_CT]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_3_Exc_NonDx_F_PrevProc_AllNonDxProcICD9ICD10Proc_CT') is not null)    --altered (ORD_...Dflt)
 			drop table #Lung_Sta3n671_3_Exc_NonDx_F_PrevProc_AllNonDxProcICD9ICD10Proc_CT    --altered (ORD_...Dflt)
 ;
 select patientSSN,sta3n,patientSID,InitialTreatmentDateTime as Img_dt,'CT-FeeCPT' as datasource, [CPTCode] as 'CPTOrICD','CT' as code_type
@@ -3407,7 +3407,7 @@ from [#Lung_Sta3n671_3_Exc_NonDx_7_PrevProc_FeeServiceProvidedCPT]    --altered 
 go
 
 --Chest PET
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_3_Exc_NonDx_G_PrevProc_AllNonDxProcICD9ICD10Proc_PET]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_3_Exc_NonDx_G_PrevProc_AllNonDxProcICD9ICD10Proc_PET') is not null)    --altered (ORD_...Dflt)
 			drop table #Lung_Sta3n671_3_Exc_NonDx_G_PrevProc_AllNonDxProcICD9ICD10Proc_PET    --altered (ORD_...Dflt)
 ;
 
@@ -3441,7 +3441,7 @@ go
 
 -- Visit,referral and physician's note from potential patient
 
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_3_Ins_9_Ex_0_AllVisits_Hlp1]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_3_Ins_9_Ex_0_AllVisits_Hlp1') is not null)    --altered (ORD_...Dflt)
 		drop table #Lung_Sta3n671_3_Ins_9_Ex_0_AllVisits_Hlp1    --altered (ORD_...Dflt)
 ;					
 select p.patientSSN
@@ -3463,7 +3463,7 @@ where 	--CohortName='Cohort20180712'	and
 go
 
 
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_3_Ins_9_Ex_1_AllVisits]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_3_Ins_9_Ex_1_AllVisits') is not null)    --altered (ORD_...Dflt)
 				drop table #Lung_Sta3n671_3_Ins_9_Ex_1_AllVisits    --altered (ORD_...Dflt)
 ;
 select PatientSSN,VisitSID,VisitDateTime,PrimaryStopCodeSID,SecondaryStopCodeSID
@@ -3475,7 +3475,7 @@ from #Lung_Sta3n671_3_Ins_9_Ex_0_AllVisits_Hlp1    --altered (ORD_...Dflt)
 go
 
 
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_3_Ins_9_Ex_1_AllVisits_StopCode]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_3_Ins_9_Ex_1_AllVisits_StopCode') is not null)    --altered (ORD_...Dflt)
 	drop table #Lung_Sta3n671_3_Ins_9_Ex_1_AllVisits_StopCode    --altered (ORD_...Dflt)
 ;					
 select v.*,code1.stopcode as PrimaryStopCode,code1.stopcodename as PrimaryStopCodeName
@@ -3515,7 +3515,7 @@ go
 
 -- Referrals
 -- E-Consult shares the same stop code as the physical location
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_3_Ins_9_Ex_3_VisitTIUconsult_joinByConsultSID]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_3_Ins_9_Ex_3_VisitTIUconsult_joinByConsultSID') is not null)    --altered (ORD_...Dflt)
 			drop table #Lung_Sta3n671_3_Ins_9_Ex_3_VisitTIUconsult_joinByConsultSID    --altered (ORD_...Dflt)
 ;
 select v.*
@@ -3570,7 +3570,7 @@ select age.* into #Lung_Sta3n671_3_Ins_0_2_In_5_Alive    --altered (ORD_...Dflt)
 go
 	
 --  Red-flagged instances: Exclude patients with previous lung cancer
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_3_Ins_1_Ex_LungCancer]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_3_Ins_1_Ex_LungCancer') is not null)    --altered (ORD_...Dflt)
 	drop table #Lung_Sta3n671_3_Ins_1_Ex_LungCancer    --altered (ORD_...Dflt)
 go
 ;
@@ -3585,7 +3585,7 @@ go
 			 
 	
 --  Red-flagged instances: Exclude patients with terminal/major DX		
-if (OBJECT_ID('tempdb.dbo.[#Lung_Sta3n671_3_Ins_2_Ex_Termi_Major]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_3_Ins_2_Ex_Termi_Major') is not null)    --altered (ORD_...Dflt)
 			drop table [#Lung_Sta3n671_3_Ins_2_Ex_Termi_Major]    --altered (ORD_...Dflt)
 go
 
@@ -3600,7 +3600,7 @@ go
 		
 
  --  Red-flagged instances: Exclude patients with hospice/palliative diagnosis
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_3_Ins_3_Ex_Hospi_1_ByDx]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_3_Ins_3_Ex_Hospi_1_ByDx') is not null)    --altered (ORD_...Dflt)
 			drop table #Lung_Sta3n671_3_Ins_3_Ex_Hospi_1_ByDx    --altered (ORD_...Dflt)
 go
 
@@ -3615,7 +3615,7 @@ where not exists
 go
 
 --  Red-flagged instances: Exclude patients with hospice/palliative care
-if (OBJECT_ID('tempdb.dbo.[#Lung_Sta3n671_3_Ins_3_Ex_Hospi_2_Fee]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_3_Ins_3_Ex_Hospi_2_Fee') is not null)    --altered (ORD_...Dflt)
 			drop table #Lung_Sta3n671_3_Ins_3_Ex_Hospi_2_Fee    --altered (ORD_...Dflt)
 go
 
@@ -3640,7 +3640,7 @@ go
 
 --  Red-flagged instances: Exclude patients with Inpatient hospice/palliative care
 
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_3_Ins_3_Ex_Hospi_3_ByPTF]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_3_Ins_3_Ex_Hospi_3_ByPTF') is not null)    --altered (ORD_...Dflt)
 			drop table #Lung_Sta3n671_3_Ins_3_Ex_Hospi_3_ByPTF    --altered (ORD_...Dflt)
 ;
 select * 
@@ -3662,7 +3662,7 @@ go
 
 		
 --  Red-flagged instances: Exclude patients with hospice/palliative referral
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_3_Ins_3_Ex_Hospi_3_Refer_joinByConsultSID]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_3_Ins_3_Ex_Hospi_3_Refer_joinByConsultSID') is not null)    --altered (ORD_...Dflt)
 			drop table #Lung_Sta3n671_3_Ins_3_Ex_Hospi_3_Refer_joinByConsultSID    --altered (ORD_...Dflt)
 ;													 
 				
@@ -3692,7 +3692,7 @@ where not exists
 go
 
 --  Red-flagged instances: Exclude patients with tuberculosis diagnosis
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_3_Ins_4_Ex_Tuber]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_3_Ins_4_Ex_Tuber') is not null)    --altered (ORD_...Dflt)
 				drop table #Lung_Sta3n671_3_Ins_4_Ex_Tuber    --altered (ORD_...Dflt)
 go
 
@@ -3713,7 +3713,7 @@ where not exists
 --------------------------------------------------------------------------------------------------------------------------------
 		
 --  Red-flagged instances: Exclude patients with LungBiopsy completed
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_3_Ins_7_OutCome_Lung_Proc_A_LungBiopsy]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_3_Ins_7_OutCome_Lung_Proc_A_LungBiopsy') is not null)    --altered (ORD_...Dflt)
 			drop table #Lung_Sta3n671_3_Ins_7_OutCome_Lung_Proc_A_LungBiopsy    --altered (ORD_...Dflt)
 ;	
 select *
@@ -3730,7 +3730,7 @@ where not exists
 go
 
 --  Red-flagged instances: Exclude patients with Bronchoscopy completed
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_3_Ins_7_OutCome_Lung_Proc_B_Bronchoscopy]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_3_Ins_7_OutCome_Lung_Proc_B_Bronchoscopy') is not null)    --altered (ORD_...Dflt)
 			drop table #Lung_Sta3n671_3_Ins_7_OutCome_Lung_Proc_B_Bronchoscopy    --altered (ORD_...Dflt)
 	;
 select *
@@ -3746,7 +3746,7 @@ where not exists
 go
 		
 --  Red-flagged instances: Exclude patients with Lung Surgery completed
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_3_Ins_7_OutCome_Lung_Proc_C_LungSurgery]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_3_Ins_7_OutCome_Lung_Proc_C_LungSurgery') is not null)    --altered (ORD_...Dflt)
 				drop table #Lung_Sta3n671_3_Ins_7_OutCome_Lung_Proc_C_LungSurgery    --altered (ORD_...Dflt)
 ;	
 select *
@@ -3765,7 +3765,7 @@ go
 	
 
 --  Red-flagged instances: Exclude patients with follow up chest XRay completed
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_3_Ins_8_OutCome_Rep_Img_A_XRay]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_3_Ins_8_OutCome_Rep_Img_A_XRay') is not null)    --altered (ORD_...Dflt)
 				drop table #Lung_Sta3n671_3_Ins_8_OutCome_Rep_Img_A_XRay    --altered (ORD_...Dflt)
 ;
 select a.*
@@ -3786,7 +3786,7 @@ where not exists
 go
 
 --  Red-flagged instances: Exclude patients with follow up chest CT completed
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_3_Ins_8_OutCome_Rep_Img_B_CT]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_3_Ins_8_OutCome_Rep_Img_B_CT') is not null)    --altered (ORD_...Dflt)
 			drop table #Lung_Sta3n671_3_Ins_8_OutCome_Rep_Img_B_CT    --altered (ORD_...Dflt)
 ;
 select a.*
@@ -3807,7 +3807,7 @@ where not exists
 go
 
 --  Red-flagged instances: Exclude patients with follow up chest PET completed
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_3_Ins_8_OutCome_Rep_Img_C_PET]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_3_Ins_8_OutCome_Rep_Img_C_PET') is not null)    --altered (ORD_...Dflt)
 			drop table #Lung_Sta3n671_3_Ins_8_OutCome_Rep_Img_C_PET    --altered (ORD_...Dflt)
 ;
 select a.*
@@ -3829,7 +3829,7 @@ go
 
 	
 --  Red-flagged instances: Exclude patients with pulm consult completed
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_3_Ins_D_OutCome_refer_1_pulm_joinByConsultSID]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_3_Ins_D_OutCome_refer_1_pulm_joinByConsultSID') is not null)    --altered (ORD_...Dflt)
 				drop table #Lung_Sta3n671_3_Ins_D_OutCome_refer_1_pulm_joinByConsultSID    --altered (ORD_...Dflt)
 ;				
 select *
@@ -3877,7 +3877,7 @@ go
 
 
 --  Red-flagged instances: Exclude patients with THORACIC SURGERY consult completed
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_3_Ins_D_OutCome_refer_3_ThoracicSurgery_joinByConsultSID]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_3_Ins_D_OutCome_refer_3_ThoracicSurgery_joinByConsultSID') is not null)    --altered (ORD_...Dflt)
 				drop table #Lung_Sta3n671_3_Ins_D_OutCome_refer_3_ThoracicSurgery_joinByConsultSID    --altered (ORD_...Dflt)
 ;				
 select *
@@ -3914,7 +3914,7 @@ go
 
 
 --  Red-flagged instances: Exclude patients with Tumor Board conference completed
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_3_Ins_D_OutCome_refer_4_TumorBoard_joinByConsultSID]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_3_Ins_D_OutCome_refer_4_TumorBoard_joinByConsultSID') is not null)    --altered (ORD_...Dflt)
 				drop table #Lung_Sta3n671_3_Ins_D_OutCome_refer_4_TumorBoard_joinByConsultSID    --altered (ORD_...Dflt)
 ;				
 select *
@@ -3947,7 +3947,7 @@ go
 --------------------------------------------------------------------------------------------------------------------------------
 
 --  Trigger Positive instances
-if (OBJECT_ID('[tempdb.dbo.#Lung_Sta3n671_3_Ins_U_TriggerPos]') is not null)    --altered (ORD_...Dflt)
+if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n671_3_Ins_U_TriggerPos') is not null)    --altered (ORD_...Dflt)
 			drop table #Lung_Sta3n671_3_Ins_U_TriggerPos    --altered (ORD_...Dflt)
 ;
 	select distinct * 
