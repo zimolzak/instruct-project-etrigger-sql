@@ -1,0 +1,13 @@
+graph {
+
+INSTRUCT -- Clinical
+INSTRUCT -- Data
+Data[label="Data", style=filled, color=black, fontcolor=white]
+Data -- EPRP
+SQL[label="SQL\ne-triggers"]
+Data -- SQL
+cp[label="Change\npackage"]
+etc[label="etc..."]
+Clinical -- cp
+Clinical -- etc
+}
