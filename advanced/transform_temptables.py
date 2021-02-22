@@ -1,3 +1,13 @@
+# usage:
+# Go to root directory of this repo.
+
+# python ./advanced/transform_temptables.py Lung.sql > Lung_tt.sql
+
+# ... and then do diff or move Lung_tt and Fobt_tt to overwrite
+# Lung.sql and Fobt.sql. This is not incorporated into makefile at
+# present, because it's designed to run once and only once, and then
+# git commit the result.
+
 import sys
 import re
 assert sys.version_info.major >= 3
