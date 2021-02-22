@@ -77,15 +77,12 @@ declare @trigger varchar(20)
 declare @isVISN bit 				--Trigger runs on VISN data levle
 declare @VISN smallint				
 declare @isSta3n bit				--Trigger runs on Sta3n data levle
-declare @Sta3n smallint				
---declare @Sta6a varchar(10)			--Site Code
 declare @run_date datetime2(0)			--Date time of trigger run
 declare @sp_start datetime2(0)			
 declare @sp_end datetime2(0)            
 declare @fu_period as smallint		--follow-up window for red-flagged patients  
 declare @age_lower as smallint
 declare @age_upper as smallint
-
 declare @ICD9Needed bit				--ICD9 and ICD9Proc are not searched if run trigger in year 2017 and beyond, set to 0
 
 
@@ -94,8 +91,6 @@ set @trigger='FOBT'					--Name of the trigger
 set @isVISN=0						--Disabled. Trigger runs against data of sta3n level 
 set @VISN=-1
 set @isSta3n=0						--Enabled. Trigger runs against data of sta3n level 
-set @Sta3n=-1
-
 
 set @run_date=getdate()
 set @sp_start='2020-01-01 00:00:00' --Study starting date time

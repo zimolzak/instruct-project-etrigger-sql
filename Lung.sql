@@ -66,8 +66,6 @@ declare @trigger varchar(20)		--Name of the trigger
 declare @isVISN bit 				--Trigger runs on VISN levle
 declare @VISN smallint				
 declare @isSta3n bit				--Trigger runs on Sta3n levle
---declare @Sta3n smallint				
---declare @Sta6a varchar(10)			--Site Code
 declare @run_date datetime2(0)			--Date time of trigger run
 declare @sp_start datetime2(0)			--Study starting date time
 declare @sp_end datetime2(0)			--Study ending date time
@@ -81,9 +79,6 @@ set @isVISN=0						--Disabled. Trigger runs against data of sta3n level
 set @VISN=12
 set @isSta3n=1
 set @VISN=12
---Set your site code sta6a,sta3n and study period. 
---set @Sta3n=528
---set @Sta6a='528A8'					-- ALBANY,NY(528A8) as an example
 set @sp_start='2020-01-01 00:00:00'
 set @sp_end='2020-05-31 23:59:59' 
 
