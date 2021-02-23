@@ -1,4 +1,4 @@
-pdfs = Fobt.pdf Lung.pdf Triggers-Overview.pdf
+pdfs = Fobt.pdf Lung.pdf Triggers-Overview.pdf instruct-graph.png
 mod_sql = HCC_altered.sql IDA_altered.sql
 manual = instruct-trigger-manual.pdf instruct-trigger-manual.docx instruct-trigger-manual.txt
 
@@ -29,6 +29,9 @@ Triggers-Overview.pdf : Triggers-Overview.md
 
 %_altered.sql : ../unmodified/%.sql transform.py
 	python transform.py $< > $@
+
+%.png: %.dot
+	dot -Tpng -o $@ $<
 
 .PHONY : clean
 
