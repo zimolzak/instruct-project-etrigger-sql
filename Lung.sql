@@ -4056,7 +4056,9 @@ order by sta3n,sta6a,[year],[month]
 
 ---- data set:  Chest XRay/CT performed
 --select * from #Lung_1_In_2_All_Chest_XRayCT_Sta6a    --altered (ORD_...Dflt) --altered (temp table)
+
 ---- data set:  Chest XRay/CT which are red-flaged
 --select * from #Lung_1_In_3_RedFlagXRayCT    --altered (ORD_...Dflt) --altered (temp table)
+
 ---- data set:  Chest XRay/CT which come out trigger positive
---select * from #Lung_3_Ins_U_TriggerPos    --altered (ORD_...Dflt) --altered (temp table)
+select * from #Lung_3_Ins_U_TriggerPos    --altered (ORD_...Dflt) --altered (temp table)

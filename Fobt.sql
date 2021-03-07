@@ -3543,13 +3543,15 @@ order by sta3n,sta6a,[year],[month]
 --where  FOBT_dt between (select sp_start from #FOBT_0_1_inputP)    --altered (ORD_...Dflt) --altered (temp table)
 --		and (select sp_end from #FOBT_0_1_inputP)    --altered (ORD_...Dflt) --altered (temp table)
 --		and Sta6a in (select sta6a from #FOBT_0_1_inputP)    --altered (ORD_...Dflt) --altered (temp table)
+
 ---- red flagged fobt tests from sta6a in the study period
 --select * from #FOBT_1_Inc_8_IncIns    --altered (ORD_...Dflt) --altered (temp table)
 --where  CBC_dt between (select sp_start from #FOBT_0_1_inputP)    --altered (ORD_...Dflt) --altered (temp table)
 --		and (select sp_end from #FOBT_0_1_inputP)    --altered (ORD_...Dflt) --altered (temp table)
 --		and Sta6a in (select sta6a from #FOBT_0_1_inputP)    --altered (ORD_...Dflt) --altered (temp table)
+
 ---- trigger positive fobt tests from sta6a in the study period
---select * from #FOBT_5_Ins_U_TriggerPos    --altered (ORD_...Dflt) --altered (temp table)
---where  CBC_dt between (select sp_start from #FOBT_0_1_inputP)    --altered (ORD_...Dflt) --altered (temp table)
---		and (select sp_end from #FOBT_0_1_inputP)    --altered (ORD_...Dflt) --altered (temp table)
---		and Sta6a in (select sta6a from #FOBT_0_1_inputP)    --altered (ORD_...Dflt) --altered (temp table)
+select * from #FOBT_5_Ins_U_TriggerPos    --altered (ORD_...Dflt) --altered (temp table)
+where  CBC_dt between (select sp_start from #FOBT_0_1_inputP)    --altered (ORD_...Dflt) --altered (temp table)
+		and (select sp_end from #FOBT_0_1_inputP)    --altered (ORD_...Dflt) --altered (temp table)
+		and Sta6a in (select sta6a from #FOBT_0_1_inputP)    --altered (ORD_...Dflt) --altered (temp table)
