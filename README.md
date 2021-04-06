@@ -59,6 +59,8 @@ The site personnel doing **validation** should receive the
 outside your station). The **data display** spreadsheet should receive
 the data from the "_Count" tables.
 
+**IMPORTANT LINK:** For EPRP data, which is different from e-trigger data, go to http://pm.rtp.med.va.gov/ReportServer_RTP/Pages/ReportViewer.aspx?%2fEBB+Reports%2fCombinedMeasureMaster&rs:Command=Render . (needs to be accessed from within VA network.
+
 
 Details
 ========
