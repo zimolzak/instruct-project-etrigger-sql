@@ -48,10 +48,11 @@ Setting other parameters and viewing outputs
 
 - You need to set your sta3n and sta6a.
 
-- For lung, the most interesting outputs are
-`Lung_Sta3n528_3_Ins_U_TriggerPos` and `Lung_Sta3n528_4_01_Count`.
-- For FOBT, the most interesting outputs are
-`FOBT_Sta3n528_5_Ins_U_TriggerPos` and `FOBT_Sta3n528_5_Ins_X_count`.
+- **IMPORTANT** For lung, view patient level data by running this line of code:
+`select * from #Lung_Sta3n528_3_Ins_U_TriggerPos`. For counts, see `Lung_Sta3n528_4_01_Count` which should display automatically.
+
+- **IMPORTANT** For colorectal, view patient level data by running this line of code:
+`select * from #FOBT_Sta3n528_5_Ins_U_TriggerPos`. For counts, see `FOBT_Sta3n528_5_Ins_X_count` which should display automatically.
 
 The site personnel doing **validation** should receive the
 "Ins_U_TriggerPos" tables (which will contain PHI, so don't send
