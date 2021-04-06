@@ -23,9 +23,8 @@ The code you download should always be the latest version. Email z i m
 o l z a k **at** bcm.edu with any questions (delete those spaces
 first, and replace **at** with a real at sign). The SharePoint site
 for change package and other documentation can be found at
-https://dvagov.sharepoint.com/sites/VHAiquest/SitePages/Singh_InSTRuCt.aspx
-. Access this site from the VA network. Soon to migrate to:
-https://dvagov.sharepoint.com/sites/VHAinstructprojectvbts
+https://dvagov.sharepoint.com/sites/VHAiquest/SitePages/Singh_InSTRuCt_2.aspx 
+. This link is specific to *cohort 2* and needs to be accessed from the VA network.
 
 Setting dates
 --------
