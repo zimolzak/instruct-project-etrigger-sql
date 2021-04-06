@@ -32,7 +32,7 @@ Setting dates
 1. Find the first day of the current month (e.g. if today is Feb 19,
 you rewind to find Feb 1).
 
-2. Subtract two more months from that (so you get Dec 1). Subtract *three months* if you are running `Fobt.sql`.
+2. Subtract two more months from that (so you get Dec 1) if you are running `Lung.sql`. Subtract *three months* if you are running `Fobt.sql`.
 
 3. Set `sp_start` equal to that (such as `set @sp_start='2019-12-01 00:00:00'`).
 
