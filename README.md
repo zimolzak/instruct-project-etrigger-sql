@@ -1,6 +1,18 @@
 InSTRuCt Project e-Trigger Quick Start
 ========
 
+This code is public domain for *anyone* to use as they wish. However,
+if you have a peer reviewed paper based in part on the code, we ask
+that you cite:
+
+- Murphy et al. [Development and Validation of Trigger Algorithms to Identify Delays in Diagnostic Evaluation of Gastroenterological Cancer.](https://pubmed.ncbi.nlm.nih.gov/28804030/) Clin Gastroenterol Hepatol. 2018 Jan;16(1):90-98.
+
+- Murphy et al. [Computerized Triggers of Big Data to Detect Delays in Follow-up of Chest Imaging Results.](https://pubmed.ncbi.nlm.nih.gov/27178786/) Chest. 2016 Sep;150(3):613-20.
+
+https://pubmed.ncbi.nlm.nih.gov/25961634/
+
+https://pubmed.ncbi.nlm.nih.gov/23873756/
+
 Downloading the SQL code
 --------
 
