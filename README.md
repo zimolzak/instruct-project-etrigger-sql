@@ -31,11 +31,12 @@ Page As...").
 
 The code you download should always be the latest version. Email z i m
 o l z a k **at** bcm.edu with any questions (delete those spaces
-first, and replace **at** with a real at sign). The SharePoint site
-for change package and other documentation can be found at
-https://dvagov.sharepoint.com/sites/VHAiquest/SitePages/Singh_InSTRuCt_2.aspx
-. This link is specific to *cohort 2* and needs to be accessed from
-the VA network.
+first, and replace **at** with a real at sign).
+
+Don't forget to review the *change package* at the [SharePoint
+site](https://dvagov.sharepoint.com/sites/VHAiquest/SitePages/Singh_InSTRuCt_2.aspx)!
+This link is specific to *cohort 2* and needs to be accessed from the
+VA network.
 
 Setup
 --------
@@ -65,7 +66,10 @@ How do I view data??
 
 - Counts from `FOBT_Sta3n528_5_Ins_X_count` should display automatically.
 
-- Review your [EPRP data](http://pm.rtp.med.va.gov/ReportServer_RTP/Pages/ReportViewer.aspx?%2fEBB+Reports%2fCombinedMeasureMaster&rs:Command=Render)! This is different from e-trigger data. It needs to be accessed from within VA network.
+- Don't forget to review your [EPRP
+  data](http://pm.rtp.med.va.gov/ReportServer_RTP/Pages/ReportViewer.aspx?%2fEBB+Reports%2fCombinedMeasureMaster&rs:Command=Render)!
+  This is different from e-trigger data. It needs to be accessed from
+  within VA network.
 
 The site personnel doing **validation** should receive the
 "Ins_U_TriggerPos" tables (which will contain PHI, so don't send
@@ -76,7 +80,10 @@ the data from the "_Count" tables.
 How are the e-triggers designed?
 ========
 
-See the Word documents in the [specifications](https://github.com/zimolzak/instruct-project-etrigger-sql/tree/master/specifications) folder if you don't want to review lots of SQL code. See also the papers cited, for details about design process and validation.
+See the Word documents in the
+[specifications](https://github.com/zimolzak/instruct-project-etrigger-sql/tree/master/specifications)
+folder if you don't want to review lots of SQL code. See also the
+papers cited, for details about design process and validation.
 
 
 Details
