@@ -33,10 +33,11 @@ The code you download should always be the latest version. Email z i m
 o l z a k **at** bcm.edu with any questions (delete those spaces
 first, and replace **at** with a real at sign). The SharePoint site
 for change package and other documentation can be found at
-https://dvagov.sharepoint.com/sites/VHAiquest/SitePages/Singh_InSTRuCt_2.aspx 
-. This link is specific to *cohort 2* and needs to be accessed from the VA network.
+https://dvagov.sharepoint.com/sites/VHAiquest/SitePages/Singh_InSTRuCt_2.aspx
+. This link is specific to *cohort 2* and needs to be accessed from
+the VA network.
 
-Setting dates
+Setup
 --------
 
 1. Find the first day of the current month (e.g. if today is Feb 19,
@@ -48,27 +49,34 @@ you rewind to find Feb 1).
 
 4. Set `sp_end` to the end of that month (such as `set @sp_end='2019-12-31 23:59:59'`).
 
-5. Done! Other stuff like `fu_period` can be left as it is.
+5. You need to set your sta3n and sta6a.
 
-Setting other parameters and viewing outputs
+6. Done! Other stuff like `fu_period` can be left as it is.
+
+
+How do I view data??
 --------
 
-- You need to change all lines that mention MyDB and MySchema.
+- `select * from #Lung_Sta3n528_3_Ins_U_TriggerPos`
 
-- You need to set your sta3n and sta6a.
+- Counts from `Lung_Sta3n528_4_01_Count` should display automatically.
 
-- **IMPORTANT** For lung, view patient level data by running this line of code:
-`select * from #Lung_Sta3n528_3_Ins_U_TriggerPos`. For counts, see `Lung_Sta3n528_4_01_Count` which should display automatically.
+- `select * from #FOBT_Sta3n528_5_Ins_U_TriggerPos`
 
-- **IMPORTANT** For colorectal, view patient level data by running this line of code:
-`select * from #FOBT_Sta3n528_5_Ins_U_TriggerPos`. For counts, see `FOBT_Sta3n528_5_Ins_X_count` which should display automatically.
+- Counts from `FOBT_Sta3n528_5_Ins_X_count` should display automatically.
+
+- Review your [EPRP data](http://pm.rtp.med.va.gov/ReportServer_RTP/Pages/ReportViewer.aspx?%2fEBB+Reports%2fCombinedMeasureMaster&rs:Command=Render)! This is different from e-trigger data. It needs to be accessed from within VA network.
 
 The site personnel doing **validation** should receive the
 "Ins_U_TriggerPos" tables (which will contain PHI, so don't send
 outside your station). The **data display** spreadsheet should receive
 the data from the "_Count" tables.
 
-**IMPORTANT LINK:** For EPRP data, which is different from e-trigger data, go to http://pm.rtp.med.va.gov/ReportServer_RTP/Pages/ReportViewer.aspx?%2fEBB+Reports%2fCombinedMeasureMaster&rs:Command=Render . (needs to be accessed from within VA network.
+
+How are the e-triggers designed?
+========
+
+See the Word documents in the [specifications](https://github.com/zimolzak/instruct-project-etrigger-sql/tree/master/specifications) folder if you don't want to review lots of SQL code. See also the papers cited, for details about design process and validation.
 
 
 Details
@@ -106,36 +114,3 @@ Perl/Python/makefile was developed by Andrew Zimolzak. As a work of
 the United States Government, this project is in the public domain
 within the United States. Additionally, we waive copyright and related
 rights in the work worldwide (see LICENSE file).
-
-
-Advanced usage
-========
-
-This has auxiliary scripts to do pretty-printing of SQL source code
-listings (enscript), listing the input and output tables of each SQL
-file (Perl), and string replacements to make the SQL work on the wider
-VA data warehouse.
-
-At command prompt, type `cd advanced` and then `make`. Most notably,
-the script `transform.py` does useful string replacements that should
-make the SQL work on the overall, generic VA data warehouse. Files
-called `xxxx_altered.sql` are output by this script. The makefile and
-other scripts depend on:
-
-- Python 3
-- Perl
-- Gnu make
-- pandoc
-- enscript, ps2pdf, pdflatex
-- usual Unix/Linux toolchain like sort, uniq
-
-If you learn Git / GitHub:
-
-- This code can be "forked" so you can make your own changes
-
-- All previous versions can be viewed
-
-- You can suggest changes (pull request) to this repository or make
-changes directly (push)
-
-- You can keep your local code in sync easily with this repository (pull)
