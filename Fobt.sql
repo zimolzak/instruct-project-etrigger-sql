@@ -1656,20 +1656,18 @@ if (OBJECT_ID('tempdb.dbo.#FOBT_Sta3n528_1_Inc_1_AllFOBTSta6a') is not null)    
 	  ,LOINC.LOINC
  into #FOBT_Sta3n528_1_Inc_1_AllFOBTSta6a    --altered (ORD_...Dflt) --altered (temp table)
   FROM [CDWWork].[chem].[PatientLabChem] as labChem    --altered (ORD_...Src)
+  inner join #FOBT_Sta3n528_0_0_1_Sta3nSta6a as st    --altered (ORD_...Dflt) --altered (temp table)
+  on labChem.sta3n=st.sta3n --and labChem.Sta6a=st.Sta6a
   inner join CDWWork.dim.Location as loc
   on labChem.RequestingLocationSID=loc.LocationSID
   inner join CDWWork.dim.Division as d
   on loc.DivisionSID=d.DivisionSID
-  --inner join CDWWork.dim.VistASite as VistaSite
-  --on VistaSite.Sta3n=labChem.Sta3n
   inner join cdwwork.dim.labchemtest as dimTest
   on labChem.[LabChemTestSID]=dimTest.LabChemTestSID
-  inner join cdwwork.dim.LOINC as LOINC
+  left join cdwwork.dim.LOINC as LOINC
   on labChem.LOINCSID=LOINC.LOINCSID
   inner join #FOBT_Sta3n528_0_7_FOBTLabTestName as n    --altered (ORD_...Dflt) --altered (temp table)
   on labChem.sta3n=n.sta3n and labchem.LabChemTestSID=n.LabChemTestSID
- -- left join #FOBT_Sta3n528_0_7_LOINC as l    --altered (ORD_...Dflt) --altered (temp table)
- --on LOINC.lOINC=l.LOINC
  inner join #FOBT_Sta3n528_0_0_1_Sta3nSta6a as s    --altered (ORD_...Dflt) --altered (temp table)
   on d.sta3n=s.sta3n and d.Sta6a=s.Sta6a
  inner join [CDWWork].[SPatient].[SPatient] as VStatus    --altered (ORD_...Src)
