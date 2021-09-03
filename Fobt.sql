@@ -136,6 +136,8 @@ values
 --,(528,'528A7') --	 (528A7) (Syracuse, NY)
 --,(540,'540') --	(540) Clarksburg, WV
 --,(523,'523') --	(523)BOSTON HCS VAMC
+--,(523,'523A5') --	(523)Brockton VAMC
+--,(523,'523A4') --	(523)West Roxbury VAMC
 
 -- Discovery
 -- Baltimore missing diagnosticcode, go with Note Title
@@ -2954,11 +2956,11 @@ if (OBJECT_ID('tempdb.dbo.#FOBT_Sta3n528_5_Exc_NonDx_3_AllVisit_Hlp1') is not nu
 if (OBJECT_ID('tempdb.dbo.#FOBT_Sta3n528_5_Exc_NonDx_3_AllVisit') is not null)    --altered (ORD_...Dflt) --altered (object_id temp table)
 					drop table #FOBT_Sta3n528_5_Exc_NonDx_3_AllVisit    --altered (ORD_...Dflt) --altered (temp table)
 
-   select PatientSSN,VisitSID,VisitDateTime,PrimaryStopCodeSID,SecondaryStopCodeSID
+   select PatientSSN,VisitSID,Sta3n,PatientSID,VisitDateTime,PrimaryStopCodeSID,SecondaryStopCodeSID
    into #FOBT_Sta3n528_5_Exc_NonDx_3_AllVisit    --altered (ORD_...Dflt) --altered (temp table)
    from #FOBT_Sta3n528_5_Exc_NonDx_3_AllVisit_Hlp1    --altered (ORD_...Dflt) --altered (temp table)
    union
-   select PatientSSN,VisitSID,VisitDateTime,PrimaryStopCodeSID,SecondaryStopCodeSID
+   select PatientSSN,VisitSID,Sta3n,PatientSID,VisitDateTime,PrimaryStopCodeSID,SecondaryStopCodeSID
    from #FOBT_Sta3n528_5_Exc_NonDx_3_AllVisit_Hlp1    --altered (ORD_...Dflt) --altered (temp table)
 go
 
@@ -2989,6 +2991,7 @@ if (OBJECT_ID('tempdb.dbo.#FOBT_Sta3n528_5_Exc_NonDx_7_VisitTIU') is not null)  
 					from #FOBT_Sta3n528_5_Exc_NonDx_5_AllVisits_StopCode as V    --altered (ORD_...Dflt) --altered (temp table)
 					left join [CDWWork].[TIU].[TIUDocument] as T     --altered (ORD_...Src)
 					on T.VisitSID=V.Visitsid --and T.CohortName='Cohort20180712'
+					and T.Sta3n=V.Sta3n
 					--more filter
 					--and T.[EntryDateTime] between dateAdd(yy,-1,(select sp_start from #FOBT_Sta3n528_0_1_inputP))    --altered (ORD_...Dflt) --altered (temp table)
 					--						  and DateAdd(dd,(select fu_period from #FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt) --altered (temp table)
@@ -3019,9 +3022,10 @@ if (OBJECT_ID('tempdb.dbo.#FOBT_Sta3n528_5_Exc_NonDx_9_VisitTIUConsult_joinByCon
 					c.[RemoteService],
 					d.StopCode as ConStopCode
 					into #FOBT_Sta3n528_5_Exc_NonDx_9_VisitTIUConsult_joinByConsultSID				    --altered (ORD_...Dflt) --altered (temp table)
-                    from #FOBT_Sta3n528_5_Exc_NonDx_7_VisitTIU as V    --altered (ORD_...Dflt) --altered (temp table)
+                    			from #FOBT_Sta3n528_5_Exc_NonDx_7_VisitTIU as V    --altered (ORD_...Dflt) --altered (temp table)
 					left join [CDWWork].[Con].[Consult] as C										                        --altered (ORD_...Src)
 					on C.ConsultSID=V.ConsultSID --and CohortName='Cohort20180712'
+					and C.Sta3n=V.Sta3n
 					--more filter
 					--and C.[requestDateTime] between dateAdd(yy,-1,(select sp_start from #FOBT_Sta3n528_0_1_inputP))    --altered (ORD_...Dflt) --altered (temp table)
 					--						  and DateAdd(dd,(select fu_period from #FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt) --altered (temp table)
