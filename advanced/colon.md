@@ -1,76 +1,81 @@
-**[Red Flag Criteria]{.underline}**
+# Colorectal Red Flag Criteria
 
-1\. **Identify** all patient records with:
+1. Identify all patient records with:
 
-Iron Deficiency Anemia, defined as: **( Hemoglobin (Hb) ≤ 11 g/dl )**
-^1^
+Iron Deficiency Anemia, defined as: ( Hemoglobin (Hb) ≤ 11 g/dl 
+^1^ AND  Mean Corpuscular Volume (MCV) ≤ 81 fL ^2^ AND No Ferritin ≥ 100 ng/ml within 12 months before or 60 days
+after CBC (i.e., ferritin not checked or result \< 100)  ^3^ )
 
-> **AND ( Mean Corpuscular Volume (MCV) ≤ 81 fL)** ^2^
->
-> **AND ( No Ferritin ≥ 100 ng/ml within 12 months before or 60 days
-> after CBC (i.e., ferritin **
->
-> **not checked or result \< 100))** ^3^
+OR a Positive Fecal Occult Blood Test (FOBT) or Fecal Immunochemical
+Test (FIT) ^4^ result
 
-OR a **(Positive Fecal Occult Blood Test (FOBT) or (Fecal Immunochemical
-Test (FIT))** ^4^ **result**
 
-**[Clinical Exclusion Criteria]{.underline}**
 
-2\. Then **Exclude** patients **\< 40 years old** *OR* **\>75 years old**
+
+## Clinical Exclusion Criteria
+
+2. Then Exclude patients \< 40 years old *OR* \>75 years old
 on test result date
 
-3\. Then **Exclude** patients listed as **deceased**^5^ within **60 DAYS
-AFTER** test result date
+3. Then Exclude patients listed as deceased^5^ within 60 DAYS
+AFTER test result date
 
-4\. Then **Exclude** patients with active **(colon cancer diagnosis)**
-^6^ within **1 YEAR PRIOR TO** test result date
+4. Then Exclude patients with active (colon cancer diagnosis)
+^6^ within 1 YEAR PRIOR TO test result date
 
-5\. Then **Exclude** patients (**with colectomy)** ^7^ **ANY TIME PRIOR**
-to *and* **60 DAYS AFTER** test result date
+5. Then Exclude patients (with colectomy) ^7^ ANY TIME PRIOR
+to *and* 60 DAYS AFTER test result date
 
-6\. Then **Exclude** patients (**enrolled in hospice or palliative
-care)** ^8^ within **1 YEAR PRIOR TO** and **60 DAYS AFTER** test result
+6. Then Exclude patients (enrolled in hospice or palliative
+care) ^8^ within 1 YEAR PRIOR TO and 60 DAYS AFTER test result
 date
 
-7\. Then **Exclude** patients with a diagnosis of **(pancreatic
-cancer)**^9^ *OR* **(leukemia \[except acute lymphocytic\])**^10^ *OR*
-**(liver cancer)**^11^ *OR* **(biliary cancer)**^12^ *OR* **(esophageal
-cancer)**^13^ *OR* **(gastric cancer)**^14^ *OR* **(brain cancer)**^15^
-*OR* **(uterine cancer)**^16^ *OR* **(ovarian cancer)**^17^ *OR*
-**(peritoneal, omental, or mesenteric cancer)**^18^ *OR*
-**(myeloma)**^19^ *OR* **(lung, bronchus, tracheal, or mesothelial
-cancer diagnosis)**^20^ within **1 YEAR PRIOR TO** and **60 DAYS AFTER**
+7. Then Exclude patients with a diagnosis of (pancreatic
+cancer)^9^ *OR* (leukemia \[except acute lymphocytic\])^10^ *OR*
+(liver cancer)^11^ *OR* (biliary cancer)^12^ *OR* (esophageal
+cancer)^13^ *OR* (gastric cancer)^14^ *OR* (brain cancer)^15^
+*OR* (uterine cancer)^16^ *OR* (ovarian cancer)^17^ *OR*
+(peritoneal, omental, or mesenteric cancer)^18^ *OR*
+(myeloma)^19^ *OR* (lung, bronchus, tracheal, or mesothelial
+cancer diagnosis)^20^ within 1 YEAR PRIOR TO and 60 DAYS AFTER
 test result date
 
-8\. Then **Exclude** patients with diagnosis of upper GI bleeding
-**(Hematemesis**) ^21^ *OR* **(Ulcer of esophagus, stomach or duodenum
-with bleeding)** ^22^ within **6 MONTHS PRIOR TO** the test result date
+8. Then Exclude patients with diagnosis of upper GI bleeding
+(Hematemesis) ^21^ *OR* (Ulcer of esophagus, stomach or duodenum
+with bleeding) ^22^ within 6 MONTHS PRIOR TO the test result date
 
-9\. Then **Exclude** patients with **(colonoscopy)** ^23^ **WITHIN 3
-YEARS PRIOR TO** test result date
+9. Then Exclude patients with (colonoscopy) ^23^ WITHIN 3
+YEARS PRIOR TO test result date
 
-10\. Then for Iron Deficiency Anemia Only, **Exclude** patients with
-**(Menorrhagia)** ^24^ *OR* **(Hematuria)** ^25^ *OR* **(Epistaxis)**
-^26^ *OR* **(Uterine , cervical or vaginal bleeding )** ^27^ *OR*
-**(Hemoptysis)** ^28^ *OR* **(Secondary hemorrhage)** ^29^ **WITHIN 6
-MONTHS PRIOR TO** test result date
+10. Then for Iron Deficiency Anemia Only, Exclude patients with
+(Menorrhagia) ^24^ *OR* (Hematuria) ^25^ *OR* (Epistaxis)
+^26^ *OR* (Uterine , cervical or vaginal bleeding ) ^27^ *OR*
+(Hemoptysis) ^28^ *OR* (Secondary hemorrhage) ^29^ WITHIN 6
+MONTHS PRIOR TO test result date
 
-11\. Then for Iron Deficiency Anemia Only, **Exclude** patients with
-diagnosis of **(Pregnancy)** ^30^ **WITHIN 1 YEAR PRIOR TO or 60 DAYS
-AFTER** test result date
+11. Then for Iron Deficiency Anemia Only, Exclude patients with
+diagnosis of (Pregnancy) ^30^ WITHIN 1 YEAR PRIOR TO or 60 DAYS
+AFTER test result date
 
-12\. Then for Iron Deficiency Anemia Only, **Exclude** patients with
-**(Thalassemia)** ^31^ **ANY TIME PRIOR TO OR WITHIN 60 DAYS AFTER**
+12. Then for Iron Deficiency Anemia Only, Exclude patients with
+(Thalassemia) ^31^ ANY TIME PRIOR TO OR WITHIN 60 DAYS AFTER
 test result date
 
-**[Expected Follow-up Criteria]{.underline}**
 
-13\. Then **Exclude** patients with a completed (**Gastroenterology
-visit)** ^32^ **WITHIN 60 DAYS AFTER** test result date
 
-14\. Then **Exclude** patients with a **(Colonoscopy)** ^23^ performed
-**WITHIN 60 DAYS AFTER** test result date
+
+## Expected Follow-up Criteria
+
+13. Then Exclude patients with a completed (Gastroenterology
+visit) ^32^ WITHIN 60 DAYS AFTER test result date
+
+14. Then Exclude patients with a (Colonoscopy) ^23^ performed
+WITHIN 60 DAYS AFTER test result date
+
+
+
+
+# Footnotes
 
 ^1^ Based on LOINC 718-7, 30313-1, 30350-3, 30352-9
 
