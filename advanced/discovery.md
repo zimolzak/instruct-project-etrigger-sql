@@ -16,14 +16,14 @@ identify missed opportunities in follow-up of 'red flag' findings
 suspicious for several cancers, including colorectal (FOBT and IDA)
 and lung. In general, each SQL file proceeds by--
 
-1.  defining the red flags that warrant additional evaluation for cancer
-    (often labs or imaging),
+1. defining the red flags that warrant additional evaluation for
+    cancer (often labs or imaging),
 
-2.  excluding other explanations for the red flags, such as already
+2. excluding other explanations for the red flags, such as already
     diagnosed colon cancer, or known cause of bleeding in the upper GI
     tract (often based on ICD/CPT codes),
 
-3.  excluding patients for whom follow-up is not deemed necessary, and
+3. excluding patients for whom follow-up is not deemed necessary, and
 
 4. excluding patients for whom appropriate follow-up was already done
     (e.g. lung biopsy, follow-up imaging, tumor board, usually based
@@ -59,10 +59,10 @@ can be found in the following files. Non-VA sites should consult these
 as well as SQL code in order to reimplement the e-triggers in local
 SQL.
 
-    Colorectal Cancer Trigger Criteria.docx
-    Colorectal Cancer- ICD 9 to ICD 10 codes.docx
-    Lung Cancer Trigger Criteria.doc
-    Lung cancer Trigger- ICD 9 to ICD 10 codes.docx
+- Colorectal Cancer Trigger Criteria.docx
+- Colorectal Cancer- ICD 9 to ICD 10 codes.docx
+- Lung Cancer Trigger Criteria.doc
+- Lung cancer Trigger- ICD 9 to ICD 10 codes.docx
 
 
 
@@ -71,22 +71,23 @@ SQL.
 
 ## Downloading the SQL code
 
-1.  The most recent version of the code can be downloaded from
-    github.com/zimolzak/instruct-project-etrigger-sql where you can also
-    find additional procedures for setting dates, and guidance about
-    which tables to export for final reporting.
+1. The most recent version of the code can be downloaded from
+    github.com/zimolzak/instruct-project-etrigger-sql where you can
+    also find additional procedures for setting dates, and guidance
+    about which tables to export for final reporting.
 
-2. Before downloading, jot down or copy/paste the text in the bar near the top of GitHub, especially the **seven random-looking letters and
-numbers** such as "LWeiBCM Update Lung.sql ... **8c2f54a** 2 days
-ago." This will identify the exact version of the code you downloaded,
-for future reference.
+2. Before downloading, jot down or copy/paste the text in the bar near
+    the top of GitHub, especially the **seven random-looking letters
+    and numbers** such as "LWeiBCM Update Lung.sql ... **8c2f54a** 2
+    days ago." This will identify the exact version of the code you
+    downloaded, for future reference.
 
 3. Click on the SQL file you want above (such as `Lung.sql`).
 
 4. Click on the grey button "Raw" near the top the page that comes up.
 
 5. Use your browser menu to save file to disk (such as "File / Save
-Page As...").
+    Page As...").
 
 Email zimolzak@bcm.edu with any questions.
 
@@ -96,13 +97,17 @@ Email zimolzak@bcm.edu with any questions.
 ## Setup
 
 1. Find the first day of the current month (e.g. if today is Feb 19,
-you rewind to find Feb 1).
+    you rewind to find Feb 1).
 
-2. Subtract two more months from that (so you get Dec 1) if you are running `Lung.sql`. Subtract *three months* if you are running `Fobt.sql`.
+2. Subtract two more months from that (so you get Dec 1) if you are
+    running `Lung.sql`. Subtract *three months* if you are running
+    `Fobt.sql`.
 
-3. Set `sp_start` equal to that (such as `set @sp_start='2019-12-01 00:00:00'`).
+3. Set `sp_start` equal to that (such as `set @sp_start='2019-12-01
+00:00:00'`).
 
-4. Set `sp_end` to the end of that month (such as `set @sp_end='2019-12-31 23:59:59'`).
+4. Set `sp_end` to the end of that month (such as `set
+@sp_end='2019-12-31 23:59:59'`).
 
 5. You need to set your sta3n and sta6a.
 
@@ -115,17 +120,16 @@ you rewind to find Feb 1).
 
 1. Start your operational access to the data warehouse via your usual
     method (e.g. desktop or Citrix connection to SQL Server Management
-    Studio software). Login to a SQL server
-    (e.g. `vhacdwa01.vha.med.va.gov`) and authenticate (using either
+    Studio software). Login to a SQL server (e.g.
+    `vhacdwa01.vha.med.va.gov`) and authenticate (using either
     username such as `vha01\vhabhs...` plus password, or using Windows
     authentication).
 
-2.  Recommended: Run sections of the SQL file sequentially (for example,
-    lines 1--132 of `Fobt.sql` cover the first two `INSERT INTO`
-    operations concerning tables that were newly created), inspecting
-    for errors. Alternatively: run query all at once, inspecting for
-    errors.
-
+2. Recommended: Run sections of the SQL file sequentially (for
+    example, lines 1--132 of `Fobt.sql` cover the first two `INSERT
+    INTO` operations concerning tables that were newly created),
+    inspecting for errors. Alternatively: run query all at once,
+    inspecting for errors.
 
 
 
@@ -148,21 +152,21 @@ last 4 of SSN from these patients to the reviewer, who will validate
 via CPRS that the sample patients have a positive red flag inside the
 time period of interest.
 
-Final note: The CDW releases patch updates periodically, and this might require
-ongoing minor changes/updates to SQL code, by each site analyst.
-Standard codes (CPT, ICD, ICDProc, LOINC, Stopcode, etc.) tend to change
-every year, with addition of new codes and removal of old codes. These
-changes require corresponding updates in the SQL code. Important note
-here is that you only add new codes to the SQL, do NOT remove the old
-ones (this is so the e-trigger continues to capture usage of both the
-historical and new codes).
+Final note: The CDW releases patch updates periodically, and this
+might require ongoing minor changes/updates to SQL code, by each site
+analyst. Standard codes (CPT, ICD, ICDProc, LOINC, Stopcode, etc.)
+tend to change every year, with addition of new codes and removal of
+old codes. These changes require corresponding updates in the SQL
+code. Important note here is that you only add new codes to the SQL,
+do NOT remove the old ones (this is so the e-trigger continues to
+capture usage of both the historical and new codes).
 
 
 
 
 # Further reading
 
-*Reducing Missed Test Results Change Package*\
-*InSTRuCt Study FAQ*, also known as `IIR FAQ 5.6.19.docx`\
-*Standard Operating Procedure*, also known as `SOP for INSTRUCT_4.5.19.pdf`\
-*InSTRuCt Project Overview*, also known as `IIR Project Charter_7.12.19.pdf`
+- Reducing Missed Test Results Change Package
+- InSTRuCt Study FAQ, also known as IIR FAQ 5.6.19.docx
+- Standard Operating Procedure, also known as SOP for INSTRUCT_4.5.19.pdf
+- InSTRuCt Project Overview, also known as IIR Project Charter_7.12.19.pdf
