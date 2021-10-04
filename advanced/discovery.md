@@ -1,4 +1,4 @@
-# InSTRuCt Study E-Trigger Manual
+% E-Trigger Manual
 
 Sahar Memon, Andrew Zimolzak, Li Wei
 
