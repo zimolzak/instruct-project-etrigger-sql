@@ -1,5 +1,4 @@
-InSTRuCt Study E-Trigger Manual
-========
+# InSTRuCt Study E-Trigger Manual
 
 Sahar Memon, Andrew Zimolzak, Li Wei
 
@@ -7,16 +6,15 @@ VA Houston / Baylor College of Medicine
 
 October, 2021
 
-Overview
-========
 
-This manual outlines procedures for VA facilities participating in the
-InSTRuCt project and enables their data-analysts/informatics personnel
-to run electronic triggers (e-triggers) on the data warehouse. The SQL
-code for the InSTRuCt study comprises e-triggers to identify missed
-opportunities in follow-up of 'red flag' findings suspicious for several
-cancers, including bladder, breast, colorectal (FOBT and IDA),
-hepatocellular, and lung. In general, each SQL file proceeds by--
+
+
+# Overview
+
+This manual outlines procedures for implementing e-triggers that
+identify missed opportunities in follow-up of 'red flag' findings
+suspicious for several cancers, including colorectal (FOBT and IDA)
+and lung. In general, each SQL file proceeds by--
 
 1.  defining the red flags that warrant additional evaluation for cancer
     (often labs or imaging),
@@ -37,8 +35,10 @@ colectomy, terminal illnesses or hospice care, presence of a known
 diagnosis that would cause bleeding in the upper GI tract rather than
 lower GI tract, and appropriate colonoscopy or GI referral.
 
-How to Apply e-Trigger Process at Your Facility
-===============================================
+
+
+
+# How to Apply e-Trigger Process at Your Facility
 
 1.  Start your operational access to the data warehouse via your usual
     method (e.g. desktop or Citrix connection to SQL Server Management
@@ -94,11 +94,12 @@ How to Apply e-Trigger Process at Your Facility
     `Lung_Sta3n528_4_01_Count` (aggregate data only, suitable to
     copy/paste into Excel sheet for display on the monthly phone calls).
 
-Estimated Analyst Time Commitment
-=================================
 
-Initial set up (one-time tasks)
--------------------------------
+
+
+# Estimated Analyst Time Commitment
+
+## Initial set up (one-time tasks)
 
 **Global modifications to adapt e-triggers to the operational Data
 Warehouse: complete**
@@ -129,8 +130,10 @@ time dedicated to this task will be 40 person-hours of analyst time. The
 study team (VA Houston) will also provide guidance to the pioneer site
 in this process.
 
-On-going tasks for the duration of the site's participation
------------------------------------------------------------
+
+
+
+## On-going tasks for the duration of the site's participation
 
 **Run SQL code to retrieve data: 17 minutes per trigger per month**
 
@@ -152,18 +155,21 @@ here is that you only add new codes to the SQL, do NOT remove the old
 ones (this is so the e-trigger continues to capture usage of both the
 historical and new codes).
 
-Summary
--------
+
+
+
+## Summary
 
 40 person-hours one-time effort.\
 40 person-hours per year ongoing effort.\
 3 hours computer time during 6 month intervention.
 
-Further reading
-===============
 
-InSTRuCt project documents
---------------------------
+
+
+# Further reading
+
+## InSTRuCt project documents
 
 *Reducing Missed Test Results Change Package*\
 *InSTRuCt Study FAQ*, also known as `IIR FAQ 5.6.19.docx`\
@@ -172,8 +178,10 @@ InSTRuCt project documents
 *InSTRuCt Project Overview*, also known as
 `IIR Project Charter_7.12.19.pdf`
 
-List of auxiliary files documenting the SQL code, November 2018
----------------------------------------------------------------
+
+
+
+## List of auxiliary files documenting the SQL code, November 2018
 
     Bladder Cancer Trigger Criteria.docx
     Bladder cancer trigger- ICD 9 to ICD 10 codes.docx
