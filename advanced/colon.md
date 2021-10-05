@@ -1,4 +1,4 @@
-# Colorectal Red Flag Criteria
+# APPENDIX: Colorectal Red Flag Criteria
 
 1. Identify all patient records with iron deficiency anemia, defined as:
 
@@ -74,7 +74,7 @@ result date
 
 
 
-# Footnotes
+## Footnotes (colorectal)
 
 ^1^ LOINC: 718-7, 30313-1, 30350-3, 30352-9
 
@@ -151,3 +151,5 @@ V23.49, V23.5, V23.7, V23.81, V23.82, V23.83, V23.84, V23.89, V23.9
 
 ^32^ Based on VA clinic stop code 33, 307, 321, or clinical note title
 entry for completed GI consult
+
+

@@ -1,4 +1,4 @@
-# Lung Red Flag Criteria
+# APPENDIX: Lung Red Flag Criteria
 
 1. Identify all patient records with abnormal chest X-Ray or CT result
 flagged by radiologist as "suspicious for malignancy" ^1^
@@ -62,7 +62,7 @@ board conference ^21^ **within 30 days after** imaging result date
 
 
 
-# Footnotes
+## Footnotes (lung)
 
 ^1^ CPT: X-Ray (71010, 71015, 71020, 71021, 71022, 71030, 71035,
 71101, 71111); CT (71275, 71250, 71270, 71260)
@@ -132,3 +132,5 @@ and 8), 34.20, 34.23, 34.24, 34.25
 32666, 32667, 32668, 32669, 32670, 32671, 32672, 32700, 32705. ICD-9:
 32.0, 32.01, 32.09, 32.1, 32.20, 32.23, 32.34, 32.25, 32.26, 32.28,
 32.29, 32.3, 32.39, 32.4, 32.41, 32.49, 34.02, 34.21, 32.5, 32.59
+
+
