@@ -169,10 +169,14 @@ continues to capture usage of both the historical and new codes).
 
 
 
-# Further reading
+# Further reading (relevant files/attachments)
 
 - Reducing Missed Test Results Change Package
-- e-Trigger Standard Operating Procedure
+- e-Trigger Standard Operating Procedure (the figure "SOP for
+  DISCovery.pptx" and the explanatory legend "DISCOVERY SOP
+  text....docx")
+- `Lung.sql` code file
+- `Fobt.sql` code file
 
 
 ---
