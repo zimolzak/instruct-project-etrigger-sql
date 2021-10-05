@@ -1,6 +1,6 @@
 pdfs = Fobt.pdf Lung.pdf Triggers-Overview.pdf instruct-graph.png
 mod_sql = HCC_altered.sql IDA_altered.sql
-manual = instruct-trigger-manual.pdf instruct-trigger-manual.docx instruct-trigger-manual.txt discovery.pdf discovery.docx colon.docx
+manual = instruct-trigger-manual.pdf instruct-trigger-manual.docx instruct-trigger-manual.txt discovery.pdf discovery.docx colon.docx lung.docx
 
 .PHONY : all
 all : $(pdfs) $(mod_sql) $(manual)
@@ -29,6 +29,9 @@ discovery.docx: discovery.md
 	pandoc -o $@ $<
 
 colon.docx: colon.md
+	pandoc -o $@ $<
+
+lung.docx: lung.md
 	pandoc -o $@ $<
 
 ## end manuals
