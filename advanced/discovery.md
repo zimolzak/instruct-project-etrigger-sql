@@ -1,4 +1,4 @@
-% E-Trigger Manual
+% Cancer Test Result e-Trigger Manual
 
 Sahar Memon, Andrew Zimolzak, Li Wei
 
@@ -13,8 +13,8 @@ October, 2021
 
 This manual outlines procedures for implementing e-triggers that
 identify missed opportunities in follow-up of 'red flag' findings
-suspicious for several cancers, including colorectal (FOBT and IDA)
-and lung. In general, each SQL file proceeds by--
+suspicious for colorectal or lung cancer. In general, each SQL file
+proceeds by:
 
 1. defining the red flags that warrant additional evaluation for
     cancer (often labs or imaging),
@@ -30,14 +30,15 @@ and lung. In general, each SQL file proceeds by--
     on stop codes and procedure codes).
 
 As an example, the e-trigger for colorectal cancer identifies patients
-with positive fecal blood tests, and then excludes patients with any of
-the following: advanced age, deceased status, known colon cancer, prior
-colectomy, terminal illnesses or hospice care, presence of a known
-diagnosis that would cause bleeding in the upper GI tract rather than
-lower GI tract, and appropriate colonoscopy or GI referral.
+with positive fecal blood tests or iron deficiency anemia, and then
+excludes patients with any of the following: advanced age, deceased
+status, known colon cancer, prior colectomy, terminal illnesses or
+hospice care, presence of a known diagnosis that would cause bleeding
+in the upper GI tract rather than lower GI tract, and appropriate
+colonoscopy or GI referral.
 
 This code is public domain for *anyone* to use as they wish. However,
-if you have a peer reviewed paper based in part on the code, we ask
+if you have a peer-reviewed paper based in part on the code, we ask
 that you cite:
 
 - [Development and Validation of Trigger Algorithms to Identify Delays in Diagnostic Evaluation of Gastroenterological Cancer.](https://pubmed.ncbi.nlm.nih.gov/28804030/) *Clin Gastroenterol Hepatol.* 2018 Jan;16(1):90-98.
@@ -55,19 +56,14 @@ patients who had a test that shows a possibility of cancer, but who
 have **not** had timely follow-up?"
 
 Further details about exactly what constitutes exclusion or follow-up
-can be found in the following files. Non-VA sites should consult these
-as well as SQL code in order to reimplement the e-triggers in local
-SQL.
-
-- Colorectal Cancer Trigger Criteria.docx
-- Colorectal Cancer- ICD 9 to ICD 10 codes.docx
-- Lung Cancer Trigger Criteria.doc
-- Lung cancer Trigger- ICD 9 to ICD 10 codes.docx
+can be found in the e-trigger manual appendices. Non-VA sites should
+consult these appendices, as well as SQL code in order to reimplement
+the e-triggers in local SQL.
 
 
 
 
-# How to Apply e-Trigger Process at Your VA Facility
+# How to Apply e-Trigger Process at a VA Facility
 
 ## Downloading the SQL code
 
@@ -96,6 +92,9 @@ Email zimolzak@bcm.edu with any questions.
 
 ## Setup
 
+This example assumes that you want to retrieve one month worth of
+e-trigger counts and patient information.
+
 1. Find the first day of the current month (e.g. if today is Feb 19,
     you rewind to find Feb 1).
 
@@ -109,9 +108,10 @@ Email zimolzak@bcm.edu with any questions.
 4. Set `sp_end` to the end of that month (such as `set
 @sp_end='2019-12-31 23:59:59'`).
 
-5. You need to set your sta3n and sta6a.
+5. You need to set your sta3n and sta6a by commenting/uncommenting
+certain lines of the SQL code.
 
-6. Done! Other stuff like `fu_period` can be left as it is.
+6. Done! Other variables like `fu_period` can be left as-is.
 
 
 
@@ -136,13 +136,16 @@ Email zimolzak@bcm.edu with any questions.
 
 ## Viewing and validating data
 
-- `select * from #Lung_Sta3n528_3_Ins_U_TriggerPos`
+- To view patients with positive lung e-triggers, `select * from
+  #Lung_Sta3n528_3_Ins_U_TriggerPos`
 
-- Counts from `Lung_Sta3n528_4_01_Count` should display automatically.
+- For lung counts, `Lung_Sta3n528_4_01_Count` should display automatically.
 
-- `select * from #FOBT_Sta3n528_5_Ins_U_TriggerPos`
+- To view patients with positive colorectal e-triggers, `select * from
+  #FOBT_Sta3n528_5_Ins_U_TriggerPos`
 
-- Counts from `FOBT_Sta3n528_5_Ins_X_count` should display automatically.
+- For colorectal counts, `FOBT_Sta3n528_5_Ins_X_count` should display
+  automatically.
 
 The site personnel doing **validation** should receive the
 "Ins_U_TriggerPos" tables (which will contain PHI, so don't send
@@ -152,14 +155,14 @@ last 4 of SSN from these patients to the reviewer, who will validate
 via CPRS that the sample patients have a positive red flag inside the
 time period of interest.
 
-Final note: The CDW releases patch updates periodically, and this
-might require ongoing minor changes/updates to SQL code, by each site
-analyst. Standard codes (CPT, ICD, ICDProc, LOINC, Stopcode, etc.)
-tend to change every year, with addition of new codes and removal of
-old codes. These changes require corresponding updates in the SQL
-code. Important note here is that you only add new codes to the SQL,
-do NOT remove the old ones (this is so the e-trigger continues to
-capture usage of both the historical and new codes).
+Final note: The VA Corporate Data Warehouse releases patch updates
+periodically, and this might require ongoing minor changes/updates to
+SQL code, by each site analyst. Standard codes (CPT, ICD, ICDProc,
+LOINC, Stop code, etc.) tend to change every year, with addition of new
+codes and removal of old codes. These changes require corresponding
+updates in the SQL code. Important note here is that you only add new
+codes to the SQL; do *not* remove the old ones (this is so the e-trigger
+continues to capture usage of both the historical and new codes).
 
 
 
@@ -167,8 +170,6 @@ capture usage of both the historical and new codes).
 # Further reading
 
 - Reducing Missed Test Results Change Package
-- InSTRuCt Study FAQ, also known as IIR FAQ 5.6.19.docx
-- Standard Operating Procedure, also known as SOP for INSTRUCT_4.5.19.pdf
-- InSTRuCt Project Overview, also known as IIR Project Charter_7.12.19.pdf
+- e-Trigger Standard Operating Procedure
 
 
