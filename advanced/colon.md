@@ -2,9 +2,10 @@
 
 1. Identify all patient records with iron deficiency anemia, defined as:
 
-(hemoglobin (Hb) ≤ 11 g/dl ^1^ *and* mean corpuscular volume (MCV) ≤
-81 fL ^2^ *and* no ferritin ≥ 100 ng/ml within 12 months before or 60
-days after CBC (i.e., ferritin not checked or result \< 100) ^3^)
+(hemoglobin (Hb) less than or equal to 11 g/dL ^1^ *and* mean
+corpuscular volume (MCV) less than or equal to 81 fL ^2^ *and* no
+ferritin greater than or equal to 100 ng/mL within 12 months before or
+60 days after CBC (i.e., ferritin not checked or result \< 100) ^3^)
 
 OR
 
@@ -32,7 +33,7 @@ days after** test result date
 within **1 year prior to and 60 days after** test result date
 
 7. Then exclude patients with a diagnosis of pancreatic cancer^9^ *or*
-leukemia \[except acute lymphocytic\]^10^ *or* liver cancer^11^ *or*
+leukemia (except acute lymphocytic)^10^ *or* liver cancer^11^ *or*
 biliary cancer^12^ *or* esophageal cancer^13^ *or* gastric cancer^14^
 *or* brain cancer^15^ *or* uterine cancer^16^ *or* ovarian cancer^17^
 *or* peritoneal, omental, or mesenteric cancer^18^ *or* myeloma^19^

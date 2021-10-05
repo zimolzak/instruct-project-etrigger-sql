@@ -136,13 +136,15 @@ certain lines of the SQL code.
 
 ## Viewing and validating data
 
-- To view patients with positive lung e-triggers, `select * from
-  #Lung_Sta3n528_3_Ins_U_TriggerPos`
+- To view patients with positive lung e-triggers, run the following
+SQL, after `Lung.sql` completes: `select * from
+#Lung_Sta3n528_3_Ins_U_TriggerPos`
 
 - For lung counts, `Lung_Sta3n528_4_01_Count` should display automatically.
 
-- To view patients with positive colorectal e-triggers, `select * from
-  #FOBT_Sta3n528_5_Ins_U_TriggerPos`
+- To view patients with positive colorectal e-triggers, run the
+following SQL, after `Fobt.sql` completes: `select * from
+#FOBT_Sta3n528_5_Ins_U_TriggerPos`
 
 - For colorectal counts, `FOBT_Sta3n528_5_Ins_X_count` should display
   automatically.
@@ -171,5 +173,8 @@ continues to capture usage of both the historical and new codes).
 
 - Reducing Missed Test Results Change Package
 - e-Trigger Standard Operating Procedure
+
+
+---
 
 
