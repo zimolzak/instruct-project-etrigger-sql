@@ -1,10 +1,14 @@
 % Cancer Test Result e-Trigger Manual
 
-Sahar Memon, Andrew Zimolzak, Li Wei
+**Guidance complied by:** Sahar Memon, Andrew Zimolzak, Li Wei, Daniel
+Murphy, Hardeep Singh.
 
-VA Houston / Baylor College of Medicine
+**Affiliation:** Michael E. DeBakey Veterans Affairs Medical Center,
+  and Baylor College of Medicine. Houston, TX, USA.
 
-October, 2021
+**For questions:** [zimolzak@bcm.edu](mailto:zimolzak@bcm.edu) and [Sahar.Memon@bcm.edu](mailto:Sahar.Memon@bcm.edu)
+
+**Date:** October, 2021
 
 
 
@@ -51,7 +55,9 @@ that you cite:
 
 # How are the e-triggers designed?
 
-An e-trigger answers the question, "How do you find (in the database)
+The lung and colorectal e-triggers are examples of one type of
+e-trigger, which we call a *close the loop e-trigger.* These two
+e-triggers answer the question, "How do you find (in the database)
 patients who had a test that shows a possibility of cancer, but who
 have **not** had timely follow-up?"
 
@@ -68,9 +74,9 @@ the e-triggers in local SQL.
 ## Downloading the SQL code
 
 1. The most recent version of the code can be downloaded from
-    github.com/zimolzak/instruct-project-etrigger-sql where you can
-    also find additional procedures for setting dates, and guidance
-    about which tables to export for final reporting.
+    [github.com/zimolzak/instruct-project-etrigger-sql](https://github.com/zimolzak/instruct-project-etrigger-sql)
+    where you can also find additional procedures for setting dates,
+    and guidance about which tables to export for final reporting.
 
 2. Before downloading, jot down or copy/paste the text in the bar near
     the top of GitHub, especially the **seven random-looking letters
@@ -84,8 +90,6 @@ the e-triggers in local SQL.
 
 5. Use your browser menu to save file to disk (such as "File / Save
     Page As...").
-
-Email zimolzak@bcm.edu with any questions.
 
 
 
@@ -172,11 +176,8 @@ continues to capture usage of both the historical and new codes).
 # Further reading (relevant files/attachments)
 
 - Reducing Missed Test Results Change Package
-- e-Trigger Standard Operating Procedure (the figure "SOP for
-  DISCovery.pptx" and the explanatory legend "DISCOVERY SOP
-  text....docx")
-- `Lung.sql` code file
-- `Fobt.sql` code file
+- `Lung.sql` code file (see GitHub)
+- `Fobt.sql` code file (see GitHub)
 
 
 ---
