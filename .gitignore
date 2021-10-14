@@ -4,9 +4,6 @@
 *_altered.sql
 *.aux
 *.log
-instruct-trigger-manual.docx
-instruct-trigger-manual.txt
 *.png
 advanced/*.docx
-advanced/discovery-appendices.md
-advanced/discovery-manual-with-appendices.md
+advanced/discovery-manual-icd9.md

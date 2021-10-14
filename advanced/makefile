@@ -1,44 +1,35 @@
 pdfs = Fobt.pdf Lung.pdf Triggers-Overview.pdf instruct-graph.png
 mod_sql = HCC_altered.sql IDA_altered.sql
-manual = instruct-trigger-manual.pdf instruct-trigger-manual.docx instruct-trigger-manual.txt discovery.pdf discovery.docx colon.docx lung.docx discovery-manual-with-appendices.docx
+instruct = instruct-trigger-manual.pdf instruct-trigger-manual.docx
+discovery = discovery-manual-icd9.docx discovery-manual-icd9.md discovery-manual-icd9.pdf
 
 .PHONY : all
-all : $(pdfs) $(mod_sql) $(manual)
+all : $(pdfs) $(mod_sql) $(instruct) $(discovery)
 
 %.pdf : ../%.sql
 	enscript --fancy-header --landscape --highlight=sql --font=Courier7 \
 	--media=Letter --mark-wrapped-lines=arrow --line-numbers -o - $< | \
 	ps2pdf - > $@
 
-## manuals
+## Instruct manuals
 
 instruct-trigger-manual.pdf: instruct-trigger-manual.tex
 	pdflatex $<
 	pdflatex $<
 
-%.docx: %.tex
+instruct-trigger-manual.docx: instruct-trigger-manual.tex
 	pandoc -o $@ $<
 
-instruct-trigger-manual.txt: instruct-trigger-manual.tex
+## Discovery manuals
+
+discovery-manual-icd9.md: discovery.md lung-icd9.md colon-icd9.md
+	cat discovery.md colon-icd9.md lung-icd9.md > $@
+
+discovery-manual-icd9.docx: discovery-manual-icd9.md
 	pandoc -o $@ $<
 
-discovery.pdf: discovery.md
+discovery-manual-icd9.pdf: discovery-manual-icd9.md
 	pandoc -o $@ $<
-
-discovery.docx: discovery.md
-	pandoc -o $@ $<
-
-colon.docx: colon.md
-	pandoc -o $@ $<
-
-lung.docx: lung.md
-	pandoc -o $@ $<
-
-discovery-manual-with-appendices.docx: discovery-manual-with-appendices.md
-	pandoc -o $@ $<
-
-discovery-manual-with-appendices.md: discovery.md lung.md colon.md
-	cat discovery.md colon.md lung.md > $@
 
 ## end manuals
 
@@ -51,8 +42,14 @@ Triggers-Overview.pdf : Triggers-Overview.md
 %.png: %.dot
 	dot -Tpng -o $@ $<
 
-.PHONY : clean
+.PHONY : clean clean-instruct clean-discovery
 
-clean :
+clean : clean-instruct clean-discovery
+	rm -f $(pdfs) $(mod_sql)
+
+clean-instruct:
 	rm -f instruct-trigger-manual.aux instruct-trigger-manual.log
-	rm -f $(pdfs) $(mod_sql) $(manual)
+	rm -f $(instruct)
+
+clean-discovery:
+	rm -f $(discovery)
