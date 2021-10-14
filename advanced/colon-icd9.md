@@ -78,7 +78,7 @@ result date
 
 ^1^ LOINC: 718-7, 30313-1, 30350-3, 30352-9
 
-^2^ LOINC: 30428-7, 787-2, 2276-4
+^2^ LOINC: 30428-7, 787-2
 
 ^3^ LOINC: 2276-4
 
@@ -87,7 +87,7 @@ result date
 
 ^5^ Based on status in mortality table
 
-^6^ ICD-9: 153.xx,154.0,154.1,154.8 (where 'x' is any value between 0
+^6^ ICD-9: 153.xx, 154.0, 154.1, 154.8 (where 'x' is any value between 0
 and 9)
 
 ^7^ ICD-9: 45.81,45.82,45.83; CPT: 44150, 44151, 44155, 44156, 44157,
