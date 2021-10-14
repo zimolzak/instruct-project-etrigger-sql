@@ -42,7 +42,7 @@ in the upper GI tract rather than lower GI tract, and appropriate
 colonoscopy or GI referral.
 
 This code is public domain for *anyone* to use as they wish. However,
-if you have a peer-reviewed paper based in part on the code, we ask
+if you have a published paper based in part on the code, we ask
 that you cite:
 
 - [Development and Validation of Trigger Algorithms to Identify Delays in Diagnostic Evaluation of Gastroenterological Cancer.](https://pubmed.ncbi.nlm.nih.gov/28804030/) *Clin Gastroenterol Hepatol.* 2018 Jan;16(1):90-98.
@@ -112,8 +112,9 @@ e-trigger counts and patient information.
 4. Set `sp_end` to the end of that month (such as `set
 @sp_end='2019-12-31 23:59:59'`).
 
-5. You need to set your sta3n and sta6a by commenting/uncommenting
-certain lines of the SQL code.
+5. You need to set your sta3n and sta6a. You can do this by
+commenting/uncommenting code in lines 100--124 for `Lung.sql`, or
+lines 118--146 for `Fobt.sql`.
 
 6. Done! Other variables like `fu_period` can be left as-is.
 
@@ -129,11 +130,12 @@ certain lines of the SQL code.
     username such as `vha01\vhabhs...` plus password, or using Windows
     authentication).
 
-2. Recommended: Run sections of the SQL file sequentially (for
-    example, lines 1--132 of `Fobt.sql` cover the first two `INSERT
-    INTO` operations concerning tables that were newly created),
-    inspecting for errors. Alternatively: run query all at once,
-    inspecting for errors.
+2. *Recommended:* Run sections of the SQL file sequentially (for
+example, lines 1--198 of `Fobt.sql` cover the first two `INSERT INTO`
+operations concerning tables that were newly created), inspecting for
+errors.
+
+    *Alternatively:* run the query all at once, inspecting for errors.
 
 
 
