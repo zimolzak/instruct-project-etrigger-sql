@@ -20,7 +20,7 @@ test (FIT) ^4^ result)
 2. Then exclude patients \< 40 years old *or* \>75 years old on test
 result date
 
-3. Then exclude patients listed as deceased^5^ within **60 days
+3. Then exclude patients listed as deceased ^5^ within **60 days
 after** test result date
 
 4. Then exclude patients with active colon cancer diagnosis ^6^ within
@@ -32,12 +32,12 @@ days after** test result date
 6. Then exclude patients enrolled in hospice or palliative care ^8^
 within **1 year prior to and 60 days after** test result date
 
-7. Then exclude patients with a diagnosis of pancreatic cancer^9^ *or*
-leukemia (except acute lymphocytic)^10^ *or* liver cancer^11^ *or*
-biliary cancer^12^ *or* esophageal cancer^13^ *or* gastric cancer^14^
-*or* brain cancer^15^ *or* uterine cancer^16^ *or* ovarian cancer^17^
-*or* peritoneal, omental, or mesenteric cancer^18^ *or* myeloma^19^
-*or* lung, bronchus, tracheal, or mesothelial cancer diagnosis^20^
+7. Then exclude patients with a diagnosis of pancreatic cancer ^9^ *or*
+leukemia (except acute lymphocytic) ^10^ *or* liver cancer ^11^ *or*
+biliary cancer ^12^ *or* esophageal cancer ^13^ *or* gastric cancer ^14^
+*or* brain cancer ^15^ *or* uterine cancer ^16^ *or* ovarian cancer ^17^
+*or* peritoneal, omental, or mesenteric cancer ^18^ *or* myeloma ^19^
+*or* lung, bronchus, tracheal, or mesothelial cancer diagnosis ^20^
 within **1 year prior to and 60 days after** test result date
 
 8. Then exclude patients with diagnosis of upper GI bleeding
@@ -48,10 +48,9 @@ bleeding ^22^ within **6 months prior to** the test result date
 to** test result date
 
 10. Then for iron deficiency anemia only, exclude patients with
-menorrhagia ^24^ *or* hematuria ^25^ *or* epistaxis ^26^ *or* uterine
-, cervical or vaginal bleeding ^27^ *or* hemoptysis ^28^ *or*
-secondary hemorrhage ^29^ **within 6 months prior to** test result
-date
+menorrhagia ^24^ *or* hematuria ^25^ *or* epistaxis ^26^ *or* uterine,
+cervical or vaginal bleeding ^27^ *or* hemoptysis ^28^ *or* secondary
+hemorrhage ^29^ **within 6 months prior to** test result date
 
 11. Then for iron deficiency anemia only, exclude patients with
 diagnosis of pregnancy ^30^ **within 1 year prior to or 60 days
@@ -88,7 +87,7 @@ result date
 
 ^5^ Based on status in mortality table
 
-^6^ ICD-9:153.xx,154.0,154.1,154.8 (where 'x' is any value between 0
+^6^ ICD-9: 153.xx,154.0,154.1,154.8 (where 'x' is any value between 0
 and 9)
 
 ^7^ ICD-9: 45.81,45.82,45.83; CPT: 44150, 44151, 44155, 44156, 44157,
@@ -145,7 +144,7 @@ hospice/palliative care consult
 ^29^ ICD-9: 958.2
 
 ^30^ ICD-9: 629.81, 631.0, 633.0, 633.01, 633.10, 633.2x, 633.8x,
-633.9x ,V22.0,V22.1, V22.2, V23.0, V23.1, V23.2, V23.3, V23.41,
+633.9x,V22.0,V22.1, V22.2, V23.0, V23.1, V23.2, V23.3, V23.41,
 V23.49, V23.5, V23.7, V23.81, V23.82, V23.83, V23.84, V23.89, V23.9
 
 ^31^ ICD-9: 282.4x

@@ -10,7 +10,7 @@ flagged by radiologist as "suspicious for malignancy" ^1^
 
 2. Then exclude patients \< 18 years old on imaging result date
 
-3. Then exclude patients listed as deceased^2^ within **30 days
+3. Then exclude patients listed as deceased ^2^ within **30 days
 after** imaging result date
 
 4. Then exclude patients with active lung cancer diagnosis ^3^ within
@@ -22,12 +22,12 @@ year prior to** and **30 days after** imaging result date
 6. Then exclude patients enrolled in hospice or palliative care ^5^
 within **1 year prior to** and **30 days after** imaging result date
 
-7. Then exclude patients with a diagnosis of pancreatic cancer^6^ *or*
-leukemia (except acute lymphocytic)^7^ *or* liver cancer^8^ *or*
-biliary cancer^9^ *or* esophageal cancer^10^ *or* gastric cancer^11^
-*or* brain cancer^12^ *or* uterine cancer^13^ *or* ovarian cancer^14^
-*or* peritoneal, omental, or mesenteric cancer^15^ *or* myeloma^16^
-*or* tracheal cancer diagnosis^17^ within **1 year prior to** and **30
+7. Then exclude patients with a diagnosis of pancreatic cancer ^6^ *or*
+leukemia (except acute lymphocytic) ^7^ *or* liver cancer ^8^ *or*
+biliary cancer ^9^ *or* esophageal cancer ^10^ *or* gastric cancer ^11^
+*or* brain cancer ^12^ *or* uterine cancer ^13^ *or* ovarian cancer ^14^
+*or* peritoneal, omental, or mesenteric cancer ^15^ *or* myeloma ^16^
+*or* tracheal cancer diagnosis ^17^ within **1 year prior to** and **30
 days after** imaging result date
 
 

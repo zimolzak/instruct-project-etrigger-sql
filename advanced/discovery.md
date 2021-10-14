@@ -30,7 +30,7 @@ proceeds by:
 3. excluding patients for whom follow-up is not deemed necessary, and
 
 4. excluding patients for whom appropriate follow-up was already done
-    (e.g. lung biopsy, follow-up imaging, tumor board, usually based
+    (e.g., lung biopsy, follow-up imaging, tumor board, usually based
     on stop codes and procedure codes).
 
 As an example, the e-trigger for colorectal cancer identifies patients
@@ -99,7 +99,7 @@ the e-triggers in local SQL.
 This example assumes that you want to retrieve one month worth of
 e-trigger counts and patient information.
 
-1. Find the first day of the current month (e.g. if today is Feb 19,
+1. Find the first day of the current month (e.g., if today is Feb 19,
     you rewind to find Feb 1).
 
 2. Subtract two more months from that (so you get Dec 1) if you are
@@ -124,7 +124,7 @@ lines 118--146 for `Fobt.sql`.
 ## Running code
 
 1. Start your operational access to the data warehouse via your usual
-    method (e.g. desktop or Citrix connection to SQL Server Management
+    method (e.g., desktop or Citrix connection to SQL Server Management
     Studio software). Login to a SQL server (e.g.
     `vhacdwa01.vha.med.va.gov`) and authenticate (using either
     username such as `vha01\vhabhs...` plus password, or using Windows
