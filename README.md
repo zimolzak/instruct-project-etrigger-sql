@@ -38,7 +38,7 @@ site](https://dvagov.sharepoint.com/sites/VHAiquest/SitePages/Singh_InSTRuCt_2.a
 This link is specific to *cohort 2* and needs to be accessed from the
 VA network.
 
-Setup
+Setup (How do I set start/stop dates?)
 --------
 
 1. Find the first day of the current month (e.g. if today is Feb 19,
