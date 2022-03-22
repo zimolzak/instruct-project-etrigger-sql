@@ -122,6 +122,7 @@ values
 --,(512,'512') --	(512) Maryland HCS (Baltimore MD)
 --,(580,'580') --	(580) Houston, TX
 --,(541,'541') --(541) Cleveland, OH
+--,(663,'663') --(663) SEATTLE VA MEDICAL CENTER
 
 
 if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n528_0_1_inputP') is not null)	    --altered (ORD_...Dflt) --altered (object_id temp table)
@@ -1994,6 +1995,111 @@ GO
 INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (549, N'NEW LESIONS, ATTN. NEEDED', 1, 1000000466)    --altered (ORD_...Dflt) --altered (temp table)
 GO
 INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode ([sta3n], [RadiologyDiagnosticCode], [isRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (580, N'POSSIBLE NEW LUNG CANCER', 1, 1000002624)    --altered (ORD_...Dflt) --altered (temp table)
+GO
+
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'10C - Follow-up 6 m ', 0, 800002084)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'10D - Follow-up 9 m ', 0, 800002085)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'10E - Follow-up 12 m', 0, 800002086)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'10G - Pulm consult needed semi-urgent ', 0, 800002088)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'10H - No further follow-up recommended', 0, 800002089)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'10B - Follow-up 3 m ', 1, 800002083)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'Lung nodule, not known to be benign', 1, 800002126)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'NORMAL', 0, 800001509)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'ELECTRONIC IMAGES ONLY', 0, 800001510)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'NO ALERT REQUIRED', 0, 800001511)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'SIGNIFICANT ABNORMALITY, ATTN NEEDED', 0, 800001512)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'CRITICAL ABNORMALITY', 0, 800001513)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'MAMMOGRAPHY REPORT ENTERED', 0, 800001515)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'BI-RADS CATEGORY 0', 0, 800001516)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'BI-RADS CATEGORY 1', 0, 800001517)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'BI-RADS CATEGORY 2', 0, 800001518)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'BI-RADS CATEGORY 3', 0, 800001519)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'BI-RADS CATEGORY 4', 1, 800001520)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'BI-RADS CATEGORY 5', 0, 800001521)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'BI-RADS CATEGORY 6', 0, 800001522)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'EXTREMELY DENSE', 0, 800001526)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'Outside Procedure Report Entered', 0, 800001527)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'ABDOMINAL AORTIC ANEURYSM NOT PRESENT', 0, 800001528)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'ABDOMINAL AORTIC ANEURYSM PRESENT', 0, 800001529)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'DOES NOT SATISFY SCREEN FOR AAA', 0, 800001530)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'LUNGRADS 0: INCOMPLETE', 0, 800001531)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'LUNGRADS 1: NEGATIVE', 0, 800001532)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'LUNGRADS 2: BENIGN NODULE APPEARANCE OR BEHAVIOR', 0, 800001533)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'LUNGRADS 3: PROBABLY BENIGN NODULE', 0, 800001534)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'LUNGRADS S: SIGNIFICANT INCIDENTAL FINDING', 0, 800001538)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'LUNGRADS C: PRIOR LUNG CANCER', 0, 800001539)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'PR 4B', 0, 800001546)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'NVCC', 0, 800001547)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'VACAA', 0, 800001548)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'CONTRACT', 0, 800001549)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'NOT ORDERED BY VA', 0, 800001550)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'BIRADS: 4 - Suspicious Abnormality', 1, 800001552)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'IMAGING CRITICAL FINDING', 0, 800001555)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'MINOR ABNORMALITY', 0, 800001557)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'MAJOR ABNORMALITY, NO ATTN. NEEDED', 0, 800001558)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'ABNORMALITY, ATTN. NEEDED', 0, 800001559)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'MAJOR ABNORMALITY, PHYSICIAN AWARE', 0, 800001560)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'UNDICTATED FILMS NOT RETURNED, 3 DAYS', 0, 800001561)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'UNSATISFACTORY/INCOMPLETE EXAM', 0, 800001562)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'POSSIBLE TUBERCULOSIS', 0, 800001564)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'TELERADIOLOGY, NOT YET DICTATED', 0, 800001566)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'POSSIBLE MALIGNANCY', 1, 800001514)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'LUNGRADS 4A: SUSPICIOUS NODULE', 1, 800001535)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'LUNGRADS 4B: SUSPICIOUS NODULE', 1, 800001536)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'LUNGRADS 4X: SUSPICIOUS NODULE WITH ADDITIONAL FEATURES', 1, 800001537)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'INCIDENTAL LUNG NODULE(NONSCREENING)', 1, 800001551)
+GO
+INSERT #Lung_Sta3n528_0_A_RedFlagXRayCTDiagnosticCode  ([sta3n], [RadiologyDiagnosticCode], [IsRedFlag], [RadiologyDiagnosticCodeSID]) VALUES (663, N'POSSIBLE MALIGNANCY, FOLLOW-UP NEEDED', 1, 800001565)
 GO
 
 
