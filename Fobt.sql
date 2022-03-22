@@ -144,6 +144,7 @@ values
 --,(512,'512') --	(512) Maryland HCS (Baltimore MD)
 --,(580,'580') --	(580) Houston, TX
 --,(541,'541') --(541) Cleveland, OH
+--,(663,'663') --(663) SEATTLE VA MEDICAL CENTER
 
 if (OBJECT_ID('tempdb.dbo.#FOBT_Sta3n528_0_1_inputP') is not null)	    --altered (ORD_...Dflt) --altered (object_id temp table)
 	drop table #FOBT_Sta3n528_0_1_inputP    --altered (ORD_...Dflt) --altered (temp table)
@@ -1470,6 +1471,32 @@ GO
 INSERT #FOBT_Sta3n528_0_7_FOBTLabTestName ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (635, 1000059624, N'14564-9', N'FOBT#2, 1/2007 thru 12/2009', N'FOBT#2')    --altered (ORD_...Dflt) --altered (temp table)
 GO
 
+INSERT #FOBT_Sta3n528_0_7_FOBTLabTestName   ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (663, 800084794, N'14563-1', N'OCCULT BLOOD #1-IMMUNO(Prior to 11/4/09)', N'FOBT#1i')
+GO
+INSERT #FOBT_Sta3n528_0_7_FOBTLabTestName   ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (663, 800084795, N'14564-9', N'OCCULT BLOOD #2-IMMUNO(Prior to 11/4/09)', N'FOBT#2i')
+GO
+INSERT #FOBT_Sta3n528_0_7_FOBTLabTestName   ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (663, 800080569, N'14565-6', N'OCCULT BLOOD #3-IMMUNO(Prior to 11/4/09)', N'FOBT#3i')
+GO
+INSERT #FOBT_Sta3n528_0_7_FOBTLabTestName   ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (663, 800018716, N'2335-8', N'OCCULT BLOOD SINGLE RANDOM', N'FOBT')
+GO
+INSERT #FOBT_Sta3n528_0_7_FOBTLabTestName   ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (663, 800080570, N'2335-8', N'OCCULT BLOOD SINGLE RANDOM-IM (<11/4/09)', N'FOBTi')
+GO
+INSERT #FOBT_Sta3n528_0_7_FOBTLabTestName   ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (663, 800088159, N'2335-8', N'OCCULT BLOOD #1 (PRIOR TO 7/26/16)', N'FOBT#1')
+GO
+INSERT #FOBT_Sta3n528_0_7_FOBTLabTestName   ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (663, 800088160, N'2335-8', N'OCCULT BLOOD #2 (PRIOR TO 7/26/16)', N'FOBT#2')
+GO
+INSERT #FOBT_Sta3n528_0_7_FOBTLabTestName   ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (663, 800088944, N'2335-8', N'OCCULT BLOOD #3 (PRIOR TO 7/26/16)', N'FOBT#3')
+GO
+INSERT #FOBT_Sta3n528_0_7_FOBTLabTestName   ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (663, 800088961, N'2335-8', N'OCCULT BLOODX3 (PRIOR TO 9/17/02)', N'FOBTzz')
+GO
+INSERT #FOBT_Sta3n528_0_7_FOBTLabTestName   ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (663, 800219311, N'29771-3', N'OCCULT BLOOD FIT RANDOM', N'FIT Ran')
+GO
+INSERT #FOBT_Sta3n528_0_7_FOBTLabTestName   ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (663, 800219312, N'29771-3', N'OCCULT BLOOD (FIT) #1 OF 1', N'FIT1/1')
+GO
+INSERT #FOBT_Sta3n528_0_7_FOBTLabTestName   ([Sta3n], [LabChemTestSID], [LOINC_Original], [LabChemTestName], [LabChemPrintTestName]) VALUES (663, 800224679, N'57905-2', N'CSP#577 OCCULT BLOOD(FIT)#1OF1', N'FIT#1/1')
+GO
+
+
 
 ---- FOBT test LOINC code list 
 --	if (OBJECT_ID('tempdb.dbo.#FOBT_Sta3n528_0_7_LOINC') is not null) 		    --altered (ORD_...Dflt) --altered (object_id temp table)
@@ -1631,6 +1658,14 @@ INSERT #FOBT_Sta3n528_0_A_RedFlagFOBTTestResult ([sta3n], [FOBTTestResult], [IsR
 GO
 INSERT #FOBT_Sta3n528_0_A_RedFlagFOBTTestResult ([sta3n], [FOBTTestResult], [IsRedFlag]) VALUES (691, N'Positive', 1)    --altered (ORD_...Dflt) --altered (temp table)
 GO
+INSERT #FOBT_Sta3n528_0_A_RedFlagFOBTTestResult ([Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 663, N'Positive', 1)
+GO												
+INSERT #FOBT_Sta3n528_0_A_RedFlagFOBTTestResult ([Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 663, N'POS', 1)
+GO												
+INSERT #FOBT_Sta3n528_0_A_RedFlagFOBTTestResult ([Sta3n], [FOBTTestResult], [IsRedFlag]) VALUES ( 663, N'P', 1)
+GO
+
+
 
 --------------------------------------------------------------------------------------------------------------------------------
 -----  2. Extract positive (red-flagged) FOBT tests from sta6a in the study period
