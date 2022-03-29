@@ -1,7 +1,17 @@
 Advanced usage
 ========
 
-This has auxiliary scripts to do pretty-printing of SQL source code
+Useful pseudocode files
+--------
+
+- `discovery.md`
+- `lung-icd10.md`
+- `colon-icd10.md`
+
+Other files
+--------
+
+This directory also includes auxiliary scripts to do pretty-printing of SQL source code
 listings (enscript), listing the input and output tables of each SQL
 file (Perl), and string replacements to make the SQL work on the wider
 VA data warehouse.
