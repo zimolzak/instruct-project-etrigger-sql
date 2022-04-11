@@ -2183,7 +2183,13 @@ if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n528_1_In_1_All_Chest_XRayCTPET_SSN') is not
 	from #Lung_Sta3n528_1_In_1_All_Chest_XRayCTPET as a    --altered (ORD_...Dflt) --altered (temp table)
 	left join [CDWWork].[SPatient].[SPatient] as b    --altered (ORD_...Src)
 	on a.sta3n=b.sta3n and a.[PatientSID]=b.patientsid
-	--where CohortName='Cohort20180712' 
+	where --CohortName='Cohort20180712' 
+		(b.CDWPossibleTestPatientFlag='N'
+		and PatientICN is not null
+		and ScrSSN is not null
+		and b.PatientSID>0)											
+										
+
 
 	
 
