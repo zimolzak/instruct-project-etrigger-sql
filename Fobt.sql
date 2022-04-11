@@ -1709,7 +1709,12 @@ if (OBJECT_ID('tempdb.dbo.#FOBT_Sta3n528_1_Inc_1_AllFOBTSta6a') is not null)    
   on d.sta3n=s.sta3n and d.Sta6a=s.Sta6a
  inner join [CDWWork].[SPatient].[SPatient] as VStatus    --altered (ORD_...Src)
 on labChem.PatientSID=VStatus.PatientSID and labChem.sta3n=VStatus.sta3n
-  where --labchem.CohortName='Cohort20180712' and 
+   where --labchem.CohortName='Cohort20180712' and 
+        (VStatus.CDWPossibleTestPatientFlag='N'
+	and PatientICN is not null
+	and ScrSSN is not null
+	and VStatus.PatientSID>0)
+    and
     labChem.[LabChemSpecimenDateTime] between (select sp_start from #FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt) --altered (temp table)
 											and(select sp_end from #FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt) --altered (temp table)
 go
