@@ -1,4 +1,3 @@
-*.pdf
 *~
 .DS_Store
 *_altered.sql
@@ -6,5 +5,8 @@
 *.log
 *.png
 advanced/*.docx
+advanced/*.pdf
+
 advanced/discovery-manual-icd9.md
 advanced/discovery-manual.md
+# Ignore those 2 .md because they're auto-generated.
