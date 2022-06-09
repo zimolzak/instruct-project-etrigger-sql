@@ -1,0 +1,79 @@
+orcids
+
+
+# CGH
+
+https://pubmed.ncbi.nlm.nih.gov/28804030/
+cgh
+2018
+crc hcc
+
+Veteran Affairs Health Services Research and Development CREATE grant (CRE-12-033)
+Houston VA HSR&D Center for Innovations in Quality, Effectiveness and Safety (CIN 13–413)
+ahrq cda (K08-HS022901 to D.R.M.)
+HSRD (CRE 12-033; pcase USA 14-274 to H.S.)
+NCPS, AHRQ (R01HS022087)
+
+
+
+
+# Chest
+
+https://pubmed.ncbi.nlm.nih.gov/27178786/
+chest
+2016
+lung
+
+VA [CRE-12033]
+va hrsd iquest  [CIN 13–413]
+ahrq cda [K08-HS022901]
+hsrd [CRE 12-033; pecase USA 14-274]
+va ncps, ahrq [R01HS022087].
+
+
+
+
+# radiology
+
+https://pubmed.ncbi.nlm.nih.gov/25961634/
+radiology
+2015
+lung
+
+
+
+
+
+# bmjqs
+
+https://pubmed.ncbi.nlm.nih.gov/23873756/
+bmjqs
+2014
+prostate and crc
+
+NIH K23 career development award (K23CA125585)
+ahrq , the Agency for Health Care Research and Quality (R18HS017820) and in part by the Houston VA HSR&D Center of Excellence (HFP90-020).
+
+
+
+# orcids
+
+
+- me 0000-0003-0973-5639 
+- drm
+- andm 0000-0001-7993-8584
+- vv
+- elise
+- dean 0000-0001-5811-8915 
+- li
+- louis
+- viraj 0000-0003-0850-6033
+- hardeep 0000-0002-4419-8974 
+- eric j thomas (radiol 2015)
+- archana laxmisan
+- brian a reis
+- adol esquivel
+- samuel n forjuoh
+- rohan parikh
+- myrna m khan
+
