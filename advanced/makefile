@@ -1,11 +1,11 @@
 discovery = discovery-manual.docx discovery-manual.pdf discovery-manual.md
 instruct = instruct-trigger-manual.pdf instruct-trigger-manual.docx
-pdfs = Fobt.pdf Lung.pdf
+code_pdfs = Fobt_sql.pdf Lung_sql.pdf
 mod_sql = HCC_altered.sql IDA_altered.sql
 misc = Triggers-Overview.pdf instruct-graph.png
 
 .PHONY : all
-all : $(discovery) $(instruct)  $(pdfs) $(mod_sql) $(misc)
+all : $(discovery) $(instruct) $(code_pdfs) $(mod_sql) $(misc)
 
 ## Discovery manuals
 
@@ -29,7 +29,7 @@ instruct-trigger-manual.docx: instruct-trigger-manual.tex
 
 ## Code PDFs
 
-%.pdf : ../%.sql
+%_sql.pdf : ../%.sql
 	enscript --fancy-header --landscape --highlight=sql --font=Courier7 \
 	--media=Letter --mark-wrapped-lines=arrow --line-numbers -o - $< | \
 	ps2pdf - > $@
@@ -52,7 +52,7 @@ Triggers-Overview.pdf : Triggers-Overview.md
 .PHONY : clean clean-instruct clean-discovery
 
 clean : clean-instruct clean-discovery
-	rm -f $(pdfs) $(mod_sql) $(misc)
+	rm -f $(code_pdfs) $(mod_sql) $(misc)
 
 clean-instruct:
 	rm -f instruct-trigger-manual.aux instruct-trigger-manual.log
