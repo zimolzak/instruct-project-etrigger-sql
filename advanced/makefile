@@ -15,7 +15,7 @@ discovery-manual.md: discovery.md lung-icd10.md colon-icd10.md
 discovery-manual.docx: discovery-manual.md
 	pandoc -o $@ $<
 
-discovery-manual.pdf: discovery-manual.md
+%.pdf: %.md
 	pandoc -o $@ $<
 
 ## Instruct manuals
@@ -41,8 +41,7 @@ instruct-trigger-manual.docx: instruct-trigger-manual.tex
 
 ## Misc.
 
-Triggers-Overview.pdf : Triggers-Overview.md
-	pandoc -o $@ $<
+# Triggers-Overview.pdf = covered by wildcard "%" pandoc rule
 
 %.png: %.dot
 	dot -Tpng -o $@ $<
