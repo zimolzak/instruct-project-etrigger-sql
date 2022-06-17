@@ -25,6 +25,7 @@ library(ggplot2)
 library(tidyr)
 library(dplyr)
 library(knitr)
+library(here)
 ```
 
 
@@ -32,6 +33,9 @@ library(knitr)
 ```{r functions, include=FALSE}
 x_to_proportion <- function(x) { 
   0.5 + atan(x) / pi
+  # max slope = 1/pi = 0.32, at x=0.
+  # going up by 1 makes proportion go about 0.5 to 0.75
+  # x up by 0.03 makes p go to 0.51
 }
 
 proportion_to_x <- function(proportion) { 
@@ -40,7 +44,7 @@ proportion_to_x <- function(proportion) {
 
 next_proportion <- function(current_proportion) {  # returns simple numeric
   current_x <- proportion_to_x(current_proportion)
-  new_x <- current_x + rnorm(1)
+  new_x <- current_x + rnorm(1) - 0.1  # decrease a little each month
   x_to_proportion(new_x)
 }
 
@@ -50,7 +54,7 @@ extend_by_one <- function(proportion_vec) {  # returns numeric vector
 }
 
 generate_run <- function(n) {  # returns numeric vector of length n
-  my_run <- c(next_proportion(0.5))
+  my_run <- c(next_proportion(0.6))  # starting value
   for (i in 2:n) {
     my_run <- extend_by_one(my_run)
   }
@@ -71,7 +75,7 @@ generate_etrigger_data <- function(number_sites, months_per_site) {  # returns d
 ```
 
 
-```{r generate-dataframe}
+```{r generate-dataframe, include=FALSE}
 n_sites <- 11
 last_prework_month <- 6
 n_action <- 6
@@ -108,9 +112,9 @@ rpois_vec <- Vectorize(rpois, 'lambda')
 
 inner_join(X_continuous, expected_n, by='Site') %>%
   mutate(
-    denominator = rpois_vec(1, expected),
-    numerator = round(denominator * Proportion_raw),
-    Proportion = numerator / denominator,
+    Denominator = rpois_vec(1, expected),
+    Numerator = round(Denominator * Proportion_raw),
+    Proportion = Numerator / Denominator,
     Phase = case_when(
       Month <= 3 ~ 'baseline',
       Month <= last_prework_month ~ 'prework',
@@ -118,7 +122,7 @@ inner_join(X_continuous, expected_n, by='Site') %>%
       TRUE ~ 'sustain'
     )
   ) %>%
-  select(Site, Month, Phase, numerator, denominator, Proportion) -> X
+  select(Site, Month, Phase, Numerator, Denominator, Proportion) -> X
   
 ```
 
@@ -136,7 +140,7 @@ site_data_with_average <- bind_rows(X, averaged)
 
 # Results
 
-```{r plotting}
+```{r plotting, echo=FALSE}
   ggplot(site_data_with_average, aes(Month, Proportion)) +
     geom_line() +
     geom_vline(xintercept = last_prework_month) +
@@ -155,7 +159,16 @@ the average rate of misses for all 11 sites.
 
 # Sample data
 
-```{r sample-data}
+```{r sample-data, echo=FALSE}
 head(X, 18+5) %>% kable()
+
+output_filename <- 'fake_data.csv'
+write.csv(X, file=here(output_filename))
+Xrows = dim(X)[1]
+Xcols = dim(X)[2]
 ```
 
+Wrote output CSV (`r Xrows` rows $\times$ `r Xcols` columns) to the file
+``r output_filename``, in the following directory:
+
+``r here()``
