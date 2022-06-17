@@ -4,25 +4,18 @@ author: "Andrew Zimolzak"
 output: pdf_document
 ---
 
-These e-triggers answer the question, "Which patients had a test that shows a
-possibility of cancer but have not had timely follow-up?"
+The e-triggers for this project answer the question, "Which patients had a test that shows a
+possibility of cancer but have *not* had timely follow-up?" Abnormal tests can be positive fecal immunochemical test,
+or lung imaging suspicious for malignancy).
 
-Each site re-runs the e-trigger monthly. As output, they see their rate of
-missed follow-up on abnormal tests (*e.g.,* positive fecal immunochemical test,
-or lung imaging suspicious for malignancy). This is calculated from the number
-of abnormal tests *without* expected follow up (numerator) and the number of
-abnormal tests altogether (denominator). Thus, on each graph, lower values are
-better (indicating fewer misses and more timely follow-up).
-
-The output at each site includes:
-
-- Trends in proportion of follow-up over time (see **Figure**), to determine whether
+Each site runs the e-trigger monthly. As output, they see the number of
+abnormal tests altogether (denominator), and the number
+of abnormal tests *without* expected follow up (numerator).
+From this, they can calculate and graph their rate of missed test results, to determine whether
 their quality improvement activities are effective.
+On each graph, lower values are
+better (indicating fewer misses and more tests with timely follow-up).
 
-- **Numerator and denominator** for abnormal test follow-up, by month.
-
-- **Patient-level data** (identifiers, dates of tests) for those in the numerator
-and denominator.
 
 
 # Simulating e-trigger data over time
@@ -116,7 +109,7 @@ rpois_vec <- Vectorize(rpois, 'lambda')
 inner_join(X_continuous, expected_n, by='Site') %>%
   mutate(
     denominator = rpois_vec(1, expected),
-    numerator = denominator * Proportion_raw,
+    numerator = round(denominator * Proportion_raw),
     Proportion = numerator / denominator,
     Phase = case_when(
       Month <= 3 ~ 'baseline',
@@ -124,7 +117,8 @@ inner_join(X_continuous, expected_n, by='Site') %>%
       Month <= last_action_month ~ 'action',
       TRUE ~ 'sustain'
     )
-  ) -> X
+  ) %>%
+  select(Site, Month, Phase, numerator, denominator, Proportion) -> X
   
 ```
 
@@ -158,3 +152,10 @@ to implement quality interventions). Before the first line is the baseline and
 
 Each panel is a different VA medical center site. The lower right panel shows
 the average rate of misses for all 11 sites.
+
+# Sample data
+
+```{r sample-data}
+head(X, 18+5) %>% kable()
+```
+
