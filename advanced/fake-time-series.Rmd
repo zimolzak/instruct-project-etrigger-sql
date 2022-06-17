@@ -83,6 +83,8 @@ n_sustain <- 6
 last_action_month <- last_prework_month + n_action
 months_per_site <- last_action_month + n_sustain
 
+set.seed(123423)
+
 X_continuous <- generate_etrigger_data(n_sites, months_per_site)
 
 ```
@@ -163,7 +165,7 @@ the average rate of misses for all 11 sites.
 head(X, 18+5) %>% kable()
 
 output_filename <- 'fake_data.csv'
-write.csv(X, file=here(output_filename))
+write.csv(X, file=here(output_filename), row.names = FALSE)
 Xrows = dim(X)[1]
 Xcols = dim(X)[2]
 ```
