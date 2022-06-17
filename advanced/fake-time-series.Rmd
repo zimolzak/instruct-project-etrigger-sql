@@ -34,20 +34,7 @@ library(dplyr)
 library(knitr)
 ```
 
-We will need to generate:
 
-- A few months of baseline data
-- 3 months prework phase data
-- 6 months action phase
-- 6 months sustain phase (in reality, it varies 0-12 months)
-
-We will use a total of *18 months* per site, times 11 sites.
-
-For realism, data are simulated as a variety of "random walk." Specifically,
-each month's value depends on last month's value, plus a random step of
-reasonable size either up or down, with constraints to ensure that proportions
-can approach but never reach 1 or 0. Currently, proportions are simulated as real
-numbers (not rational numbers).
 
 ```{r functions, include=FALSE}
 x_to_proportion <- function(x) { 
@@ -92,15 +79,36 @@ generate_etrigger_data <- function(number_sites, months_per_site) {  # returns d
 
 
 ```{r generate-dataframe}
-months_per_site <- 18
 n_sites <- 11
+last_prework_month <- 6
+n_action <- 6
+n_sustain <- 6
+last_action_month <- last_prework_month + n_action
+months_per_site <- last_action_month + n_sustain
+
 X_continuous <- generate_etrigger_data(n_sites, months_per_site)
+
 ```
 
-```{r rational-numbers}
+We generate:
+
+- A few months of baseline data, plus prework phase data (total `r last_prework_month` months)
+- `r n_action` months action phase
+- `r n_sustain` months sustain phase (in reality, it varies 0-12 months)
+
+Therefore, we will use a total of *`r months_per_site` months* per site, times `r n_sites` sites.
+
+For realism, data are simulated as a variety of "random walk." Specifically,
+each month's value depends on last month's value, plus a random step of
+reasonable size either up or down, with constraints to ensure that proportions
+can approach but never reach 1 or 0. Currently, proportions are simulated as real
+numbers (not rational numbers).
+
+
+```{r rational-numbers, include=FALSE}
 expected_n = data.frame(
   Site = LETTERS[1: n_sites],
-  expected = runif(n_sites, 9, 30)
+  expected = runif(n_sites, 9, 30)  # Sites usually 9 to 30 abnormal tests per mo.
 )
 
 rpois_vec <- Vectorize(rpois, 'lambda')
@@ -109,12 +117,18 @@ inner_join(X_continuous, expected_n, by='Site') %>%
   mutate(
     denominator = rpois_vec(1, expected),
     numerator = denominator * Proportion_raw,
-    Proportion = numerator / denominator
+    Proportion = numerator / denominator,
+    Phase = case_when(
+      Month <= 3 ~ 'baseline',
+      Month <= last_prework_month ~ 'prework',
+      Month <= last_action_month ~ 'action',
+      TRUE ~ 'sustain'
+    )
   ) -> X
   
 ```
 
-We will also compute the average rate of misses by month, across sites.
+We will also compute the average rate of misses by month, across *all* sites.
 
 ```{r compute-average, include=FALSE}
 X %>%
@@ -131,8 +145,8 @@ site_data_with_average <- bind_rows(X, averaged)
 ```{r plotting}
   ggplot(site_data_with_average, aes(Month, Proportion)) +
     geom_line() +
-    geom_vline(xintercept = 6) +
-    geom_vline(xintercept = 12) +
+    geom_vline(xintercept = last_prework_month) +
+    geom_vline(xintercept = last_action_month) +
     ylim(0,1) +
     facet_wrap(vars(Site))
 ```
