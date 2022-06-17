@@ -10,3 +10,4 @@ advanced/*.pdf
 advanced/discovery-manual-icd9.md
 advanced/discovery-manual.md
 # Ignore those 2 .md because they're auto-generated.
+.Rproj.user

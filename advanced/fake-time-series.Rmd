@@ -1,0 +1,146 @@
+---
+title: "InSTRuCt project: simulated e-trigger data"
+author: "Andrew Zimolzak"
+output: pdf_document
+---
+
+These e-triggers answer the question, "Which patients had a test that shows a
+possibility of cancer but have not had timely follow-up?"
+
+Each site re-runs the e-trigger monthly. As output, they see their rate of
+missed follow-up on abnormal tests (*e.g.,* positive fecal immunochemical test,
+or lung imaging suspicious for malignancy). This is calculated from the number
+of abnormal tests *without* expected follow up (numerator) and the number of
+abnormal tests altogether (denominator). Thus, on each graph, lower values are
+better (indicating fewer misses and more timely follow-up).
+
+The output at each site includes:
+
+- Trends in proportion of follow-up over time (see **Figure**), to determine whether
+their quality improvement activities are effective.
+
+- **Numerator and denominator** for abnormal test follow-up, by month.
+
+- **Patient-level data** (identifiers, dates of tests) for those in the numerator
+and denominator.
+
+
+# Simulating e-trigger data over time
+
+```{r libraries, message=FALSE, warning=FALSE, include=FALSE}
+library(ggplot2)
+library(tidyr)
+library(dplyr)
+library(knitr)
+```
+
+We will need to generate:
+
+- A few months of baseline data
+- 3 months prework phase data
+- 6 months action phase
+- 6 months sustain phase (in reality, it varies 0-12 months)
+
+We will use a total of *18 months* per site, times 11 sites.
+
+For realism, data are simulated as a variety of "random walk." Specifically,
+each month's value depends on last month's value, plus a random step of
+reasonable size either up or down, with constraints to ensure that proportions
+can approach but never reach 1 or 0. Currently, proportions are simulated as real
+numbers (not rational numbers).
+
+```{r functions, include=FALSE}
+x_to_proportion <- function(x) { 
+  0.5 + atan(x) / pi
+}
+
+proportion_to_x <- function(proportion) { 
+  tan(pi * (proportion - 0.5))
+}
+
+next_proportion <- function(current_proportion) {  # returns simple numeric
+  current_x <- proportion_to_x(current_proportion)
+  new_x <- current_x + rnorm(1)
+  x_to_proportion(new_x)
+}
+
+extend_by_one <- function(proportion_vec) {  # returns numeric vector
+  val_to_add <- next_proportion(tail(proportion_vec, n=1))
+  c(proportion_vec, val_to_add)
+}
+
+generate_run <- function(n) {  # returns numeric vector of length n
+  my_run <- c(next_proportion(0.5))
+  for (i in 2:n) {
+    my_run <- extend_by_one(my_run)
+  }
+  my_run
+}
+
+generate_etrigger_data <- function(number_sites, months_per_site) {  # returns data frame
+  result <- generate_run(months_per_site)
+  site_labels <- rep(LETTERS[1], months_per_site)
+  timepoints <- 1:months_per_site
+  for (i in 2:number_sites) {
+    result <- c(result, generate_run(months_per_site))
+    site_labels <- c(site_labels, rep(LETTERS[i], months_per_site))
+    timepoints <- c(timepoints, 1:months_per_site)
+  }
+  data.frame(Proportion_raw = result, Site = site_labels, Month = timepoints)
+}
+```
+
+
+```{r generate-dataframe}
+months_per_site <- 18
+n_sites <- 11
+X_continuous <- generate_etrigger_data(n_sites, months_per_site)
+```
+
+```{r rational-numbers}
+expected_n = data.frame(
+  Site = LETTERS[1: n_sites],
+  expected = runif(n_sites, 9, 30)
+)
+
+rpois_vec <- Vectorize(rpois, 'lambda')
+
+inner_join(X_continuous, expected_n, by='Site') %>%
+  mutate(
+    denominator = rpois_vec(1, expected),
+    numerator = denominator * Proportion_raw,
+    Proportion = numerator / denominator
+  ) -> X
+  
+```
+
+We will also compute the average rate of misses by month, across sites.
+
+```{r compute-average, include=FALSE}
+X %>%
+  group_by(Month) %>%
+  summarise(Proportion = mean(Proportion)) %>%
+  mutate(Site='p_Avg') ->
+  averaged
+site_data_with_average <- bind_rows(X, averaged)
+```
+
+
+# Results
+
+```{r plotting}
+  ggplot(site_data_with_average, aes(Month, Proportion)) +
+    geom_line() +
+    geom_vline(xintercept = 6) +
+    geom_vline(xintercept = 12) +
+    ylim(0,1) +
+    facet_wrap(vars(Site))
+```
+
+In the figure above, the vertical reference lines mark the start and end of the
+action phase (period when the site was interacting with the central study team
+to implement quality interventions). Before the first line is the baseline and
+"prework" phase. After the second line is the "sustainment" phase.
+
+Each panel is a different VA medical center site. The lower right panel shows
+the average rate of misses for all 11 sites.
