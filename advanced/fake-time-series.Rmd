@@ -174,3 +174,19 @@ Wrote output CSV (`r Xrows` rows $\times$ `r Xcols` columns) to the file
 ``r output_filename``, in the following directory:
 
 ``r here()``
+
+
+# Plot design
+
+```{r dots-no-facet}
+site_data_with_average %>%
+  filter(Site != 'p_Avg') %>%
+  ggplot(aes(as.factor(Month), Proportion)) +
+    geom_boxplot() +
+    geom_jitter(width = 0.1, alpha = 0.5) +
+    geom_vline(xintercept = last_prework_month) +
+    geom_vline(xintercept = last_action_month) +
+    ylim(0,1) +
+    labs(y="Proportion of abnormal FOBT missed", x='Month (start date aligned to 6)')
+```
+
