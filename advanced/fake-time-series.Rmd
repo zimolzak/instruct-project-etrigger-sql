@@ -74,14 +74,16 @@ generate_etrigger_data <- function(number_sites, months_per_site) {  # returns d
 }
 ```
 
+Set up some global parameters
 
-```{r generate-dataframe, include=FALSE}
+```{r generate-dataframe, echo=TRUE}
 n_sites <- 11
 last_prework_month <- 6
 n_action <- 6
 n_sustain <- 6
 last_action_month <- last_prework_month + n_action
 months_per_site <- last_action_month + n_sustain
+project_kickoff <- as.Date('2021-01-01')
 
 set.seed(123423)
 
@@ -98,11 +100,12 @@ We generate:
 Therefore, we will use a total of *`r months_per_site` months* per site, times `r n_sites` sites.
 
 For realism, data are simulated as a variety of "random walk." Specifically,
-each month's value depends on last month's value, plus a random step of
+each month's rate depends on last month's rate, plus a random step of
 reasonable size either up or down, with constraints to ensure that proportions
-can approach but never reach 1 or 0. Currently, proportions are simulated as real
-numbers (not rational numbers).
-
+can approach but never reach 1 or 0. The denominator (number of abnormals per month, with
+or without follow-up) is modeled from a Poisson distribution, where each site has
+a typical number of abnormals per month, with natural variation around the mean each month,
+but no variation in site-specific mean over time.
 
 ```{r rational-numbers, include=FALSE}
 expected_n = data.frame(
@@ -127,9 +130,10 @@ inner_join(X_continuous, expected_n, by='Site') %>%
       Site %in% c('A', 'B', 'C', 'D') ~ 1,
       Site %in% c('E', 'F', 'G', 'H') ~ 2,
       TRUE ~ 3,
-    )
+    ),
+    Date = n_action * 30 * (Cohort - 1) + project_kickoff
   ) %>%
-  select(Cohort, Site, Month, Phase, Numerator, Denominator, Proportion) -> X
+  select(Cohort, Site, Month, Phase, Numerator, Denominator, Proportion, Date) -> X
 ```
 
 We will also compute the average rate of misses by month, across *all* sites.
@@ -165,7 +169,10 @@ to implement quality interventions). Before the first line is the baseline and
 Each panel is a different VA medical center site. The lower right panel shows
 the average rate of misses for all 11 sites.
 
-# Sample data
+
+
+
+# Sample data table
 
 ```{r sample-data, echo=FALSE}
 head(X, 18+5) %>% kable()
