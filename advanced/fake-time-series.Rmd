@@ -131,9 +131,13 @@ inner_join(X_continuous, expected_n, by='Site') %>%
       Site %in% c('E', 'F', 'G', 'H') ~ 2,
       TRUE ~ 3,
     ),
-    Date = n_action * 30 * (Cohort - 1) + project_kickoff
+    Date = n_action * 30 * (Cohort - 1) + (Month - 1) * 30 + project_kickoff,
+    PhaseGrp = case_when(
+      Phase %in% c('baseline', 'prework') ~ 'Control',
+      TRUE ~ 'Intervention'
+    )
   ) %>%
-  select(Cohort, Site, Month, Phase, Numerator, Denominator, Proportion, Date) -> X
+  select(Cohort, Site, Month, Phase, Numerator, Denominator, Proportion, Date, PhaseGrp) -> X
 ```
 
 We will also compute the average rate of misses by month, across *all* sites.
@@ -203,4 +207,13 @@ site_data_with_average %>%
     labs(y="Proportion of abnormal FOBT missed", x='Month (start date aligned to 6)')
 ```
 
+
+```{r actual-date}
+ggplot(X, aes(Date, Proportion, colour = as.factor(Cohort))) +
+  geom_point(aes(shape = PhaseGrp)) +
+  geom_smooth() +
+  ylim(0,1)
+```
+
+Still not sure I like the one above.
 
