@@ -217,3 +217,9 @@ ggplot(X, aes(Date, Proportion, colour = as.factor(Cohort))) +
 
 Still not sure I like the one above.
 
+```{r date-and-stat}
+ggplot(X, aes(Date, Proportion, colour = as.factor(Cohort))) +
+  geom_point(aes(shape = PhaseGrp), alpha = 0.3) +
+  stat_summary(fun.data = "mean_sdl", fun.args = list(mult = 1)) +
+  ylim(0,1)
+```
