@@ -122,10 +122,14 @@ inner_join(X_continuous, expected_n, by='Site') %>%
       Month <= last_prework_month ~ 'prework',
       Month <= last_action_month ~ 'action',
       TRUE ~ 'sustain'
+    ),
+    Cohort = case_when(
+      Site %in% c('A', 'B', 'C', 'D') ~ 1,
+      Site %in% c('E', 'F', 'G', 'H') ~ 2,
+      TRUE ~ 3,
     )
   ) %>%
-  select(Site, Month, Phase, Numerator, Denominator, Proportion) -> X
-  
+  select(Cohort, Site, Month, Phase, Numerator, Denominator, Proportion) -> X
 ```
 
 We will also compute the average rate of misses by month, across *all* sites.
@@ -138,6 +142,8 @@ X %>%
   averaged
 site_data_with_average <- bind_rows(X, averaged)
 ```
+
+
 
 
 # Results
@@ -189,4 +195,5 @@ site_data_with_average %>%
     ylim(0,1) +
     labs(y="Proportion of abnormal FOBT missed", x='Month (start date aligned to 6)')
 ```
+
 
