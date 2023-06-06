@@ -221,7 +221,7 @@ Still not sure I like the one above.
 ```{r date-and-stat}
 ggplot(X, aes(Date, Proportion, colour = as.factor(Cohort))) +
   geom_point(alpha = 0.5) +
-  stat_summary(fun.data = "mean_sdl", fun.args = list(mult = 1), shape = 'square') +
+  stat_summary(fun.data = "mean_sdl", fun.args = list(mult = 1), shape = '') +
   stat_summary(fun = mean, geom='line') +
   coord_cartesian(ylim = c(0, 1)) +
   labs(y="Proportion of abnormal FOBT missed", color="Cohort")
