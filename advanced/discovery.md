@@ -1,6 +1,6 @@
 % Cancer Test Result e-Trigger Manual
 
-**Guidance complied by:** Sahar Memon, Andrew Zimolzak, Li Wei, Daniel
+**Guidance compiled by:** Sahar Memon, Andrew Zimolzak, Li Wei, Daniel
 Murphy, Hardeep Singh.
 
 **Affiliation:** Michael E. DeBakey Veterans Affairs Medical Center,
