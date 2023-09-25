@@ -3,6 +3,7 @@ instruct = instruct-trigger-manual.pdf instruct-trigger-manual.docx
 code_pdfs = Fobt_sql.pdf Lung_sql.pdf
 mod_sql = HCC_altered.sql IDA_altered.sql
 misc = Triggers-Overview.pdf instruct-graph.png orcids-credits.pdf
+misc += consort-like.png
 
 .PHONY : all
 all : $(discovery) $(instruct) $(code_pdfs) $(mod_sql) $(misc)
