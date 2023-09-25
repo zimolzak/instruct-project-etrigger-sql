@@ -1,18 +1,20 @@
 digraph  {
 
-node [style=filled, fillcolor="#EAEEED", fontname="Trebuchet MS", color="#979797"]
+node [style=filled, fillcolor="#EAEEED", fontname="Trebuchet MS", color="#979797", shape=rectangle]
 edge [color="#979797"]
+
+
+
 
 # Top nodes
 
 root [shape=rectangle, label="12 VAMCs invited\nx of complexity class...\ny of complexity...", style=filled, fillcolor="#EAEEED"];
 
-randomize [label="12 VAMCs randomized"];
+randomize [label="12 VAMCs randomized", shape=ellipse];
 
-c1 [shape=rectangle, label="4 VAMCs randomized to sequence 1"];
+c1 [shape=rectangle, label="4 VAMCs randomized to sequence 1\nn of complexity...\nm of complex...."];
 c2 [shape=rectangle, label="4 VAMCs randomized to sequence 2"];
 c3 [shape=rectangle, label="4 VAMCs randomized to sequence 3"];
-
 
 
 
@@ -27,9 +29,7 @@ randomize -> c3 [arrowhead="none"];
 
 
 
-########
-# subgraph bottom_part {
-# splines = ortho;
+# Bottom nodes
 
 dropout [shape=rectangle];  # Order matters!
 
@@ -49,23 +49,33 @@ n3 [fixedsize = true,
 			style = invis,
 			shape = point];
 
-a1 [shape=rectangle];
-a2 [shape=rectangle];
-a3 [shape=rectangle];
+a1 [shape=rectangle, label="4 VAMCs\nAction phase (6 mo.) start Sept., 2020"];
+a2 [shape=rectangle, label="4 VAMCs\npre"];
+a3 [shape=rectangle, label="3 VAMCs\npre"];
 
-# Edges
+apr1 [label="post"]
+apr2 [label="ACTION\nAction phase start Apr., 2021"]
+apr3 [label="pre"]
+
+oct1 [label="post"]
+oct2 [label="post"]
+oct3 [label="ACTION\nAction phase start Oct., 2021"]
+
+
+
+# Bottom Edges
 
 c1 -> n1 [arrowhead = "none"];
 c2 -> n2 [arrowhead = "none"];
 c3 -> n3 [arrowhead = "none"];
 
-n1 -> a1;
-n2 -> a2;
-n3 -> a3;
+n1 -> a1 -> apr1 -> oct1 -> ana1;
+n2 -> a2 -> apr2 -> oct2 -> ana2;
+n3 -> a3 -> apr3 -> oct3 -> ana3;
 
-c1 -> dropout [style = invis];  # ad hoc
-n1 -> dropout [constraint = false];
-dropout -> a1 [style = invis, constraint = false];  # ad hoc
+c3 -> dropout [style = invis];  # ad hoc
+n3 -> dropout [constraint = false];
+dropout -> a3 [style = invis, constraint = false];  # ad hoc
 
 # }
 
