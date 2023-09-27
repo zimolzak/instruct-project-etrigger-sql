@@ -8,14 +8,14 @@ edge [color="#979797"]
 
 # Top nodes
 
-root [label="12 VAMCs invited\n    4 complexity 1a\n    4 complexity 1b\n    4 complexity 1c",
+root [label="12 Veterans Affairs Medical Centers invited\n4 complexity 1a\n4 complexity 1b\n4 complexity 1c\n",
      style=filled, fillcolor="#EAEEED"];
 
-randomize [label="12 VAMCs randomized", shape=ellipse];
+randomize [label="12 clusters randomized", shape=ellipse];
 
-c1 [label="4 VAMCs randomized to sequence 1\n1 complexity 1a\n2 complexity 1b\n1 complexity 1c"]
-c2 [label="4 VAMCs randomized to sequence 2\nx complexity 1a\ny complexity 1b\nz complexity 1c"];
-c3 [label="4 VAMCs randomized to sequence 3\ny complexity 1a\ny complexity 1b\nz complexity 1c"];
+c1 [label="4 clusters randomized to sequence 1\n1 complexity 1a\n2 complexity 1b\n1 complexity 1c"]
+c2 [label="4 clusters randomized to sequence 2\n2 complexity 1a\n1 complexity 1b\n1 complexity 1c"];
+c3 [label="4 clusters randomized to sequence 3\n1 complexity 1a\n1 complexity 1b\n2 complexity 1c"];
 
 
 
@@ -32,7 +32,7 @@ randomize -> c3 [arrowhead="none"];
 
 # Bottom nodes
 
-dropout [label="1 VAMC left study\n(complexity xx)"];  # Order matters!
+dropout [label="1 VAMC left study\n(complexity 1c)"];  # Order matters!
 
 # Invisible point nodes
 
@@ -57,9 +57,9 @@ n3 [fixedsize = true,
 
 # Main nodes
 
-pre1 [label="4 VAMCs\nPre-intervention\nstarting Feb., 2020"]
-pre2 [label="4 VAMCs\nPre-intervention"]
-pre3 [label="3 VAMCs\nPre-intervention"]
+pre1 [label="4 clusters\nPre-intervention\nstarting Feb., 2020\n"]
+pre2 [label="4 clusters\nPre-intervention"]
+pre3 [label="3 clusters\nPre-intervention"]
 
 a1 [label="Action phase (6 mo.)\nstarting Sept., 2020"];
 a2 [label="Pre-intervention"];
@@ -73,9 +73,9 @@ oct1 [label="Continuous improvement"]
 oct2 [label="Continuous improvement"]
 oct3 [label="Action phase (6 mo.)\nstarting Oct., 2021"]
 
-ana1 [label="4 VAMCs included in primary analysis\nx mo. pre-intervention\n6 mo. action\ny mo. continuous improvement"]
-ana2 [label="4 VAMCs included in primary analysis\nx mo. pre-intervention\n6 mo. action\ny mo. continuous improvement"]
-ana3 [label="3 VAMCs included in primary analysis\nx mo. pre-intervention\n6 mo. action\ny mo. continuous improvement"]
+ana1 [label="4 clusters included in primary analysis\l    7 mo. pre-intervention\l    6 mo. action\l    13 mo. continuous improvement\l"]
+ana2 [label="4 clusters included in primary analysis\l    14 mo. pre-intervention\l    6 mo. action\l    6 mo. continuous improvement\l"]
+ana3 [label="3 clusters included in primary analysis\l    20 mo. pre-intervention\l    6 mo. action\l    0 mo. continuous improvement\l"]
 
 
 
