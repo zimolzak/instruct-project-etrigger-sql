@@ -8,13 +8,14 @@ edge [color="#979797"]
 
 # Top nodes
 
-root [shape=rectangle, label="12 VAMCs invited\nx of complexity class...\ny of complexity...", style=filled, fillcolor="#EAEEED"];
+root [label="12 VAMCs invited\n    4 complexity 1a\n    4 complexity 1b\n    4 complexity 1c",
+     style=filled, fillcolor="#EAEEED"];
 
 randomize [label="12 VAMCs randomized", shape=ellipse];
 
-c1 [shape=rectangle, label="4 VAMCs randomized to sequence 1\nn of complexity...\nm of complex...."];
-c2 [shape=rectangle, label="4 VAMCs randomized to sequence 2"];
-c3 [shape=rectangle, label="4 VAMCs randomized to sequence 3"];
+c1 [label="4 VAMCs randomized to sequence 1\n1 complexity 1a\n2 complexity 1b\n1 complexity 1c"]
+c2 [label="4 VAMCs randomized to sequence 2\nx complexity 1a\ny complexity 1b\nz complexity 1c"];
+c3 [label="4 VAMCs randomized to sequence 3\ny complexity 1a\ny complexity 1b\nz complexity 1c"];
 
 
 
@@ -31,7 +32,9 @@ randomize -> c3 [arrowhead="none"];
 
 # Bottom nodes
 
-dropout [shape=rectangle];  # Order matters!
+dropout [label="1 VAMC left study\n(complexity xx)"];  # Order matters!
+
+# Invisible point nodes
 
 n1 [fixedsize = true,
 			height = 0,
@@ -49,17 +52,30 @@ n3 [fixedsize = true,
 			style = invis,
 			shape = point];
 
-a1 [shape=rectangle, label="4 VAMCs\nAction phase (6 mo.) start Sept., 2020"];
-a2 [shape=rectangle, label="4 VAMCs\npre"];
-a3 [shape=rectangle, label="3 VAMCs\npre"];
 
-apr1 [label="post"]
-apr2 [label="ACTION\nAction phase start Apr., 2021"]
-apr3 [label="pre"]
 
-oct1 [label="post"]
-oct2 [label="post"]
-oct3 [label="ACTION\nAction phase start Oct., 2021"]
+
+# Main nodes
+
+pre1 [label="4 VAMCs\nPre-intervention\nstarting Feb., 2020"]
+pre2 [label="4 VAMCs\nPre-intervention"]
+pre3 [label="3 VAMCs\nPre-intervention"]
+
+a1 [label="Action phase (6 mo.)\nstarting Sept., 2020"];
+a2 [label="Pre-intervention"];
+a3 [label="Pre-intervention"]
+
+apr1 [label="Continuous improvement"]
+apr2 [label="Action phase (6 mo.)\nstarting Apr., 2021"]
+apr3 [label="Pre-intervention"]
+
+oct1 [label="Continuous improvement"]
+oct2 [label="Continuous improvement"]
+oct3 [label="Action phase (6 mo.)\nstarting Oct., 2021"]
+
+ana1 [label="4 VAMCs included in primary analysis\nx mo. pre-intervention\n6 mo. action\ny mo. continuous improvement"]
+ana2 [label="4 VAMCs included in primary analysis\nx mo. pre-intervention\n6 mo. action\ny mo. continuous improvement"]
+ana3 [label="3 VAMCs included in primary analysis\nx mo. pre-intervention\n6 mo. action\ny mo. continuous improvement"]
 
 
 
@@ -69,9 +85,9 @@ c1 -> n1 [arrowhead = "none"];
 c2 -> n2 [arrowhead = "none"];
 c3 -> n3 [arrowhead = "none"];
 
-n1 -> a1 -> apr1 -> oct1 -> ana1;
-n2 -> a2 -> apr2 -> oct2 -> ana2;
-n3 -> a3 -> apr3 -> oct3 -> ana3;
+n1 -> pre1 -> a1 -> apr1 -> oct1 -> ana1;
+n2 -> pre2 -> a2 -> apr2 -> oct2 -> ana2;
+n3 -> pre3 -> a3 -> apr3 -> oct3 -> ana3;
 
 c3 -> dropout [style = invis];  # ad hoc
 n3 -> dropout [constraint = false];
