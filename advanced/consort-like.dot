@@ -1,5 +1,6 @@
 digraph  {
 
+splines=ortho
 node [style=filled, fillcolor="#EAEEED", fontname="Trebuchet MS", color="#979797", shape=rectangle]
 edge [color="#979797"]
 
@@ -32,7 +33,7 @@ randomize -> c3 [arrowhead="none"];
 
 # Bottom nodes
 
-dropout [label="1 VAMC left study\n(complexity 1c)"];  # Order matters!
+dropout [label="1 cluster left study\n(complexity 1c)"];  # Order matters!
 
 # Invisible point nodes
 
