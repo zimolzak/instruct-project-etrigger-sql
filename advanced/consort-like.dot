@@ -94,6 +94,4 @@ c3 -> dropout [style = invis];  # ad hoc
 n3 -> dropout [constraint = false];
 dropout -> a3 [style = invis, constraint = false];  # ad hoc
 
-# }
-
 }
