@@ -3055,8 +3055,8 @@ if (OBJECT_ID('tempdb.dbo.#FOBT_Sta3n528_5_Exc_NonDx_9_VisitTIUConsult_joinByCon
 
 						select v.*
 					,c.requestDateTime as ReferralRequestDateTime,c.OrderStatusSID as ConsultOrderStatusSID,
-					c.ToRequestserviceSID as ConsultToRequestserviceSID,c.ToRequestserviceName as ConsultToRequestserviceName,
-					c.placeofconsultation,	  
+					c.ToRequestserviceSID as ConsultToRequestserviceSID,rs.ServiceName as ConsultToRequestserviceName,
+					--c.placeofconsultation,	  
 					c.requestType,   -- weather the request is a consult or procedure
 					c.[InpatOutpat], -- the ordering person to indicate if the service is to be rendered on an outpatient or Inpatients basis.
 					c.[RemoteService],
@@ -3066,6 +3066,8 @@ if (OBJECT_ID('tempdb.dbo.#FOBT_Sta3n528_5_Exc_NonDx_9_VisitTIUConsult_joinByCon
 					left join [CDWWork].[Con].[Consult] as C										                        --altered (ORD_...Src)
 					on C.ConsultSID=V.ConsultSID --and CohortName='Cohort20180712'
 					and C.Sta3n=V.Sta3n
+					left join cdwwork.dim.RequestService as rs
+					on c.ToRequestServiceSID=rs.RequestServiceSID and c.Sta3n=rs.sta3n	
 					--more filter
 					--and C.[requestDateTime] between dateAdd(yy,-1,(select sp_start from #FOBT_Sta3n528_0_1_inputP))    --altered (ORD_...Dflt) --altered (temp table)
 					--						  and DateAdd(dd,(select fu_period from #FOBT_Sta3n528_0_1_inputP)    --altered (ORD_...Dflt) --altered (temp table)
