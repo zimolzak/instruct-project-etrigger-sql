@@ -3627,8 +3627,8 @@ if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n528_3_Ins_9_Ex_3_VisitTIUconsult_joinByCons
 
 			select v.*
 			,c.requestDateTime as ReferralRequestDateTime,c.OrderStatusSID as ConsultOrderStatusSID,
-			c.ToRequestserviceSID as ConsultToRequestserviceSID,c.ToRequestserviceName as ConsultToRequestserviceName,
-			c.placeofconsultation,	  
+			c.ToRequestserviceSID as ConsultToRequestserviceSID,rs.ServiceName as ConsultToRequestserviceName,
+			--c.placeofconsultation,	  
 			c.requestType, -- weather the request is a consult or procedure
 			c.[InpatOutpat], -- the ordering person to indicate if the service is to be rendered on an outpatient or Inpatients basis.
 			c.[RemoteService],
@@ -3636,7 +3636,9 @@ if (OBJECT_ID('tempdb.dbo.#Lung_Sta3n528_3_Ins_9_Ex_3_VisitTIUconsult_joinByCons
 			into #Lung_Sta3n528_3_Ins_9_Ex_3_VisitTIUconsult_joinByConsultSID				    --altered (ORD_...Dflt) --altered (temp table)
             from #Lung_Sta3n528_3_Ins_9_Ex_2_VisitTIU as V    --altered (ORD_...Dflt) --altered (temp table)
 			left join [CDWWork].[Con].[Consult] as C										                        --altered (ORD_...Src)
-			on C.ConsultSID=V.ConsultSID --and CohortName='Cohort20180712'		
+			on C.ConsultSID=V.ConsultSID --and CohortName='Cohort20180712'	
+			left join cdwwork.dim.RequestService as rs
+			on c.ToRequestServiceSID=rs.RequestServiceSID and c.Sta3n=rs.sta3n	
 					--more filter
 					--and C.[requestDateTime] between dateAdd(yy,-1,(select sp_start from #Lung_Sta3n528_0_1_inputP))    --altered (ORD_...Dflt) --altered (temp table)
 					--	and DateAdd(dd,30+(select fu_period from #Lung_Sta3n528_0_1_inputP),(select sp_end from #Lung_Sta3n528_0_1_inputP))						      --altered (ORD_...Dflt) --altered (temp table)
