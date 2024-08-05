@@ -6,6 +6,8 @@
 *.png
 advanced/*.docx
 advanced/*.pdf
+*.ps
+*.eps
 
 advanced/discovery-manual-icd9.md
 advanced/discovery-manual.md

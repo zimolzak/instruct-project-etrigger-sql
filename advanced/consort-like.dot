@@ -1,7 +1,7 @@
 digraph  {
 
 splines=ortho
-node [style=filled, fillcolor="#EAEEED", fontname="Trebuchet MS", color="#979797", shape=rectangle]
+node [style=filled, fillcolor="#EAEEED", fontname="Helvetica", color="#979797", shape=rectangle]
 edge [color="#979797"]
 
 
